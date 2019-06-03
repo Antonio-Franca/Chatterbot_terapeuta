@@ -129,7 +129,7 @@ adjetivo('Terrivel').
 ola :-
 	phh(['Oi', eu, sou, 'Shrink', ',', seu, 'terapeuta.']),
 	nl,
-	phh(['Como', 'voce', 'esta?']),
+	phh(['Como', 'você', 'está?']),
 	nl,
 	ler(Paciente), 
 	consultaTerapeuta(Paciente).
@@ -142,15 +142,27 @@ consultaTerapeuta(Resposta) :-
 	ler(NovaResposta),
 	consultaTerapeuta(NovaResposta).
 
-assunto(pai).
+contexto(Lista,Palavra) :-
+	assunto(Palavra,Tema),
+	membro(Tema, Lista).
 
-contexto(Lista,Tema) :-
-	assunto(Tema),
-	fazParte(Tema, Lista).
+terapeuta(D) :-
+	phh(['O', que, mais, 'você', considera, muito, trabalho, ?]).	
 
-fazParte(X,[X|_]).
-fazParte(X,[_|Y]):-
-	fazParte(X,Y).
+
+%%%												ASSUNTOS					%%%%%%%%%%%%%
+
+assunto(pai,'família').
+assunto('mãe','família').
+assunto(filho,'família').
+assunto(filha,'família').
+assunto(trabalho,trabalho).
+assunto(cansado,trabalho).
+
+
+
+
+%%%												GRAMÁTICA					%%%%%%%%%%%%%
 								
 sentenca(Numero,Genero) --> pergunta(Numero,Genero).
 sentenca(Numero,Genero) --> frase(Numero,Genero).
@@ -180,6 +192,8 @@ frase(Numero,Genero) -->  artigo(Numero,Genero) , sujeito(Numero,Genero).
 frase(Numero,Genero) -->  predicado(Numero,Genero).
 
 sujeito(Numero,Genero) --> pronome(Numero,Genero), caractere_unico.
+sujeito(Numero,Genero) --> pronome(Numero,_), verbo(Numero), substantivo(Numero,Genero).
+sujeito(Numero,Genero) --> pronome(Numero,_), verbo(Numero), pronome(Numero,_), substantivo(Numero,Genero).
 sujeito(Numero,Genero) --> substantivo(Numero,Genero), caractere_unico.
 sujeito(Numero,Genero) --> artigo(Numero,Genero) , substantivo(Numero,Genero), preposicao(_), caractere_unico.
 sujeito(Numero,Genero) --> adverbio(Numero), adjetivo(Numero,Genero), caractere_unico.
@@ -202,6 +216,7 @@ predicado(Numero,Genero) --> verbo(Numero), preposicao(_), substantivo(Numero,Ge
 predicado(Numero,Genero) --> verbo(Numero), preposicao(_), verbo(Numero), adverbio(Numero,Genero), adjetivo(Numero,Genero), caractere_unico. 
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero), caractere_unico.
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero), caractere_unico.
+predicado(Numero,Genero) --> pronome(_,_), verbo(Numero), substantivo(Numero,Genero).
 
 
 %Estou comprando um protetor solar.
@@ -368,6 +383,7 @@ pronome(singular, masculino) --> [quanto].
 
 
 %SUBSTANTIVOS
+substantivo(singular,masculino) --> [cansado].
 substantivo(singular, masculino) --> [gato].
 substantivo(plural, masculino) --> [gatos].
 substantivo(singular, masculino) --> [rato]. 

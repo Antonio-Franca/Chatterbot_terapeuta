@@ -116,6 +116,7 @@ membro(X,[X|_]).
 membro(X,[_|Y]):-
 	membro(X,Y).
 
+
 phh([]) :- nl.
 phh([H|T]) :- 
 	write(H),
@@ -135,16 +136,16 @@ ola :-
 	consultaTerapeuta(Paciente).
 
 consultaTerapeuta(Resposta) :-	
-	sentenca( X,Y,Resposta,[]),
-	contexto(Resposta,D),
-	terapeuta(D),
+	sentenca(X,Y,Resposta,[]),
+	contexto(Resposta,D,Tema),
+	terapeuta(Tema),
 	nl,
 	ler(NovaResposta),
 	consultaTerapeuta(NovaResposta).
 
-contexto(Lista,Palavra) :-
+contexto(Lista,Palavra,Tema) :-
 	assunto(Palavra,Tema),
-	membro(Tema, Lista).
+	membro(Palavra, Lista).
 
 terapeuta(D) :-
 	phh(['O', que, mais, 'você', considera, muito, trabalho, ?]).	

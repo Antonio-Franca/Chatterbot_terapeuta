@@ -4,8 +4,8 @@
 % Operators
 
 :- op(500,xfy,&). 
-:- op(510,xfy,=>). 
-:- op(100,fx, ‘).
+:- op(510,xfy, =>). 
+:- op(100,fx, =!).
 
 % Dialogue Manager
 
@@ -26,11 +26,12 @@ main_loop :-
 %%% Sentence ==> sentence to form a reply to
 
 talk(Sentence, Reply) :-
-	% parse the sentence
-	parse(Sentence, LF, Type),
-	% convert the FOL logical form into a Horn 
+	% parse the sentence% convert the FOL logical form into a Horn
+	parse(Sentence, LF, Type), 
 	% clause, if possible
 	clausify(LF, Clause, FreeVars), !,
+	parse(Sentence, LF, Type),
+	
 	% concoct a reply, based on the clause and 
 	% whether sentence was a query or assertion 
 	reply(Type, FreeVars, Clause, Reply).
@@ -128,15 +129,21 @@ clausify(all(X,F0),F,[X|V]) :-
 
 % Implications: consequent must be a literal,
 % antecedent is clausified specially. c
-lausify(A0=>C0,(C:-A),V) :-
+clausify(A0=>C0,(C:-A),V) :-
 	clausify_literal(C0,C), 
 	clausify_antecedent(A0,A,V).
+
+% Literals: left unchanged (except literal
+% 			marker is removed). 
+clausify(C0,C,[]) :- 
+	clausify_literal(C0,C).
 
 
 % Literals: left unchanged (except literal
 % 			marker is removed). 
 clausify(C0,C,[]) :- 
 	clausify_literal(C0,C).
+
 
 % Note that conjunctions and existentials are
 % disallowed, since they can’t form Horn clauses.
@@ -167,7 +174,8 @@ clausify_antecedent(exists(X,F0),F,[X|V]) :-
 
 % Literal is left unchanged (except literal 
 % marker is removed). 
-clausify_literal(‘L,L).
+clausify_literal(=!L,L).
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%						Grammar
@@ -206,18 +214,18 @@ clausify_literal(‘L,L).
 
 %%% Questions
 
-question(S => ‘answer(X)) -->
+question(S => =!answer(X)) -->
 	whpron, 
 	vp(finite, X^S, nogap).
 
-question(S => ‘answer(X)) -->
+question(S => =!answer(X)) -->
 	whpron, 
 	sinv(S, gap(np, X)).
 
-question(S => ‘answer(yes)) --> 
+question(S => =!answer(yes)) --> 
 	sinv(S, nogap).
 
-question(S => ‘answer(yes)) --> 
+question(S => =!answer(yes)) --> 
 	[is],
 	np((X^S0)^S, nogap), 
 	np((X^true)^exists(X,S0&true), nogap).
@@ -352,12 +360,12 @@ det( every, (X^S1)^(X^S2)^ all(X,S1=>S2).
 det( a, (X^S1)^(X^S2)^exists(X,S1&S2) ). 
 det( some, (X^S1)^(X^S2)^exists(X,S1&S2) ).
 
-n( author, X^ ‘author(X) ).
-n( book, X^ ‘book(X) ).
-n( professor, X^ ‘professor(X) ).
-n( program, X^ ‘program(X) ).
-n( programmer, X^ ‘programmer(X) ).
-n( student, X^ ‘student(X) ).
+n( author, X^ =!author(X) ).
+n( book, X^ =!book(X) ).
+n( professor, X^ =!professor(X) ).
+n( program, X^ =!program(X) ).
+n( programmer, X^ =!programmer(X) ).
+n( student, X^ =!student(X) ).
 pn( begriffsschrift, begriffsschrift ). 
 pn( bertrand, bertrand ). 
 pn( bill, bill ). 
@@ -368,25 +376,25 @@ pn( shrdlu, shrdlu ).
 pn( terry, terry).
 
 iv( halt, halts, halted,
-	halted, halting, X^ ‘halt(X) ).
+	halted, halting, X^ =!halt(X) ).
 
 tv( write, writes, wrote,
-	written, writing, X^Y^ ‘writes(X,Y) ).
+	written, writing, X^Y^ =!writes(X,Y) ).
 
 tv( meet, meets, met,
-	met, meeting, X^Y^ ‘meets(X,Y) ).
+	met, meeting, X^Y^ =!meets(X,Y) ).
 
 tv( concern, concerns, concerned,
-	concerned, concerning, X^Y^ ‘concerns(X,Y) ).
+	concerned, concerning, X^Y^ =!concerns(X,Y) ).
 
 tv( run, runs, ran,
-	run, running, X^Y^ ‘runs(X,Y) ).
+	run, running, X^Y^ =!runs(X,Y) ).
 
 rov( want, wants, wanted,
 	 wanted, wanting,
 	 % semantics is partial execution of
 	% NP ^ VP ^ Y ^ NP( X^want(Y,X,VP(X)) )
-	((X^ ‘want(Y,X,Comp))^S) ^ (X^Comp) ^ Y ^ S, 
+	((X^ =!want(Y,X,Comp))^S) ^ (X^Comp) ^ Y ^ S, 
 	% form of VP required:
 	infinitival).
 

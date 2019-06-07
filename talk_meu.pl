@@ -44,6 +44,10 @@ na_palavra(C, C) :-
 na_palavra(C, C) :- 
 	caractere_especial(C). 
 
+membro(X,[X|_]).
+membro(X,[_|Y]):-
+	membro(X,Y).
+
 							%%% Special characters 
 caractere_especial('-'). 
 caractere_especial('').
@@ -111,10 +115,6 @@ concatena([X|L1], L2, [X|L3]) :-
 								%%% Leitura e impressao
 spaces(0) :- !.
 spaces(N) :- write(' '), N1 is N - 1, spaces(N1).
-
-membro(X,[X|_]).
-membro(X,[_|Y]):-
-	membro(X,Y).
 
 
 phh([]) :- nl.

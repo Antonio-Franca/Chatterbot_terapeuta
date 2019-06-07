@@ -24,21 +24,51 @@ main_loop :-
 %%% Reply <== appropriate reply to the sentence
 %%% Sentence ==> sentence to form a reply to
 
+parse_question :-
+	write('>> '),
+	read_sent(Words),
+	isAQuestion(Words),!.
+
+isAQuestion(Sentence) :-
+	questao(Numero,Genero,Sentence,[]),
+	write('It is a question!').
+
+isAQuestion(_Sentence) :-
+	write('It is not a question!').
+
 talk(Sentence, Reply) :-
 	% parse the sentence
-	% convert the FOL logical form into a Horn
 	% clause, if possible
-%	parse(Sentence, LF, Type), 							%%%%%%
 	parse(Sentence, Type),
-%	clausify(LF, Clause, FreeVars), !,					%%%%%%
-	% concoct a reply, based on the clause and 
-	% whether sentence was a query or assertion 
-%	reply(Type, FreeVars, Clause, Reply).				%%%%%%
+	(therapist(Sentence,Reply,Pronome);therapist(Sentence,Reply)),
 	reply(Type, Reply).
 
 % No parse was found, sentence is too difficult. 
 talk(_Sentence, error('too difficult')).
 
+context(Sentence,Theme,Pronome) :-
+	assunto(Word,Theme),
+	member(Word,Sentence,Pronome).
+
+context(Sentence,Theme) :-
+	assunto(Word,Theme),
+	member(Word,Sentence).
+
+
+member(X,[X|_]).
+member(X,[_|Y]):-
+	member(X,Y).
+
+member(X,[pronomeQuantidade,X|_],pronomeQuantidade).
+member(X,[_|Y],_):-
+	member(X,Y).
+
+therapist(Sentence,Reply,Pronome) :-
+	context(Sentence,Theme,Pronome).
+
+
+therapist(Sentence,Reply) :-
+	context(Sentence,Theme).
 
 % Replying to a query. 
 reply(query, FreeVars,
@@ -115,7 +145,6 @@ print_answers([Answer|Rest]) :-
 % Parsing an assertion: a finite sentence without gaps. 
 parse(Sentence, assertion) :-
 	sentenca(Numero, Genero, Sentence, []).
-%	sentence(LF, nogap, Sentence, []).					%%%%%%%
 
 % Parsing a query: a question. t.
 
@@ -557,6 +586,7 @@ pronomeTratamento --> ['você'].
 
 pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, verbo(Numero), interrogacao.
 pergunta(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), artigo(Numero,Genero), pronomeTratamento, substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
@@ -593,6 +623,11 @@ artigoCombinacao(singular, masculino) --> [ao].
 artigoCombinacao(plural, masculino) --> [aos].
 
 % PRONOMES
+
+pronomeQuantidade --> [muita].
+pronomeQuantidade --> [muitas].
+pronomeQuantidade --> [muito].
+pronomeQuantidade --> [muitos].
 
 pronome(singular) --> [eu].
 pronome(singular) --> [tu].
@@ -656,6 +691,7 @@ pronome(plural, feminino) --> [minhas].
 pronome(singular, feminino) --> [muita].
 pronome(plural, feminino) --> [muitas].
 pronome(singular, masculino) --> [muito].
+pronome(plural, masculino) --> [muitos].
 pronome(singular, feminino) --> [naquela].
 pronome(singular, feminino) --> [nela].
 pronome(singular, masculino) --> [nele].
@@ -1469,6 +1505,9 @@ verbo(singular) --> ['é'].
 verbo(singular) --> ['era'].
 verbo(plural) --> ['são'].
 
+verbo(singular) --> [haver].
+verbo(singular) --> [houve].
+verbo(singular) --> ['há'].
 verbo(singular) --> [persegue].
 verbo(plural) --> [perseguem].
 verbo(singular) --> [odeio].

@@ -121,6 +121,7 @@ parse(Sentence, LF, question) :-
     question(LF, Sentence, []).
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CLAUSIFIER
 
 % Universals: variable is left implicitly scoped. 

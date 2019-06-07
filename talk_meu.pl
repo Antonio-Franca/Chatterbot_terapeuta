@@ -128,9 +128,9 @@ phh([H|T]) :-
 adjetivo('Terrivel').
 
 ola :-
-	phh(['Oi', eu, sou, 'Shrink', ',', seu, 'terapeuta.']),
+	phh(['Ola', eu, sou, 'Shrink', ',', seu, 'terapeuta.']),
 	nl,
-	phh(['Como', 'você', 'está?']),
+	phh(['Como', 'voce', 'esta?']),
 	nl,
 	ler(Paciente), 
 	consultaTerapeuta(Paciente).

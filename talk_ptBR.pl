@@ -13,58 +13,10 @@
 %%% =========
 main_loop :-
 	write('>> '), % prompt the user 
-	lerEntrada(Words), % read a sentence 
-	fala(Words, Reply), % process it with TALK 
+	read_sent(Words), % read a sentence 
+	talk(Words, Reply), % process it with TALK 
 	print_reply(Reply), % generate a printed reply 
 	main_loop. % pocess more sentences
-
-lerEntrada(Words) :-
-	get0(Char), % prime the lookahead 
-	lerEntrada(Char, Words). % get the words
-
-% Newlines end the input. 
-lerEntrada(C, []) :- 
-	novaLinha(C), !.
-
-% Spaces are ignored.
-lerEntrada(C, Words) :- 
-	espaco(C), !,
-    get0(Char),
-    lerEntrada(Char, Words).
-
-% Everything else starts a word. 
-lerEntrada(Char, [Word|Words]) :-
-	lerPalavra(Char, Chars, Next),
-	name(Word, Chars),
-	lerEntrada(Next, Words).
-
-% Space and newline end a word. 
-lerPalavra(C, [], C) :- 
-	espaco(C), !. 
-
-lerPalavra(C, [], C) :- 
-	novaLinha(C), !.
-
-% All other chars are added to the list. 
-lerPalavra(Char, [Char|Chars], Last) :-
-	get0(Next),
-	lerPalavra(Next, Chars, Last).
-
-%%% space(Char)
-%%% ===========
-%%%
-%%% Char === the ASCII code for the space
-%%% 		 character
-
-espaco(32).
-
-%%% newline(Char)
-%%% =============
-%%%
-%%% Char === the ASCII code for the newline
-%%%			 character
-
-novaLinha(10).
 
 %%% talk(Sentence, Reply)
 %%% This digital edition of Prolog and Natural-Language Analysis is distributed 
@@ -73,39 +25,21 @@ novaLinha(10).
 %%% Reply <== appropriate reply to the sentence
 %%% Sentence ==> sentence to form a reply to
 
-fala(Sentenca, Resposta) :-
+talk(Sentence, Reply) :-
 	% parse the sentence
 	% convert the FOL logical form into a Horn
 	% clause, if possible
 %	parse(Sentence, LF, Type), 							%%%%%%
-	analiseSintatica(Sentenca, Tipo),
+	parse(Sentence, Type),
 %	clausify(LF, Clause, FreeVars), !,					%%%%%%
 	% concoct a reply, based on the clause and 
 	% whether sentence was a query or assertion 
 %	reply(Type, FreeVars, Clause, Reply).				%%%%%%
-	responde(Tipo, Resposta).
+	reply(Type, Reply).
 
 % No parse was found, sentence is too difficult. 
-fala(_Sentence, error('too difficult')).
+talk(_Sentence, error('too difficult')).
 
-%%% parse(Sentence, LF, Type) 
-%%% =========================
-%%%
-%%% Sentence ==> sentence to parse
-%%% LF <== logical form (in FOL) of sentence
-%%% Type <== type of sentence
-%%%			 (query or assertion)
-%%%
-
-% Parsing an assertion: a finite sentence without gaps. 
-analiseSintatica(Sentence, frase) :-
-	sentenca(Numero, Genero, Sentence, []).
-%	sentence(LF, nogap, Sentence, []).					%%%%%%%
-
-% Parsing a query: a question. t.
-
-analiseSintatica(Sentence, pergunta) :-
-    questao(Numero, Genero, Sentence, []).
 
 % Replying to a query. 
 reply(query, FreeVars,
@@ -170,6 +104,24 @@ print_answers([Answer|Rest]) :-
 	print_answers(Rest).
 
 
+%%% parse(Sentence, LF, Type) 
+%%% =========================
+%%%
+%%% Sentence ==> sentence to parse
+%%% LF <== logical form (in FOL) of sentence
+%%% Type <== type of sentence
+%%%			 (query or assertion)
+%%%
+
+% Parsing an assertion: a finite sentence without gaps. 
+parse(Sentence, assertion) :-
+	sentenca(Numero, Genero, Sentence, []).
+%	sentence(LF, nogap, Sentence, []).					%%%%%%%
+
+% Parsing a query: a question. t.
+
+parse(Sentence, question) :-
+    questao(Numero, Genero, Sentence, []).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CLAUSIFIER
@@ -459,6 +411,54 @@ conc([], List, List).
 conc([Element|Rest], List, [Element|LongRest]) :- 
 	conc(Rest, List, LongRest).
 
+read_sent(Words) :-
+	get0(Char), % prime the lookahead 
+	read_sent(Char, Words). % get the words
+
+% Newlines end the input. 
+read_sent(C, []) :- 
+	newline(C), !.
+
+% Spaces are ignored.
+read_sent(C, Words) :- 
+	space(C), !,
+    get0(Char),
+    read_sent(Char, Words).
+
+% Everything else starts a word. 
+read_sent(Char, [Word|Words]) :-
+	read_word(Char, Chars, Next),
+	name(Word, Chars),
+	read_sent(Next, Words).
+
+% Space and newline end a word. 
+read_word(C, [], C) :- 
+	space(C), !. 
+
+read_word(C, [], C) :- 
+	newline(C), !.
+
+% All other chars are added to the list. 
+read_word(Char, [Char|Chars], Last) :-
+	get0(Next),
+	read_word(Next, Chars, Last).
+
+
+%%% space(Char)
+%%% ===========
+%%%
+%%% Char === the ASCII code for the space
+%%% 		 character
+
+space(32).
+
+%%% newline(Char)
+%%% =============
+%%%
+%%% Char === the ASCII code for the newline
+%%%			 character
+
+newline(10).
 
 
 

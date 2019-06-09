@@ -23,8 +23,8 @@ main_loop(Reply) :-
 	nl,write(Reply),nl,
 	% write('>> '),nl,nl, % prompt the user 
 	ler(Words), % read a sentence 
-	talk(Words, Reply), % process it with TALK 
-	main_loop(Reply). % pocess more sentences
+	talk(Words, NewReply), % process it with TALK 
+	main_loop(NewReply). % pocess more sentences
 
 %%%								 LEITURA E IMPRESSAO 				%%%%
 
@@ -408,7 +408,6 @@ pronome(singular, masculino) --> [quanto].
 
 %SUBSTANTIVOS
 
-
 verbo(singular) --> [estudando].
 adjetivo(singular, masculino) --> [depressivo].
 adjetivo(singular, masculino) --> [depressiva].
@@ -417,9 +416,7 @@ adjetivo(singular, _masculino) --> [bem].
 substantivo(singular, masculino) --> [depressivo].
 substantivo(singular, masculino) --> [depressiva].
 substantivo(singular,feminino) --> [amiga].
-substantivo(singular,masculino) --> [amigo].
 substantivo(plural,feminino) --> [amigos].
-
 substantivo(singular,feminino) --> [tristeza].
 substantivo(singular,masculino) --> [faculdade].
 substantivo(singular,masculino) --> [estudo].
@@ -569,7 +566,7 @@ substantivo(singular, masculino) --> ['joão'].
 substantivo(plural, masculino) --> [jogadores].
 substantivo(singular, masculino) --> [jogo].
 substantivo(plural, masculino) --> [jogos].
-substantivo(singular, masculino) --> [juscelino].
+substantivo(singular, masculino) --> [amigo].       %%%%%%%%%%%%%%%%%%%
 substantivo(singular, feminino) --> ['justiça'].
 substantivo(singular, masculino) --> ['lá'].
 substantivo(singular, masculino) --> [labirinto].
@@ -1201,6 +1198,7 @@ substantivo(plural, masculino) --> [treinos].
 
 
 %VERBO
+
 verbo(singular) --> [matando].
 verbo(singular) --> [estou].
 verbo(plural) --> [estamos].
@@ -2402,7 +2400,9 @@ verbo(plural) --> [cunham].
 verbo(singular) --> [conturbado].
 verbo(singular) --> [dando].
 
+
 %ADJETIVO
+
 adjetivo(singular, masculino) --> [deprimido].
 adjetivo(singular, feminino) --> [deprimida].
 adjetivo(singular, masculino) --> [fiel].
@@ -3146,6 +3146,10 @@ frase(Numero,Genero) -->  artigo(Numero,Genero) , sujeito(Numero,Genero).
 frase(Numero,Genero) -->  artigo(Numero,Genero) , sujeito(Numero,Genero).
 frase(Numero,Genero) -->  artigo(Numero,Genero), substantivo(Numero,Genero), verbo(Numero).  
 frase(Numero,Genero) -->  predicado(Numero,Genero).
+frase(Numero,Genero) -->  preposicao(Numero), artigo(Numero,Genero),substantivo(Numero,Genero).
+frase(Numero,Genero) -->  preposicao(Numero), substantivo(Numero,Genero).
+frase(Numero,Genero) -->  preposicao(Numero), pronome(Numero,Genero).
+frase(Numero,Genero) -->  preposicao(Numero), pronome(Numero,Genero), verbo(Numero).
 
 sujeito(Numero,_Genero) --> adverbio(Numero), substantivo(_,_).
 sujeito(Numero,Genero) --> pronome(Numero,_), verbo(Numero), substantivo(Numero,Genero).

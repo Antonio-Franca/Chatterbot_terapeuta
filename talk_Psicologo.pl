@@ -11,21 +11,129 @@
 %%% main_loop
 %%% =========
 main :-
-	write('Ola, eu sou Shrink, seu terapeuta'),nl,nl,
-	write('Como voce esta?'),nl,nl,
-	write('>> '), % prompt the user 
-	read_sent(Words), % read a sentence 
+	write('DICA: NAO USE ACENTOS rsrs'), nl,
+	write('Ola, eu sou Shrink, seu terapeuta'),nl,
+	write('Como voce esta?'),nl,
+	% write('>> '), % prompt the user 
+	ler(Words), % read a sentence 
 	talk(Words, Reply), % process it with TALK 
 	main_loop(Reply). % pocess more sentences
 
 main_loop(Reply) :-
-	nl,nl,phh(Reply),nl,nl,
-	write('>> '),nl,nl, % prompt the user 
-	read_sent(Words), % read a sentence 
+	nl,write(Reply),nl,
+	% write('>> '),nl,nl, % prompt the user 
+	ler(Words), % read a sentence 
 	talk(Words, Reply), % process it with TALK 
 	main_loop(Reply). % pocess more sentences
 
-%%%								 IMPRESSAO 				%%%%
+%%%								 LEITURA E IMPRESSAO 				%%%%
+
+%%% Read in a sentence - "?-ler(S)"
+ler([W|Ws]) :- 
+	get_char(C), lepalavra(C, W, C1), resto_enviado(W, C1, Ws).
+
+%%% Given a word and the character after it, read in the rest of the sentence 
+resto_enviado(W, _, []) :- 
+	ultima_palavra(W), !.
+resto_enviado(W, C, [W1|Ws]) :- 
+	lepalavra(C, W1, C1), resto_enviado(W1, C1, Ws).
+
+
+%%% Read in a single word, given an initial character, and remembering which character came after the word.
+
+lepalavra(C, C, C1) :- 
+	caractere_unico(C), !, get_char(C1).
+
+lepalavra(C, W, C2) :- 
+	na_palavra(C, NewC),
+	!,
+	get_char(C1),
+	resta_palavra(C1, Cs, C2), 
+	atom_chars(W, [NewC|Cs]).
+
+
+lepalavra(C, W, C2) :- 
+	get_char(C1), lepalavra(C1, W, C2).
+resta_palavra(C,[NewC|Cs], C2) :- 
+	na_palavra(C, NewC),!,
+	get_char(C1), 
+	resta_palavra(C1, Cs, C2). 
+resta_palavra(C, [], C).
+
+
+%%% These characters can appear within a word. The second na_palavra clause converts letras to lower-case 
+na_palavra(C, C) :- 
+	letra(C, _). 
+
+na_palavra(C, L) :- 
+	letra(L, C). 
+
+na_palavra(C, C) :- 
+	digito(C). 
+
+na_palavra(C, C) :- 
+	caractere_especial(C). 
+
+membro(X,[X|_]).
+membro(X,[_|Y]):-
+	membro(X,Y).
+
+							%%% Special characters 
+caractere_especial('-'). 
+caractere_especial('').
+
+			%%% These characters form words on their own
+caractere_unico(','). 
+caractere_unico('.'). 
+caractere_unico(';').
+caractere_unico(':').
+caractere_unico('?'). 
+caractere_unico('!').
+
+					%%% Upper and lower case letras 
+letra(a, 'A'). 
+letra(b, 'B'). 
+letra(c, 'C'). 
+letra(d, 'D'). 
+letra(e, 'E'). 
+letra(f, 'F'). 
+letra(g, 'G'). 
+letra(h, 'H'). 
+letra(i, 'I'). 
+letra(j, 'J'). 
+letra(k, 'K').
+letra(n, 'N'). 
+letra(o, 'O'). 
+letra(p, 'P'). 
+letra('q', 'Q').
+letra(r, 'R'). 
+letra('s', 'S').
+letra(t, 'T'). 
+letra(u, 'U').
+letra(v, 'V'). 
+letra(w, 'W'). 
+letra('x', 'X').
+letra('y', 'Y'). 
+letra(z, 'Z').
+letra(l, 'L'). 
+letra('m', 'M').
+
+					%%% digitos
+digito('0'). 
+digito('1'). 
+digito('2'). 
+digito('3'). 
+digito('4').
+digito('5'). 
+digito('6'). 
+digito('7'). 
+digito('8'). 
+digito('9').
+
+				%%% These words terminate a sentence
+ultima_palavra('.'). 
+ultima_palavra('!'). 
+ultima_palavra('?').
 
 spaces(0) :- !.
 spaces(N) :- write(' '), N1 is N - 1, spaces(N1).
@@ -46,12 +154,11 @@ phh([H|T]) :-
 %%% Sentence ==> sentence to form a reply to
 
 parse_question :-
-	write('>> '),
-	read_sent(Words),
+	ler(Words),
 	isAQuestion(Words),!.
 
 isAQuestion(Sentence) :-
-	questao(Numero,Genero,Sentence,[]),
+	questao(_Numero,_Genero,Sentence,[]),
 	write('It is a question!').
 
 isAQuestion(_Sentence) :-
@@ -61,11 +168,14 @@ talk(Sentence, Reply) :-
 	% parse the sentence
 	% clause, if possible
 	parse(Sentence, Type),
-	(therapist(Sentence,Reply,Pronome);therapist(Sentence,Reply)),
-	reply(Type, Reply).
+	therapist(Sentence,Reply).
+	%(therapist(Sentence,Reply,Pronome);therapist(Sentence,Reply)).
 
 % No parse was found, sentence is too difficult. 
-talk(_Sentence, error('too difficult')).
+talk(_Sentence, _) :-
+	write('Erro').
+
+%%%%				DESENVOLVIMENTO DO AGENTE %%%%%
 
 context(Sentence,Theme,Pronome) :-
 	assunto(Word,Theme),
@@ -89,7 +199,11 @@ therapist(Sentence,Reply,Pronome) :-
 
 
 therapist(Sentence,Reply) :-
-	context(Sentence,Theme).
+	context(Sentence,Theme),
+	answer(Theme,Reply).
+
+therapist(_Sentence,Reply) :-
+	answer(outOfKB,Reply).
 
 
 %%%%% 				LEITURA DA SENTENCA 			%%%%%%%
@@ -160,7 +274,7 @@ newline(10).
 questao(Numero,Genero) --> pergunta(Numero,Genero).
 sentenca(Numero,Genero) --> frase(Numero,Genero).
 sentenca(Numero,Genero) --> periodoSimples(Numero,Genero).
-sentenca(Numero,Genero) --> periodoComposto(Numero,Genero).
+% sentenca(Numero,Genero) --> periodoComposto(Numero,Genero).
 
 periodoSimples(Numero,Genero) --> predicado(Numero,Genero).
 periodoSimples(Numero,Genero) --> sujeito(Numero,Genero), predicado(Numero,Genero).
@@ -185,7 +299,7 @@ frase(Numero,Genero) -->  artigo(Numero,Genero) , sujeito(Numero,Genero).
 frase(Numero,Genero) -->  artigo(Numero,Genero), substantivo(Numero,Genero), verbo(Numero).  
 frase(Numero,Genero) -->  predicado(Numero,Genero).
 
-sujeito(Numero,Genero) --> adverbio(Numero), substantivo(Numero,_).
+sujeito(Numero,_Genero) --> adverbio(Numero), substantivo(Numero,_).
 sujeito(Numero,Genero) --> pronome(Numero,_), verbo(Numero), substantivo(Numero,Genero).
 sujeito(Numero,Genero) --> pronome(Numero,_), verbo(Numero), pronome(Numero,_), substantivo(Numero,Genero).
 sujeito(Numero,Genero) --> substantivo(Numero,Genero).
@@ -195,8 +309,9 @@ sujeito(Numero,Genero) --> artigo(Numero,Genero) , substantivo(Numero,Genero).
 sujeito(Numero,Genero) --> artigo(Numero,Genero) , substantivo(Numero,Genero), adjetivo(Numero,Genero).
 sujeito(Numero,Genero) --> substantivo(Numero,Genero) , conjuncao, substantivo(Numero,Genero).
 
-predicado(Numero,Genero) --> verbo(Numero), caractere_unico.
-predicado(Numero,Genero) --> verbo(Numero), pronome(_,_), substantivo(Numero, _), caractere_unico.
+predicado(Numero,_Genero) --> verbo(Numero), caractere_unico.
+predicado(Numero,_Genero) --> verbo(Numero), adjetivo(Numero,_),caractere_unico.
+predicado(Numero,_Genero) --> verbo(Numero), pronome(_,_), substantivo(Numero, _), caractere_unico.
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), caractere_unico.
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), adjetivo(Numero,Genero), caractere_unico.
 predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), adjetivo(Numero,Genero), caractere_unico.
@@ -242,8 +357,11 @@ pronomePossessivo(plural, humano) --> [minhas].
 pronomePossessivo(singular, agente) --> [seu].
 pronomePossessivo(plural, agente) --> [seus].
 
-pronomeTratamento --> ['você'].
 
+pronomeTratamento --> [voce].
+
+pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, interrogacao.
+pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, interrogacao.
 pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, verbo(Numero), interrogacao.
 pergunta(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), substantivo(Numero,Genero), interrogacao.
@@ -251,6 +369,7 @@ pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), artigo(Numero,Genero
 pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), artigo(Numero,Genero), pronomeTratamento, substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero) --> pronomePergunta, pronomeTratamento, verbo(Numero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), pronomePergunta, interrogacao.
@@ -260,162 +379,31 @@ pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, pronome(_,_)
 pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, pronomeTratamento, verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
 pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, pronome(_,_), pronomeTratamento, verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
 
-assunto(pai,'família').
-assunto('mãe','família').
-assunto(filho,'família').
-assunto(filha,'família').
+assunto(pai,familia).
+assunto(mae,familia).
+assunto(filho,familia).
+assunto(filha,familia).
 assunto(trabalho,trabalho).
 assunto(cansado,trabalho).
-assunto(estudar,estudo).
-assunto(faculdade,estudo).
-assunto(estudando,estudo).
-assunto(estudo,estudo).
+assunto(estudar,trabalho).
+assunto(faculdade,trabalho).
+assunto(estudando,trabalho).
+assunto(estudo,trabalho).
 assunto(deprimido,tristeza).
 assunto(triste,tristeza).
 assunto(tristeza,tristeza).
 assunto(depressivo,tristeza).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
-assunto(,).
+assunto(mal, sencacao).
+assunto(bem, sencacao).
+
+
+answer(outOfKB, 'Entendo! Por favor, continue...').
+
+answer(familia,  'Conte-me mais sobre sua familia').
+answer(trabalho, 'Com todo esse trabalho, voce tem tirado tempo pra voce?').
+answer(tristeza, 'Voce conta sobre esse sentimento pra mais alguem?').
+answer(sensacao, 'O que voce tem feito pra essa sencacao nao tomar conta?').
+
 
  
 % CARACTERES
@@ -542,6 +530,25 @@ pronome(singular, masculino) --> [quanto].
 
 
 %SUBSTANTIVOS
+
+
+verbo(singular) --> [estudando].
+adjetivo(singular, masculino) --> [depressivo].
+adjetivo(singular, masculino) --> [depressiva].
+adjetivo(singular, _masculino) --> [bem]. 
+
+substantivo(singular, masculino) --> [depressivo].
+substantivo(singular, masculino) --> [depressiva].
+
+substantivo(singular,feminino) --> [tristeza].
+substantivo(singular,masculino) --> [faculdade].
+substantivo(singular,masculino) --> [estudo].
+substantivo(plural,masculino) --> [estudos].
+substantivo(singular,masculino) --> [pai].
+substantivo(singular,feminino) --> [mae].
+substantivo(singular,masculino) --> [filho].
+substantivo(singular,feminino) --> [filha].
+substantivo(singular,masculino) --> [trabalho].
 substantivo(singular,masculino) --> [cansado].
 substantivo(singular, masculino) --> [gato].
 substantivo(plural, masculino) --> [gatos].
@@ -1322,7 +1329,7 @@ verbo(plural) --> [estavam].
 verbo(singular) --> ['é'].
 verbo(singular) --> ['era'].
 verbo(plural) --> ['são'].
-
+verbo(singular) --> [vai].
 verbo(singular) --> [haver].
 verbo(singular) --> [houve].
 verbo(singular) --> ['há'].
@@ -1537,6 +1544,8 @@ verbo(singular) --> [jogar].
 verbo(plural) --> [jogar].
 verbo(plural) --> [jogar].
 verbo(singular) --> [jogo].
+verbo(singular) --> [estudar].
+verbo(singular) --> [estudo].
 verbo(singular) --> [jogo].
 verbo(plural) --> [juntam].
 verbo(plural) --> [juntam].
@@ -2513,6 +2522,8 @@ verbo(singular) --> [conturbado].
 verbo(singular) --> [dando].
 
 %ADJETIVO
+adjetivo(singular, masculino) --> [deprimido].
+adjetivo(singular, feminino) --> [deprimida].
 adjetivo(singular, masculino) --> [fiel].
 adjetivo(singular, feminino) --> [fiel].
 adjetivo(singular, masculino) --> [forense].

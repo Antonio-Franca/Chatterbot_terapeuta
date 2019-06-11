@@ -285,11 +285,11 @@ newline(10).
  
 % CARACTERES
 
-caractere_unico --> [',']. 
+caractere_unico --> [,]. 
 caractere_unico --> [.]. 
-caractere_unico --> [';'].
-caractere_unico --> [':'].
-caractere_unico --> ['!'].
+caractere_unico --> [;].
+caractere_unico --> [:].
+caractere_unico --> [!].
 
 % ARTIGOS
 
@@ -407,11 +407,6 @@ pronome(singular, masculino) --> [quanto].
 
 
 %SUBSTANTIVOS
-
-verbo(singular) --> [estudando].
-adjetivo(singular, masculino) --> [depressivo].
-adjetivo(singular, masculino) --> [depressiva].
-adjetivo(singular, _masculino) --> [bem]. 
 
 substantivo(singular, masculino) --> [depressivo].
 substantivo(singular, masculino) --> [depressiva].
@@ -1199,6 +1194,8 @@ substantivo(plural, masculino) --> [treinos].
 
 %VERBO
 
+
+verbo(singular) --> [estudando].
 verbo(singular) --> [matando].
 verbo(singular) --> [estou].
 verbo(plural) --> [estamos].
@@ -2403,6 +2400,10 @@ verbo(singular) --> [dando].
 
 %ADJETIVO
 
+
+adjetivo(singular, masculino) --> [depressivo].
+adjetivo(singular, masculino) --> [depressiva].
+adjetivo(singular, _masculino) --> [bem]. 
 adjetivo(singular, masculino) --> [deprimido].
 adjetivo(singular, feminino) --> [deprimida].
 adjetivo(singular, masculino) --> [fiel].
@@ -2605,8 +2606,6 @@ adjetivo(plural, feminino) --> [pacientes].
 adjetivo(singular, masculino) --> ['padrão'].
 adjetivo(singular, feminino) --> ['padrão'].
 adjetivo(plural, masculino) --> [pagos].
-adjetivo(singular, masculino) --> [pai].
-adjetivo(plural, masculino) --> [pais].
 adjetivo(singular, masculino) --> [par].
 adjetivo(singular, feminino) --> [par].
 adjetivo(singular, masculino) --> [paradoxal].
@@ -3070,7 +3069,7 @@ pronomePossessivo(plural, agente) --> [seus].
 
 pronomeTratamento --> [voce].
 
-pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, interrogacao.
+pergunta(_Numero,_Genero) --> pronomePergunta, pronomePergunta, interrogacao.
 pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, interrogacao.
 pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, verbo(Numero), interrogacao.
 pergunta(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
@@ -3079,7 +3078,7 @@ pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), artigo(Numero,Genero
 pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), artigo(Numero,Genero), pronomeTratamento, substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero) --> pronomePergunta, pronomeTratamento, verbo(Numero), interrogacao.
+pergunta(Numero,_Genero) --> pronomePergunta, pronomeTratamento, verbo(Numero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), pronomePergunta, interrogacao.
@@ -3150,6 +3149,7 @@ frase(Numero,Genero) -->  preposicao(Numero), artigo(Numero,Genero),substantivo(
 frase(Numero,Genero) -->  preposicao(Numero), substantivo(Numero,Genero).
 frase(Numero,Genero) -->  preposicao(Numero), pronome(Numero,Genero).
 frase(Numero,Genero) -->  preposicao(Numero), pronome(Numero,Genero), verbo(Numero).
+frase(Numero,Genero) -->  preposicao(Numero), pronomePossessivo(_Numero,_Genero), substantivo(Numero,_).
 
 sujeito(Numero,_Genero) --> adverbio(Numero), substantivo(_,_).
 sujeito(Numero,Genero) --> pronome(Numero,_), verbo(Numero), substantivo(Numero,Genero).

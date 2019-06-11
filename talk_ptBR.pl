@@ -396,8 +396,8 @@ tv( interessar, interessa, interessou,
 tv( correr, corre, correu,
 	corrido, correndo, X^Y^ opd corre(X,Y) ).
 
-rov( want, wants, wanted,
-	 wanted, wanting,
+rov( querer, quer, queria,
+	 querido, querendo,
 	 % semantics is partial execution of
 	% NP ^ VP ^ Y ^ NP( X^want(Y,X,VP(X)) )
 	((X^ opd want(Y,X,Comp))^S) ^ (X^Comp) ^ Y ^ S, 

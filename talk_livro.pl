@@ -189,7 +189,9 @@ clausify_literal(opd L,L).
 %%%			iv Intransitive Verb
 %%%			tv Transitive Verb
 %%%			aux AUXiliary verb
-%%%			rov subject-Object Raising Verb optrel OPTional RELative clause relpron RELative PRONoun
+%%%			rov subject-Object Raising Verb 
+%%%			optrel OPTional RELative clause 
+%%%			relpron RELative PRONoun
 %%%			whpron WH PRONoun
 %%%			det DETerminer
 %%%			n Noun

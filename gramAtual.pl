@@ -1064,7 +1064,8 @@ substantivo(plural, masculino) --> [treinos].
 
 %VERBO
 
-
+verbo(singular) --> [fazer].
+verbo(singular) --> [quiser].
 verbo(singular) --> [estudando].
 verbo(singular) --> [matando].
 verbo(singular) --> [estou].
@@ -2990,7 +2991,7 @@ periodoSimples(Numero,Genero) --> preposicao(_), predicado(Numero,Genero).
 periodoSimples(Numero,Genero) --> preposicao(_), sujeito(Numero,Genero), predicado(Numero,Genero).
 
 periodoComposto(Numero,Genero) --> periodoSimples(Numero,Genero), caractere_unico, periodoSimples(Numero,Genero).
-periodoComposto(Numero,Genero) --> periodoComposto(Numero,Genero), caractere_unico, periodoSimples(Numero,Genero).
+periodoComposto(Numero,Genero) --> periodoSimples(Numero,Genero), caractere_unico, periodoSimples(Numero,Genero), caractere_unico, periodoSimples(Numero,Genero).
 
 %%% SUJEITO DETERMINADO
 
@@ -3025,7 +3026,8 @@ predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), adjetivo
 predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), adjetivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), pronome(Numero,_), substantivo(Numero,Genero), preposicao(_), verbo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), pronome(Numero,_), substantivo(Numero,Genero), preposicao(_), verbo(Numero).
+predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), pronome(Numero,_), pronome(Numero,_), verbo(Numero).
 predicado(Numero,Genero) --> verbo(Numero), numeral(Numero), substantivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), numeral(Numero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), preposicao(_), substantivo(Numero,Genero).

@@ -234,7 +234,7 @@ question(S => opd answer(yes)) -->
 
 
 %%% Declarative Sentences
-sentence(S, GapInfo) -->
+sentenca(S, GapInfo) -->
    np(VP^S, nogap),
    vp(finite, VP, GapInfo).
 

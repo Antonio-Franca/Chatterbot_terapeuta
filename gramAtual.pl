@@ -1,131 +1,121 @@
-%*************************************************************************************************************
-%*************************************************************************************************************
-%** Camila Paixão    35 %          									**
-%** Felipe Cabral	 10 %										    ** 	
-%** Manoel Mota		 55 %										    ** 	 	
-%*************************************************************************************************************
-%*************************************************************************************************************
+% ARTIGOS
+
+artigo(singular, masculino) 	--> [o].
+artigo(plural, masculino) 		--> [os].
+artigo(plural, masculino) 		--> [uns].
+artigo(singular, masculino) 	--> [um].
+artigo(singular, feminino) 		--> [a].
+artigo(singular, masculino) 	--> [a].
+artigo(plural, feminino) 		--> [as].
+artigo(singular, feminino) 		--> [uma].
+artigo(plural, feminino) 		--> [umas].
+artigo(singular, masculino) 	--> [ao].
+artigo(plural, masculino) 		--> [aos].
+
+% PRONOMES
+
+%%%% Pronomes pessoais retos
+
+pronome(singular, _) 			--> [eu].
+pronome(singular, _) 			--> [tu].
+pronome(singular, masculino) 	--> [ele].
+pronome(singular,feminino) 	 	--> [ela].
+pronome(plural, _) 				--> [nos].
+pronome(plural, _) 				--> [vos].
+pronome(plural,masculino) 		--> [eles].
+pronome(plural,feminino) 		--> [elas].
+
+%%%% Pronomes pessoais atonos 
+
+pronome(singular, masculino) 	--> [me].
+pronome(singular, feminino) 	--> [me].
+pronome(singular, masculino) 	--> [te].
+pronome(singular, feminino) 	--> [te].
+pronome(singular, masculino) 	--> [se].
+pronome(singular, feminino) 	--> [se].
+pronome(plural, masculino) 		--> [se].
+pronome(plural, feminino) 		--> [se].
+pronome(singular, masculino) 	--> [lhe].
+pronome(singular, feminino) 	--> [lhe].
+pronome(plural, masculino) 		--> [nos].
+pronome(plural, feminino) 		--> [nos].
+pronome(singular, masculino) 	--> [o].
+pronome(singular, feminino) 	--> [a].
+pronome(plural, masculino) 		--> [as].
+pronome(plural, feminino) 		--> [os].
+pronome(plural, masculino) 		--> [lhes].
+pronome(plural, feminino) 		--> [lhes].
+
+%%%% Pronomes pessoais tonicos
 
 
-% frase(A,[cargo,e,cargos],C,[]).
-%false.
+pronome(singular, masculino) 	--> [mim].
+pronome(singular, feminino) 	--> [mim].
+pronome(singular, masculino)	--> [ti].
+pronome(singular, feminino) 	--> [ti].
+pronome(singular, masculino) 	--> [comigo].
+pronome(singular, feminino) 	--> [comigo].
+pronome(plural, masculino) 		--> [conosco].
+pronome(plural, feminino) 		--> [conosco].
+pronome(singular, masculino) 	--> [contigo].
+pronome(singular, feminino) 	--> [contigo].
+pronome(singular, masculino) 	--> [si].
+pronome(singular, feminino) 	--> [si].
+pronome(plural, masculino) 		--> [si].
+pronome(plural, feminino) 		--> [si].
+pronome(plural, masculino) 		--> [consigo].
+pronome(plural, feminino) 		--> [consigo].
 
+%%%% Pronomes indefinidos
 
-%comando para testar se uma frase pertence ao texto
-% abrir pelo terminal o diretorio onde esta esse arquivo
-% digitar prolog
-% para a chamada do arquivo pode ser assim: ['gramatica.pl'].
-% em seguida por exemplo: sentenca(singular, femenino,[acabou,a,coletiva],[]).
-
-
-
-sentenca(Numero,Genero) --> frase(Numero,Genero).
-sentenca(Numero,Genero,Pessoa) --> periodoSimples(Numero,Genero,Pessoa).
-sentenca(Numero,Genero,Pessoa) --> periodoComposto(Numero,Genero,Pessoa).
-
-periodoSimples(Numero,Genero) --> predicado(Numero,Genero).
-periodoSimples(Numero,Genero) --> sujeito(Numero,Genero), predicado(Numero,Genero).
-
-periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero).
-periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero), sentenca.
-periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero), conjuncao, sentenca.
-periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero).
-periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero), sentenca.
-periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero), preposicao(_),sentenca.
-periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero), conjuncao, oracaoSubordinada(Numero,Genero).
-periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero), conjuncao, oracaoCoordenada(Numero,Genero).
-
-oracaoCoordenada(Numero,Genero) --> predicado(Numero,Genero).
-oracaoCoordenada(Numero,Genero) --> sujeito(Numero,Genero), predicado(Numero,Genero).
-oracaoSubordinada(Numero,Genero) --> predicado(Numero,Genero).
-oracaoSubordinada(Numero,Genero) --> sujeito(Numero,Genero), predicado(Numero,Genero).
-
-frase(Numero,Genero) -->  sujeito(Numero,Genero).
-frase(Numero,Genero) -->  artigo(Numero,Genero) , sujeito(Numero,Genero).
-frase(Numero,Genero) -->  artigo(Numero,Genero) , sujeito(Numero,Genero).
-frase(Numero,Genero) -->  predicado(Numero,Genero).
-
-sujeito(Numero,Genero) --> pronome(Numero,Genero).
-sujeito(Numero,Genero) --> substantivo(Numero,Genero).
-sujeito(Numero,Genero) --> artigo(Numero,Genero) , substantivo(Numero,Genero), preposicao(_).
-sujeito(Numero,Genero) --> adverbio(Numero), adjetivo(Numero,Genero).
-sujeito(Numero,Genero) --> artigo(Numero,Genero) , substantivo(Numero,Genero).
-sujeito(Numero,Genero) --> artigo(Numero,Genero) , substantivo(Numero,Genero), adjetivo(Numero,Genero).
-sujeito(Numero,Genero) --> substantivo(Numero,Genero) , conjuncao, substantivo(Numero,Genero).
-
-predicado(Numero,Genero) --> verbo(Numero).
-predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), adjetivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), pronome(Numero,_), substantivo(Numero,Genero), preposicao(_), verbo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), numeral(Numero,Genero), substantivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), numeral(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), preposicao(_), substantivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), preposicao(_), substantivo(Numero,Genero), preposicao(_), adjetivo(Numero,Genero),substantivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), preposicao(_), verbo(Numero,Genero), adverbio(Numero,Genero), adjetivo(Numero,Genero). 
-predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
-
-%Estou comprando um protetor solar.
-%Irei à praia.
-
-%objeto_direto(N) --> substantivo(N).
-%objeto_direto(N) --> artigo(N), substantivo(N).
-%objeto_indireto(N) --> preposicao(N), substantivo(N).
-
-
-%ARTIGOS
-artigo(singular, masculino) --> [o].
-artigo(plural, masculino) --> [os].
-artigo(plural, masculino) --> [uns].
-artigo(singular, masculino) --> [um].
-artigo(singular, feminino) --> [a].
-artigo(plural, feminino) --> [as].
-artigo(singular, feminino) --> [uma].
-artigo(plural, feminino) --> [umas].
-artigoCombinacao(singular, masculino) --> [ao].
-artigoCombinacao(plural, masculino) --> [aos].
-
-%PRONOMES
-pronome(singular) --> [eu].
-pronome(singular) --> [tu].
-pronome(plural) --> ['nós'].
-pronome(plural) --> ['vós'].
-pronome(singular,masculino) --> [ele].
-pronome(singular,femenino) --> [ela].
-pronome(plural,masculino) --> [eles].
-pronome(plural,femenino) --> [elas].
-pronome(singular, masculino) --> [dr].
-pronome(singular, femenino) --> [algo].
+pronome(singular, feminino) --> [algo].
 pronome(singular, masculino) --> [algo].
-pronome(singular, femenino) --> ['alguém'].
-pronome(singular, masculino) --> ['alguém'].
+pronome(singular, feminino) --> [alguem].
+pronome(singular, masculino) --> [alguem].
 pronome(singular, masculino) --> [algum].
-pronome(singular, femenino) --> [alguma].
-pronome(plural, femenino) --> [algumas].
+pronome(singular, feminino) --> [algum].
+pronome(singular, feminino) --> [alguma].
+pronome(singular, masculino) --> [alguma].
+pronome(plural, feminino) --> [algumas].
+pronome(plural, masculino) --> [algumas].
 pronome(plural, masculino) --> [alguns].
-pronome(singular, femenino) --> [aquela].
+pronome(plural, feminino) --> [alguns].
+pronome(singular, feminino) --> [toda].
+pronome(singular, masculino) --> [todo].
+pronome(singular, feminino) --> [tudo].
+pronome(singular, masculino) --> [tudo].
+pronome(plural, feminino) --> [todas].
+pronome(plural, masculino) --> [todos].
+pronome(singular, feminino) --> [aquela].
 pronome(singular, masculino) --> [aquele].
 pronome(singular, masculino) --> [aquilo].
-pronome(singular, femenino) --> [cada].
-pronome(plural, femenino) --> [certas].
+pronome(singular, feminino) --> [cada].
+pronome(singular, masculino) --> [cada].
+pronome(plural, feminino) --> [certas].
+pronome(singular, feminino) --> [certa].
 pronome(singular, masculino) --> [certo].
+pronome(plural, masculino) --> [certos].
 pronome(singular, masculino) --> [disso].
-pronome(singular, femenino) --> [dessa].
-pronome(plural, femenino) --> [dessas].
-pronome(singular, femenino) --> [desse].
+pronome(singular, feminino) --> [disso].
+pronome(singular, feminino) --> [dessa].
+pronome(plural, feminino) --> [dessas].
+pronome(singular, feminino) --> [desse].
 pronome(plural, masculino) --> [desses].
-pronome(singular, femenino) --> [dela].
-pronome(plural, femenino) --> [delas].
+pronome(singular, masculino) --> [desse].
+pronome(plural, feminino) --> [desses].
+pronome(singular, feminino) --> [dela].
+pronome(plural, feminino) --> [delas].
 pronome(singular, masculino) --> [dele].
 pronome(plural, masculino) --> [deles].
 pronome(singular, masculino) --> [deste].
-pronome(singular, femenino) --> [daquela].
-pronome(plural, femenino) --> [daquelas].
+pronome(singular, feminino) --> [deste].
+pronome(plural, masculino) --> [destes].
+pronome(plural, feminino) --> [destes].
+pronome(singular, _feminino) --> [daquela].
+pronome(plural, _feminino) --> [daquelas].
 pronome(plural, masculino) --> [daqueles].
-pronome(plural, femenino) --> [demais].
+pronome(singular, masculino) --> [daquele].
+pronome(plural, feminino) --> [demais].
 pronome(plural, masculino) --> [demais].
 pronome(singular,masculino) --> [isso].
 pronome(singular,feminino) --> [isso].
@@ -135,8 +125,6 @@ pronome(singular, masculino) --> [mais].
 pronome(singular, feminino) --> [mais].
 pronome(plural, masculino) --> [mais].
 pronome(plural, feminino) --> [mais].
-pronome(singular, masculino) --> [me].
-pronome(singular, feminino) --> [me].
 pronome(singular, masculino) --> [menos].
 pronome(singular, feminino) --> [menos].
 pronome(plural, masculino) --> [menos].
@@ -150,14 +138,25 @@ pronome(singular, feminino) --> [minha].
 pronome(plural, feminino) --> [minhas].
 pronome(singular, feminino) --> [muita].
 pronome(plural, feminino) --> [muitas].
+pronome(singular, masculino) --> [muita].
+pronome(plural, masculino) --> [muitas].
 pronome(singular, masculino) --> [muito].
+pronome(plural, masculino) --> [muitos].
+pronome(singular, feminino) --> [muito].
+pronome(plural, feminino) --> [muitos].
 pronome(singular, feminino) --> [naquela].
 pronome(singular, feminino) --> [nela].
 pronome(singular, masculino) --> [nele].
 pronome(plural, masculino) --> [neles].
 pronome(singular, masculino) --> [nenhum].
 pronome(singular, feminino) --> [nessa].
+pronome(singular, masculino) --> [nessa].
+pronome(plural, feminino) --> [nessas].
+pronome(plural, masculino) --> [nessas].
+pronome(singular, feminino) --> [nesse].
 pronome(singular, masculino) --> [nesse].
+pronome(plural, feminino) --> [nesses].
+pronome(plural, masculino) --> [nesses].
 pronome(singular, masculino) --> [neste].
 pronome(singular, masculino) --> [nisso].
 pronome(singular, feminino) --> [nisso].
@@ -181,7 +180,59 @@ pronome(singular, feminino) --> [qualquer].
 pronome(plural, feminino) --> [quantas].
 pronome(singular, masculino) --> [quanto].
 
+%%%% Pronomes possessivo
+
+pronome(singular, _) 	--> [meu].
+pronome(plural, _) 		--> [meus].
+pronome(singular, _) 	--> [minha].
+pronome(plural, _) 		--> [minhas].
+pronome(singular, _) 	--> [seu].
+pronome(plural, _) 		--> [seus].
+pronome(singular, _) 	--> [teu].
+pronome(plural, _) 		--> [teus].
+pronome(singular, _) 	--> [sua].
+pronome(plural, _) 		--> [suas].
+pronome(singular, _) 	--> [tua].
+pronome(plural, _) 		--> [tuas].
+pronome(singular, _) 	--> [nosso].
+pronome(plural, _) 		--> [nossos].
+pronome(singular, _) 	--> [nossa].
+pronome(plural, _) 		--> [nossas].
+
+%%%% Pronomes interrogativos
+
+pronome(singular, _) --> [por].
+pronome(singular, _) --> [por,que].
+pronome(singular, _) --> [que].
+pronome(singular, _) --> [o,que].
+pronome(plural, _) 	 --> [quais].
+pronome(singular, _) --> [qual].
+pronome(plural, _)   --> [quantos].
+pronome(singular, _) --> [quanto].
+pronome(plural, _)   --> [quantas].
+pronome(singular, _) --> [quanta].
+pronome(singular, _) --> [quem].
+pronome(singular, _) --> [quando].
+pronome(singular, _) --> [para].
+
+
 %SUBSTANTIVOS
+
+
+substantivo(singular, masculino) --> [depressivo].
+substantivo(singular, masculino) --> [depressiva].
+substantivo(singular,feminino) --> [amiga].
+substantivo(plural,feminino) --> [amigos].
+substantivo(singular,feminino) --> [tristeza].
+substantivo(singular,masculino) --> [faculdade].
+substantivo(singular,masculino) --> [estudo].
+substantivo(plural,masculino) --> [estudos].
+substantivo(singular,masculino) --> [pai].
+substantivo(singular,feminino) --> [mae].
+substantivo(singular,masculino) --> [filho].
+substantivo(singular,feminino) --> [filha].
+substantivo(singular,masculino) --> [trabalho].
+substantivo(singular,masculino) --> [cansado].
 substantivo(singular, masculino) --> [gato].
 substantivo(plural, masculino) --> [gatos].
 substantivo(singular, masculino) --> [rato]. 
@@ -198,19 +249,20 @@ substantivo(singular, masculino)--> [fim].
 substantivo(singular, feminino) --> [florida].
 substantivo(singular, feminino) --> [fome].
 substantivo(singular, feminino) --> [fonte].
-substantivo(singular, feminino) --> ['força'].
+substantivo(singular, feminino) --> [forca].
 substantivo(singular, feminino) --> [forma].
 substantivo(plural, feminino) --> [formas].
 substantivo(singular, masculino) --> [formato].
 substantivo(singular, masculino) --> [fortalecimento].
-substantivo(plural, masculino) --> ['fósseis'].
+substantivo(plural, masculino) --> [fosseis].
+substantivo(singular, masculino) --> [fossil].
 substantivo(singular, feminino) --> [foto].
 substantivo(plural, feminino) --> [fotos].
 substantivo(singular, masculino) --> [freio].
 substantivo(singular, feminino) --> [frente].
 substantivo(singular, feminino) --> [fronteira].
 substantivo(singular, masculino) --> [fundo].
-substantivo(singular, masculino) --> ['furacão'].
+substantivo(singular, masculino) --> [furacao].
 substantivo(singular, masculino) --> [futebol].
 substantivo(singular, masculino) --> [futuro].
 substantivo(singular, masculino) --> [ganho].
@@ -221,26 +273,27 @@ substantivo(singular, feminino) --> [gasolina].
 substantivo(singular, masculino) --> [gasto].
 substantivo(plural, masculino) --> [gastos].
 substantivo(singular, masculino) --> [gelo].
-substantivo(plural, masculino) --> ['gêmeos'].
+substantivo(plural, masculino) --> [gemeos].
 substantivo(singular, masculino) --> [gene].
 substantivo(plural, masculino) --> [genes].
-substantivo(singular, feminino) --> ['genética'].
+substantivo(singular, feminino) --> [genetica].
 substantivo(singular, feminino) --> [gengiva].
-substantivo(plural, masculino) --> ['gênios'].
+substantivo(plural, masculino) --> [genios].
 substantivo(singular, feminino) --> [gente].
 substantivo(singular, masculino) --> [geral].
-substantivo(singular, feminino) --> ['gerência'].
-substantivo(singular, masculino) --> ['getúlio'].
+substantivo(singular, feminino) --> [gerencia].
+substantivo(singular, masculino) --> [getulio].
 substantivo(plural, masculino) --> [gigantes].
-substantivo(singular, masculino) --> ['ginásio'].
+substantivo(singular, masculino) --> [ginasio].
 substantivo(singular, masculino) --> [globo].
 substantivo(singular, masculino) --> [golpe].
 substantivo(singular, feminino) --> [gordura].
 substantivo(plural, masculino) --> [governos].
-substantivo(singular, feminino) --> ['graça'].
-substantivo(plural, feminino) --> ['graças'].
+substantivo(singular, feminino) --> [graca].
+substantivo(plural, feminino) --> [gracas].
+substantivo(plural, masculino) --> [gracas].
 substantivo(singular, feminino) --> [grana].
-substantivo(plural, masculino) --> ['grãos'].
+substantivo(plural, masculino) --> [graos].
 substantivo(singular, masculino) --> [grau].
 substantivo(singular, feminino) --> [gravidade].
 substantivo(singular, masculino) --> [grupo].
@@ -249,14 +302,14 @@ substantivo(singular, masculino) --> [guarda].
 substantivo(singular, feminino) --> [guarda].
 substantivo(plural, feminino) --> [guerras].
 substantivo(singular, feminino) --> [habilidade].
-substantivo(singular, feminino) --> [hipertransparência].
-substantivo(singular, feminino) --> ['história'].
+substantivo(singular, feminino) --> [hipertransparencia].
+substantivo(singular, feminino) --> [historia].
 substantivo(singular, masculino) --> [hoje].
 substantivo(singular, masculino) --> [homem].
 substantivo(singular, feminino) --> [hora].
 substantivo(plural, feminino) --> [horas].
 substantivo(plural, feminino) --> [hordas].
-substantivo(plural, masculino) --> ['hormônios'].
+substantivo(plural, masculino) --> [hormonios].
 substantivo(plural, masculino) --> [hospitais].
 substantivo(singular, masculino) --> [hospital].
 substantivo(singular, feminino) --> [humanidade].
@@ -266,77 +319,76 @@ substantivo(singular, feminino) --> [ideia].
 substantivo(plural, feminino) --> [ideias].
 substantivo(singular, feminino) --> [imagem].
 substantivo(plural, feminino) --> [imagens].
-substantivo(singular, feminino) --> ['imaginação'].
+substantivo(singular, feminino) --> [imaginacao].
 substantivo(singular, masculino) --> [impacto].
-substantivo(singular, feminino) --> ['implantação'].
+substantivo(singular, feminino) --> [implantacao].
 substantivo(singular, masculino) --> [importante].
 substantivo(singular, feminino) --> [importante].
 substantivo(plural, masculino) --> [impostos].
 substantivo(singular, feminino) --> [imprensa].
 substantivo(singular, masculino) --> [impulso].
-substantivo(plural, feminino) --> ['incisões'].
+substantivo(plural, feminino) --> [incisoes].
 substantivo(singular, masculino) --> [inconsciente].
 substantivo(singular, masculino) --> [inconveniente].
-substantivo(singular, feminino) --> ['índia'].
-substantivo(singular, masculino) --> ['índice'].
-substantivo(singular, feminino) --> ['indigestão'].
-substantivo(singular, feminino) --> ['indignação'].
-substantivo(plural, masculino) --> ['indivíduos'].
+substantivo(singular, feminino) --> [india].
+substantivo(singular, masculino) --> [indice].
+substantivo(singular, feminino) --> [indigestao].
+substantivo(singular, feminino) --> [indignacao].
+substantivo(plural, masculino) --> [individuos].
 substantivo(singular, masculino) --> [indio].
 substantivo(singular, feminino) --> [industria].
 substantivo(singular, masculino) --> [inesperado].
-substantivo(singular, feminino) --> ['inflação'].
-substantivo(singular, feminino) --> ['inflamação'].
-substantivo(singular, feminino) --> ['influência'].
-substantivo(plural, feminino) --> ['informações'].
+substantivo(singular, feminino) --> [inflacao].
+substantivo(singular, feminino) --> [inflamacao].
+substantivo(singular, feminino) --> [influencia].
+substantivo(plural, feminino) --> [informacoes].
 substantivo(singular, feminino) --> [inglaterra].
-substantivo(singular, masculino) --> ['inglês'].
+substantivo(singular, masculino) --> [ingles].
 substantivo(plural, masculino) --> [ingressos].
 substantivo(plural, feminino) --> [iniciais].
-substantivo(singular, masculino) --> ['início'].
-substantivo(singular, feminino) --> ['inovação'].
+substantivo(singular, masculino) --> [inicio].
+substantivo(singular, feminino) --> [inovacao].
 substantivo(singular, feminino) --> [inspirada].
-substantivo(singular, feminino) --> ['instância'].
+substantivo(singular, feminino) --> [instancia].
 substantivo(singular, masculino) --> [instinto].
-substantivo(singular, feminino) --> ['inteligência'].
+substantivo(singular, feminino) --> [inteligencia].
 substantivo(plural, masculino) --> [interesses].
 substantivo(singular, masculino) --> [internacional].
 substantivo(singular, feminino) --> [internacional].
-substantivo(singular, feminino) --> ['interpretação'].
-substantivo(plural, feminino) --> ['interpretações'].
+substantivo(singular, feminino) --> [interpretacao].
+substantivo(plural, feminino) --> [interpretacoes].
 substantivo(singular, masculino) --> [intervalo].
-substantivo(singular, feminino) --> ['intervenção'].
+substantivo(singular, feminino) --> [intervencao].
 substantivo(singular, masculino) --> [instestino].
-substantivo(singular, feminino) --> ['invenção'].
+substantivo(singular, feminino) --> [invencao].
 substantivo(singular, masculino) --> [inverno].
 substantivo(singular, masculino) --> [inverso].
 substantivo(plural, masculino) --> [investigadores].
 substantivo(singular, masculino) --> [iraque].
-substantivo(singular, masculino) --> ['irmão'].
-substantivo(singular, masculino) --> [j].
+substantivo(singular, masculino) --> [irmao].
 substantivo(singular, masculino) --> [janeiro].
-substantivo(singular, masculino) --> ['jânio'].
+substantivo(singular, masculino) --> [janio].
 substantivo(singular, masculino) --> [jeito].
-substantivo(singular, masculino) --> ['joão'].
+substantivo(singular, masculino) --> [joao].
 substantivo(plural, masculino) --> [jogadores].
 substantivo(singular, masculino) --> [jogo].
 substantivo(plural, masculino) --> [jogos].
-substantivo(singular, masculino) --> [juscelino].
-substantivo(singular, feminino) --> ['justiça'].
-substantivo(singular, masculino) --> ['lá'].
+substantivo(singular, masculino) --> [amigo].       %%%%%%%%%%%%%%%%%%%
+substantivo(singular, feminino) --> [justica].
+substantivo(singular, masculino) --> [la].
 substantivo(singular, masculino) --> [labirinto].
-substantivo(singular, masculino) --> ['laboratório'].
+substantivo(singular, masculino) --> [laboratorio].
 substantivo(singular, masculino) --> [lado].
-substantivo(singular, masculino) --> ['ladrão'].
-substantivo(singular, masculino) --> ['lançamento'].
-substantivo(plural, masculino) --> ['lançamentos'].
+substantivo(singular, masculino) --> [ladrao].
+substantivo(singular, masculino) --> [lancamento].
+substantivo(plural, masculino) --> [lancamentos].
 substantivo(singular, masculino) --> [lazer].
 substantivo(singular, feminino) --> [lei].
 substantivo(plural, feminino) --> [leis].
 substantivo(singular, feminino) --> [levedura].
 substantivo(singular, feminino) --> [liberdade].
-substantivo(plural, masculino) --> ['líderes'].
-substantivo(singular, masculino) --> ['líquido'].
+substantivo(plural, masculino) --> [lideres].
+substantivo(singular, masculino) --> [liquido].
 substantivo(singular, feminino) --> [literatura].
 substantivo(plural, masculino) --> [locais].
 substantivo(singular, masculino) --> [logo].
@@ -347,31 +399,32 @@ substantivo(singular, masculino) --> [lula].
 substantivo(singular, feminino) --> [lula].
 substantivo(singular, feminino) --> [luta].
 substantivo(singular, feminino) --> [madrasta].
-substantivo(singular, feminino) --> ['mãe'].
-substantivo(singular, masculino) --> ['mágico'].
+substantivo(singular, feminino) --> [mae].
+substantivo(singular, masculino) --> [pai].
+substantivo(singular, masculino) --> [magico].
 substantivo(singular, masculino) --> [maio].
 substantivo(singular, feminino) --> [maioria].
 substantivo(singular, masculino) --> [mais].
 substantivo(singular, masculino) --> [mal].
 substantivo(plural, feminino) --> [maneiras].
 substantivo(plural, feminino) --> [mangas].
-substantivo(singular, feminino) --> ['manhã'].
+substantivo(singular, feminino) --> [manha].
 substantivo(plural, feminino) --> [manhas].
-substantivo(singular, feminino) --> ['manifestação'].
-substantivo(singular, feminino) --> ['manipulação'].
-substantivo(singular, feminino) --> ['mão'].
+substantivo(singular, feminino) --> [manifestacao].
+substantivo(singular, feminino) --> [manipulacao].
+substantivo(singular, feminino) --> [mao].
 substantivo(singular, masculino) --> [mapa].
 substantivo(singular, masculino) --> [marcio].
 substantivo(singular, masculino) --> [marmanjo].
 substantivo(singular, feminino) --> [martelada].
 substantivo(singular, feminino) --> [massa].
-substantivo(singular, feminino) --> ['média'].
-substantivo(singular, feminino) --> ['médica'].
+substantivo(singular, feminino) --> [media].
+substantivo(singular, feminino) --> [medica].
 substantivo(plural, masculino) --> [medicamentos].
 substantivo(singular, feminino) --> [medicina].
-substantivo(singular, masculino) --> ['médico'].
-substantivo(plural, masculino) --> ['médicos'].
-substantivo(singular, masculino) --> ['médio'].
+substantivo(singular, masculino) --> [medico].
+substantivo(plural, masculino) --> [medicos].
+substantivo(singular, masculino) --> [medio].
 substantivo(singular, masculino) --> [medo].
 substantivo(singular, masculino) --> [meio].
 substantivo(singular, masculino) --> [melhor].
@@ -381,33 +434,33 @@ substantivo(plural, feminino) --> [melhores].
 substantivo(singular, feminino) --> [melhoria].
 substantivo(singular, feminino) -->[melodia].
 substantivo(singular, masculino) --> [membro].
-substantivo(singular, feminino) --> ['memória'].
-substantivo(plural, feminino) --> ['memórias'].
+substantivo(singular, feminino) --> [memoria].
+substantivo(plural, feminino) --> [memorias].
 substantivo(singular, masculino) --> [menos].
 substantivo(plural, feminino) --> [mensagens].
 substantivo(singular, feminino) --> [mente].
 substantivo(singular, masculino) --> [mercado].
-substantivo(singular, masculino) --> ['mérito'].
-substantivo(singular, masculino) --> ['mês'].
+substantivo(singular, masculino) --> [merito].
+substantivo(singular, masculino) --> [ mes ].
 substantivo(singular, feminino) --> [mesa].
 substantivo(singular, masculino) --> [mesmo].
 substantivo(plural, masculino) --> [mestres].
 substantivo(singular, masculino) --> [metabolismo].
 substantivo(singular, feminino) --> [metade].
-substantivo(singular, feminino) --> ['metáfora'].
-substantivo(plural, feminino) --> ['metáforas'].
+substantivo(singular, feminino) --> [ metafora ].
+substantivo(plural, feminino) --> [ metaforas ].
 substantivo(singular, feminino) --> [metralhadora].
-substantivo(plural, masculino) --> ['milhões'].
+substantivo(plural, masculino) --> [ milhoes ].
 substantivo(singular, masculino) --> [militar].
 substantivo(singular, feminino) --> [militar].
 substantivo(singular, masculino) --> [ministro].
 substantivo(singular, feminino) --> [minoria].
-substantivo(singular, feminino) --> ['missão'].
-substantivo(singular, feminino) -->  ['modificação'].
+substantivo(singular, feminino) --> [ missao ].
+substantivo(singular, feminino) -->  [ modificacao ].
 substantivo(singular, masculino) --> [modo].
 substantivo(singular, masculino) --> [molho].
 substantivo(singular, masculino) --> [momento].
-substantivo(plural, masculino) --> ['monopólios'].
+substantivo(plural, masculino) --> [ monopolios ].
 substantivo(singular, masculino) --> [moral].
 substantivo(singular, feminino) --> [moral].
 substantivo(singular, feminino) --> [morte].
@@ -419,74 +472,73 @@ substantivo(plural, masculino) --> [motores].
 substantivo(plural, masculino) --> [motoristas].
 substantivo(plural, feminino) --> [motoristas].
 substantivo(singular, masculino) --> [movimento].
-substantivo(singular, feminino) --> ['mudança'].
-substantivo(plural, feminino) --> ['mudanças'].
+substantivo(singular, feminino) --> [ mudanca ].
+substantivo(plural, feminino) --> [ mudancas ].
 substantivo(plural, feminino) --> [mulheres].
-substantivo(plural, feminino) --> ['multidões'].
+substantivo(plural, feminino) --> [ multidoes ].
 substantivo(singular, masculino) --> [mundo].
-substantivo(singular, feminino) --> ['música'].
+substantivo(singular, feminino) --> [ musica ].
 substantivo(singular, feminino) --> [musiquinha].
-substantivo(singular, feminino) --> ['nação'].
+substantivo(singular, feminino) --> [ nacao ].
 substantivo(singular, masculino) --> [nada].
 substantivo(plural, masculino) --> [namorados].
 substantivo(singular, masculino) --> [nariz].
 substantivo(plural, feminino) --> [negativas].
 substantivo(singular, masculino) --> [negro].
 substantivo(singular, masculino) --> [nervoso].
-substantivo(singular, feminino) --> ['neurociência'].
+substantivo(singular, feminino) --> [ neurociencia ].
 substantivo(singular, masculino) --> [neurocientista].
 substantivo(singular, feminino) --> [neurocientista].
 substantivo(plural, masculino) --> [neurocientistas].
 substantivo(plural, feminino) --> [neurocientistas].
 substantivo(singular, masculino) --> [neurologista].
 substantivo(singular, feminino) --> [neurologista].
-substantivo(plural, masculino) --> ['neurônios'].
+substantivo(plural, masculino) --> [ neuronios ].
 substantivo(singular, feminino) --> [neve].
-substantivo(singular, masculino) --> ['nível'].
+substantivo(singular, masculino) --> [ nivel ].
 substantivo(singular, feminino) --> [noite].
 substantivo(singular, masculino) --> [nome].
 substantivo(singular, masculino) --> [normal].
 substantivo(singular, feminino) --> [normal].
-substantivo(singular, feminino) --> ['notícia'].
+substantivo(singular, feminino) --> [ noticia ].
 substantivo(plural, feminino) --> [novatas].
 substantivo(singular, masculino) --> [novato].
 substantivo(singular, feminino) --> [novidade].
-substantivo(singular, masculino) --> ['número'].
-substantivo(plural, masculino) --> ['números'].
+substantivo(singular, masculino) --> [ numero ].
+substantivo(plural, masculino) --> [ numeros ].
 substantivo(singular, feminino) --> [obesidade].
 substantivo(singular, feminino) --> [obra].
-substantivo(singular, masculino) --> ['obstáculo'].
+substantivo(singular, masculino) --> [ obstaculo ].
 substantivo(singular, masculino) --> [ocidental].
 substantivo(singular, feminino) --> [ocidental].
 substantivo(plural, masculino) --> [olhos].
 substantivo(plural, masculino) --> [ombros].
 substantivo(plural, feminino) --> [ondas].
-substantivo(plural, feminino) --> ['opções'].
-substantivo(singular, feminino) --> ['operação'].
+substantivo(plural, feminino) --> [ opcoes ].
+substantivo(singular, feminino) --> [ operacao ].
 substantivo(singular, masculino) --> [oposto].
 substantivo(plural, feminino) --> [orelhas].
 substantivo(singular, masculino) --> [organismo].
-substantivo(singular, feminino) --> ['orientação'].
+substantivo(singular, feminino) --> [ orientacao ].
 substantivo(plural, feminino) --> [origens].
 substantivo(singular, masculino) --> [ouvido].
 substantivo(singular, masculino) --> [paciente].
 substantivo(singular, feminino) --> [paciente].
 substantivo(plural, masculino) --> [pacientes].
 substantivo(plural, feminino) --> [pacientes].
-substantivo(singular, masculino) --> ['padrão'].
-substantivo(singular, feminino) --> ['página'].
-substantivo(singular, masculino) --> [pai].
+substantivo(singular, masculino) --> [ padrao ].
+substantivo(singular, feminino) --> [ pagina ].
 substantivo(singular, masculino) --> [painel].
 substantivo(plural, masculino) --> [pais].
-substantivo(singular, masculino) --> ['país'].
+substantivo(singular, masculino) --> [ pais ].
 substantivo(singular, feminino) --> [paisagem].
-substantivo(plural, masculino) --> ['países'].
+substantivo(plural, masculino) --> [ paises ].
 substantivo(singular, feminino) --> [palavra].
 substantivo(singular, masculino) --> [par].
 substantivo(plural, feminino) --> [paralelas].
 substantivo(singular, feminino) --> [parte].
 substantivo(plural, feminino) --> [partes].
-substantivo(singular, feminino) --> ['participação'].
+substantivo(singular, feminino) --> [ participacao ].
 substantivo(singular, feminino) --> [partida].
 substantivo(singular, masculino) --> [passado].
 substantivo(plural, masculino) --> [passistas].
@@ -495,18 +547,18 @@ substantivo(singular, masculino) --> [passo].
 substantivo(singular, feminino) --> [patente].
 substantivo(plural, feminino) --> [patentes].
 substantivo(singular, masculino) --> [paulo].
-substantivo(singular, masculino) --> ['pé'].
-substantivo(plural, feminino) --> ['peças'].
+substantivo(singular, masculino) --> [ pe ].
+substantivo(plural, feminino) --> [ pecas ].
 substantivo(singular, feminino) --> [peculiaridade].
 substantivo(singular, feminino) --> [pegadinha].
 substantivo(singular, feminino) --> [pele].
 substantivo(singular, feminino) --> [pedenga].
 substantivo(singular, masculino) --> [pensamento].
-substantivo(singular, feminino) --> ['pensilvânia'].
-substantivo(singular, feminino) --> ['percepção'].
+substantivo(singular, feminino) --> [ pensilvania ].
+substantivo(singular, feminino) --> [ percepcao ].
 substantivo(singular, masculino) --> [perfil].
 substantivo(plural, feminino) --> [perguntas].
-substantivo(plural, masculino) --> ['períodos'].
+substantivo(plural, masculino) --> [ periodos ].
 substantivo(singular, masculino) --> [perito].
 substantivo(plural, masculino) --> [peritos].
 substantivo(singular, feminino) --> [perna].
@@ -519,11 +571,11 @@ substantivo(singular, feminino) --> [pessoa].
 substantivo(singular, masculino) --> [pessoal].
 substantivo(plural, feminino) --> [pessoas].
 substantivo(plural, feminino) --> [petroleiras].
-substantivo(singular, masculino) --> ['petróleo'].
-substantivo(singular, feminino) --> ['petrolífera'].
+substantivo(singular, masculino) --> [ petroleo ].
+substantivo(singular, feminino) --> [ petrolifera ].
 substantivo(singular, masculino) --> [piano].
-substantivo(singular, feminino) --> ['pílula'].
-substantivo(plural, feminino) --> ['pílulas'].
+substantivo(singular, feminino) --> [ pilula ].
+substantivo(plural, feminino) --> [ pilulas ].
 substantivo(singular, feminino) --> [pimenta].
 substantivo(singular, masculino) --> [pioneiro].
 substantivo(singular, feminino) --> [pipoca].
@@ -537,36 +589,36 @@ substantivo(plural, feminino) --> [plantas].
 substantivo(plural, masculino) --> [pobres].
 substantivo(plural, feminino) --> [pobres].
 substantivo(singular, masculino) --> [poder].
-substantivo(singular, feminino) --> ['polícia'].
-substantivo(singular, feminino) --> ['política'].
-substantivo(plural, masculinoulino) --> ['políticos'].
+substantivo(singular, feminino) --> [ policia ].
+substantivo(singular, feminino) --> [ politica ].
+substantivo(plural, masculinoulino) --> [ politicos ].
 substantivo(singular, masculino) --> [poluente].
 substantivo(plural, masculino) --> [poluentes].
-substantivo(singular, feminino) --> ['poluição'].
+substantivo(singular, feminino) --> [ poluicao ].
 substantivo(plural, masculino) --> [poluidores].
 substantivo(plural, masculino) --> [pontinhos].
 substantivo(singular, masculino) --> [ponto].
-substantivo(singular, feminino) --> ['população'].
-substantivo(singular, feminino) --> ['posição'].
+substantivo(singular, feminino) --> [ populacao ].
+substantivo(singular, feminino) --> [ posicao ].
 substantivo(plural, feminino) --> [possibilidades].
 substantivo(singular, masculino) --> [posto].
 substantivo(singular, feminino) --> [pouca].
 substantivo(plural, feminino) --> [poucas].
 substantivo(singular, masculino) --> [pouco].
-substantivo(singular, feminino) --> ['prática'].
+substantivo(singular, feminino) --> [ pratica ].
 substantivo(singular, masculino) --> [prato].
 substantivo(singular, masculino) --> [prazo].
-substantivo(singular, masculino) --> ['preço'].
-substantivo(singular, masculino) --> ['prédio'].
-substantivo(singular, feminino) --> ['preocupação'].
+substantivo(singular, masculino) --> [ preco ].
+substantivo(singular, masculino) --> [ predio ].
+substantivo(singular, feminino) --> [ preocupacao ].
 substantivo(singular, masculino) --> [presente].
-substantivo(singular, feminino) --> ['presidência'].
+substantivo(singular, feminino) --> [ presidencia ].
 substantivo(singular, masculino) --> [presidente].
 substantivo(singular, feminino) --> [presidemte].
 substantivo(plural, masculino) --> [presidentes].
 substantivo(plural, feminino) --> [presidentes].
 substantivo(plural, masculino) --> [presos].
-substantivo(singular, feminino) --> ['pressão'].
+substantivo(singular, feminino) --> [ pressao ].
 substantivo(singular, masculino) --> [previsto].
 substantivo(singular, feminino) --> [primeira].
 substantivo(plural, feminino) --> [primeiras].
@@ -576,129 +628,130 @@ substantivo(singular, masculino) --> [principal].
 substantivo(singular, feminino) --> [principal].
 substantivo(singular, feminino) --> [privacidade].
 substantivo(singular, masculino) --> [problema].
+substantivo(singular, feminino) --> [problema].
 substantivo(plural, masculino) --> [problemas].
 substantivo(singular, masculino) --> [processo].
 substantivo(plural, masculino) --> [processos].
-substantivo(singular, feminino) --> ['produção'].
-substantivo(plural, feminino) --> ['produções'].
+substantivo(singular, feminino) --> [ producao ].
+substantivo(plural, feminino) --> [ producoes ].
 substantivo(plural, masculino) --> [produtos].
 substantivo(singular, masculino) --> [professor].
-substantivo(singular, feminino) --> ['profissão'].
+substantivo(singular, feminino) --> [ profissao ].
 substantivo(singular, masculino) --> [profundo].
 substantivo(singular, masculino) --> [programa].
 substantivo(plural, masculino) --> [programas].
 substantivo(singular, masculino) --> [projeto].
 substantivo(plural, masculino) --> [promotores].
 substantivo(singular, feminino) --> [propaganda].
-substantivo(singular, masculino) --> ['propósito'].
+substantivo(singular, masculino) --> [ proposito ].
 substantivo(singular, feminino) --> [proposta].
 substantivo(plural, feminino) --> [prospostas].
-substantivo(singular, feminino) --> ['própria'].
-substantivo(plural, masculino) --> ['próprios'].
-substantivo(singular, feminino) --> ['proteína'].
+substantivo(singular, feminino) --> [ propria ].
+substantivo(plural, masculino) --> [ proprios ].
+substantivo(singular, feminino) --> [ proteina ].
 substantivo(singular, masculino) --> [protocolo].
 substantivo(singular, feminino) --> [prova].
-substantivo(singular, feminino) --> ['próxima'].
-substantivo(singular, masculino) --> ['próximo'].
-substantivo(plural, masculinoulino) --> ['próximos'].
-substantivo(singular, feminino) --> ['psicóloga'].
+substantivo(singular, feminino) --> [ proxima ].
+substantivo(singular, masculino) --> [ proximo ].
+substantivo(plural, masculinoulino) --> [ proximos ].
+substantivo(singular, feminino) --> [ psicologa ].
 substantivo(singular, feminino) --> [psiquiatra].
 substantivo(singular, masculino) --> [psiquiatra].
 substantivo(singular,feminino) --> [publicidade].
-substantivo(singular, masculino) --> ['público'].
-substantivo(plural, masculino) --> ['públicos'].
+substantivo(singular, masculino) --> [ publico ].
+substantivo(plural, masculino) --> [ publicos ].
 substantivo(singular, masculino) --> [pulo].
 substantivo(singular, masculino) --> [punhado].
 substantivo(singular, masculino) --> [quadro].
 substantivo(singular, feminino) --> [quantidade].
-substantivo(plural, femenino) --> [alertas].
-substantivo(plural, femenino) --> ['aberrações'].
-substantivo(singular, femenino) -->['atenção'].
+substantivo(plural, feminino) --> [alertas].
+substantivo(plural, feminino) --> [ aberracoes ].
+substantivo(singular, feminino) -->[ atencao ].
 substantivo(singular, masculino) --> [acordo].
-substantivo(singular, masculino) --> ['açúcar'].
-substantivo(singular, femenino) --> [acupuntura].
+substantivo(singular, masculino) --> [ acucar ].
+substantivo(singular, feminino) --> [acupuntura].
 substantivo(singular, masculino) --> [acerto].
-substantivo(singular, femenino) --> ['ação'].
+substantivo(singular, feminino) --> [ acao ].
 substantivo(singular, masculino) --> [adolescente].
 substantivo(plural, masculino) --> [adultos].
-substantivo(singular, masculino) --> ['adversário'].
+substantivo(singular, masculino) --> [ adversario ].
 substantivo(plural, masculino) --> [afogados].
 substantivo(singular, masculino) --> [afogado].
-substantivo(singular, femenino) --> ['áfrica'].
-substantivo(singular, femenino) --> [adotada].
-substantivo(singular, femenino) --> [ajuda].
-substantivo(singular, femenino) --> [agricultura].
-substantivo(singular, femenino) --> ['água'].
-substantivo(singular, femenino) --> [agulha].
-substantivo(singular, masculino) --> ['álcool'].
-substantivo(singular, femenino) --> [autoestima].
-substantivo(singular, femenino) --> [autoconfianca].
-substantivo(singular, femenino) --> [ameaca].
-substantivo(plural, femenino) --> [ameacas].
-substantivo(singular, femenino) --> [ambiciosa].
-substantivo(singular, femenino) --> [americana].
+substantivo(singular, feminino) --> [ africa ].
+substantivo(singular, feminino) --> [adotada].
+substantivo(singular, feminino) --> [ajuda].
+substantivo(singular, feminino) --> [agricultura].
+substantivo(singular, feminino) --> [ agua ].
+substantivo(singular, feminino) --> [agulha].
+substantivo(singular, masculino) --> [ alcool ].
+substantivo(singular, feminino) --> [autoestima].
+substantivo(singular, feminino) --> [autoconfianca].
+substantivo(singular, feminino) --> [ameaca].
+substantivo(plural, feminino) --> [ameacas].
+substantivo(singular, feminino) --> [ambiciosa].
+substantivo(singular, feminino) --> [americana].
 substantivo(singular, masculino) --> [americano].
 substantivo(singular, masculino) --> [amor].
 substantivo(plural, masculino) --> [amores].
-substantivo(singular, femenino) --> [analise].
-substantivo(singular, femenino) --> [analogia].
-substantivo(plural, femenino) --> [analogias].
-substantivo(singular, femenino) --> [anarquia].
-substantivo(singular, femenino) --> [anatomia].
-substantivo(singular, femenino) --> [alice].
+substantivo(singular, feminino) --> [analise].
+substantivo(singular, feminino) --> [analogia].
+substantivo(plural, feminino) --> [analogias].
+substantivo(singular, feminino) --> [anarquia].
+substantivo(singular, feminino) --> [anatomia].
+substantivo(singular, feminino) --> [alice].
 substantivo(singular, masculino) --> [allan].
 substantivo(singular, masculino) --> [allen].
-substantivo(plural, femenino) --> ['aplicações'].
-substantivo(singular, femenino) --> [antropologia].
+substantivo(plural, feminino) --> [ aplicacoes ].
+substantivo(singular, feminino) --> [antropologia].
 substantivo(singular, masculino) --> [aquecimento].
 substantivo(singular, masculino) --> [apresentador].
-substantivo(singular, femenino) --> ['área'].
-substantivo(plural, femenino) --> ['áreas'].
-substantivo(plural, femenino) --> ['árenas'].
+substantivo(singular, feminino) --> [ area ].
+substantivo(plural, feminino) --> [ areas ].
+substantivo(plural, feminino) --> [ arenas ].
 substantivo(plural, masculino) --> [animadores].
-substantivo(singular, femenino) --> ['anfitriã'].
-substantivo(singular, femenino) --> [anomalia].
+substantivo(singular, feminino) --> [ anfitria ].
+substantivo(singular, feminino) --> [anomalia].
 substantivo(plural, masculino) --> [burros].
 substantivo(singular, masculino) --> [argumento].
 substantivo(singular, masculino) --> [arquivo].
-substantivo(singular, femenino) --> [arte].
+substantivo(singular, feminino) --> [arte].
 substantivo(plural, masculino) --> [artistas].
-substantivo(plural, femenino) --> [artistas].
+substantivo(plural, feminino) --> [artistas].
 substantivo(singular, masculino) --> [aumento].
-substantivo(plural, femenino) --> ['árvores'].
+substantivo(plural, feminino) --> [ arvores ].
 substantivo(singular, masculino) --> [assedio].
-substantivo(singular, femenino) --> ['associação'].
-substantivo(singular, femenino) --> [associada].
+substantivo(singular, feminino) --> [ associacao ].
+substantivo(singular, feminino) --> [associada].
 substantivo(singular, masculino) --> [assunto].
-substantivo(singular, femenino) --> [amyris].
-substantivo(singular, femenino) --> [atividade].
-substantivo(plural, masculino) --> ['aviões'].
-substantivo(singular, masculino) --> ['avô'].
-substantivo(singular, femenino) --> ['avô'].
-substantivo(singular, masculino) --> ['avião'].
-substantivo(singular, femenino) --> [avenida].
+substantivo(singular, feminino) --> [amyris].
+substantivo(singular, feminino) --> [atividade].
+substantivo(plural, masculino) --> [ avioes ].
+substantivo(singular, masculino) --> [ avo ].
+substantivo(singular, feminino) --> [ avo ].
+substantivo(singular, masculino) --> [ aviao ].
+substantivo(singular, feminino) --> [avenida].
 substantivo(singular, masculino) --> [avatar].
 substantivo(singular, masculino) --> [abril].
-substantivo(singular, femenino) --> [ala].
-substantivo(plural, femenino) --> [alas].
+substantivo(singular, feminino) --> [ala].
+substantivo(plural, feminino) --> [alas].
 substantivo(singular, masculino) --> [ano].
 substantivo(plural, masculino) --> [anos].
-substantivo(singular, femenino) --> [batalha].
-substantivo(singular, femenino)--> [criatividade].
+substantivo(singular, feminino) --> [batalha].
+substantivo(singular, feminino)--> [criatividade].
 substantivo(singular, masculino)--> [criatividade].
-substantivo(singular, femenino) --> [agredida].
-substantivo(singular, femenino) --> [atmosfera].
-substantivo(plural, femenino) --> [quotas].
+substantivo(singular, feminino) --> [agredida].
+substantivo(singular, feminino) --> [atmosfera].
+substantivo(plural, feminino) --> [quotas].
 substantivo(singular, masculino) --> [ego].
-substantivo(singular, femenino) --> [ann].
-substantivo(singular, femenino) --> [artrose].
-substantivo(singular, femenino) --> [biotechnology].
-substantivo(singular, femenino) --> [biotecnologia].
-substantivo(singular, femenino) --> [biologia].
-substantivo(plural, masculino) --> ['biocombustíveis'].
-substantivo(singular, femenino) --> [bicicleta].
-substantivo(singular, femenino) --> [boca].
-substantivo(singular, femenino) --> [bola].
+substantivo(singular, feminino) --> [ann].
+substantivo(singular, feminino) --> [artrose].
+substantivo(singular, feminino) --> [biotechnology].
+substantivo(singular, feminino) --> [biotecnologia].
+substantivo(singular, feminino) --> [biologia].
+substantivo(plural, masculino) --> [ biocombustiveis ].
+substantivo(singular, feminino) --> [bicicleta].
+substantivo(singular, feminino) --> [boca].
+substantivo(singular, feminino) --> [bola].
 substantivo(singular, masculino) --> [bolo].
 substantivo(singular, masculino) --> [boneco].
 substantivo(singular, masculino) --> [braco].
@@ -707,257 +760,267 @@ substantivo(singular, masculino) --> [braun].
 substantivo(singular, masculino) --> [brigadeiro].
 substantivo(singular, masculino) --> [britanico].
 substantivo(singular, masculino) --> [buraco].
-substantivo(singular, femenino) --> [burra].
-substantivo(plural, femenino) --> [bacterias].
-substantivo(singular, femenino) --> [california].
+substantivo(singular, feminino) --> [burra].
+substantivo(plural, feminino) --> [bacterias].
+substantivo(singular, feminino) --> [california].
 substantivo(singular, masculino) --> [campeao].
 substantivo(singular, masculino) --> [cancer].
 substantivo(singular, masculino) --> [barco].
-substantivo(singular, femenino) --> [barreira].
-substantivo(plural, femenino) --> [barreiras].
-substantivo(singular, femenino) --> [base].
+substantivo(singular, feminino) --> [barreira].
+substantivo(plural, feminino) --> [barreiras].
+substantivo(singular, feminino) --> [base].
 substantivo(singular, masculino) --> [carvao].
-substantivo(singular, femenino) --> [casa].
-substantivo(plural, femenino) --> [casas].
-substantivo(singular, femenino) --> ['balança'].
+substantivo(singular, feminino) --> [casa].
+substantivo(plural, feminino) --> [casas].
+substantivo(singular, feminino) --> [ balanca ].
 substantivo(singular, masculino) --> [cargo].
 substantivo(plural, masculino) --> [cargos].
-substantivo(singular, femenino) --> [carreira].
+substantivo(singular, feminino) --> [carreira].
 substantivo(singular, masculino) --> [carro].
-substantivo(plural, masculino) --> ['carrões'].
+substantivo(plural, masculino) --> [ carroes ].
 substantivo(plural, masculino) --> [carros].
-substantivo(plural, femenino) --> [cartas].
+substantivo(plural, feminino) --> [cartas].
 substantivo(singular, masculino) --> [carbono].
 substantivo(plural, masculino) --> [caracteres].
-substantivo(plural, femenino) --> ['características'].
+substantivo(plural, feminino) --> [ caracteristicas ].
 substantivo(singular, masculino) --> [chato].
 substantivo(singular, masculino) --> [chefe].
-substantivo(singular, femenino) --> [chance].
-substantivo(singular, femenino) --> [chamada].
-substantivo(singular, femenino) --> [caverna].
-substantivo(singular, masculino) --> ['cenário'].
+substantivo(singular, feminino) --> [chance].
+substantivo(singular, feminino) --> [chamada].
+substantivo(singular, feminino) --> [caverna].
+substantivo(singular, masculino) --> [ cenario ].
 substantivo(singular, masculino) --> [centro].
-substantivo(singular, masculino) --> ['cérebro'].
-substantivo(plural, femenino) --> [ceroulas].
+substantivo(singular, masculino) --> [ cerebro ].
+substantivo(plural, feminino) --> [ceroulas].
 substantivo(singular, masculino) --> [cego].
-substantivo(singular, femenino) --> [cena].
+substantivo(singular, feminino) --> [cena].
 substantivo(singular, masculino) --> [cinema].
-substantivo(singular, femenino) --> [cirurgia].
-substantivo(singular, masculino) --> ['clássico'].
+substantivo(singular, feminino) --> [cirurgia].
+substantivo(singular, masculino) --> [ classico ].
 substantivo(singular, masculino) --> [clima].
 substantivo(plural, masculino) --> [clubes].
 substantivo(singular, masculino) --> [cochilo].
-substantivo(singular, masculino) --> ['código'].
-substantivo(plural, masculino) --> ['códigos'].
-substantivo(singular, femenino) --> ['cognição'].
-substantivo(singular, masculino) --> ['coincidência'].
+substantivo(singular, masculino) --> [ codigo ].
+substantivo(plural, masculino) --> [ codigos ].
+substantivo(singular, feminino) --> [ cognicao ].
+substantivo(singular, masculino) --> [ coincidencia ].
 substantivo(singular, masculino) --> [colega].
-substantivo(singular, femenino) --> [colega].
+substantivo(singular, feminino) --> [colega].
 substantivo(singular, masculino) --> [colegas].
-substantivo(singular, femenino) --> [colegas].
-substantivo(singular, femenino) --> [coletiva].
+substantivo(singular, feminino) --> [colegas].
+substantivo(singular, feminino) --> [coletiva].
 substantivo(singular, masculino) --> [comando].
 substantivo(singular, masculino) --> [combate].
-substantivo(plural, masculino) --> ['combustíveis'].
-substantivo(singular, masculino) --> ['combustível'].
+substantivo(plural, masculino) --> [ combustiveis ].
+substantivo(singular, masculino) --> [ combustivel ].
 substantivo(singular, masculino) --> [bairro].
-substantivo(singular, femenino) --> [conta].
-substantivo(plural, femenino) --> [contas].
+substantivo(singular, feminino) --> [conta].
+substantivo(plural, feminino) --> [contas].
 substantivo(singular, masculino) --> [consumo].
 substantivo(plural, masculino) --> [consumidores].
 substantivo(singular, masculino) --> [conhecido].
 substantivo(singular, masculino) --> [conhecimento].
 substantivo(singular, masculino) --> [consenso].
-substantivo(singular, femenino) --> ['consideração'].
-substantivo(singular, femenino) --> ['construção'].
-substantivo(plural, femenino) --> ['construções'].
+substantivo(singular, feminino) --> [ consideracao ].
+substantivo(singular, feminino) --> [ construcao ].
+substantivo(plural, feminino) --> [ construcoes ].
 substantivo(singular, masculino) --> [contato].
 substantivo(singular, masculino) --> [contribuinte].
 substantivo(singular, masculino) --> [controle].
-substantivo(singular, femenino) --> [coordenadora].
-substantivo(singular, femenino) --> [copa].
+substantivo(singular, feminino) --> [coordenadora].
+substantivo(singular, feminino) --> [copa].
 substantivo(singular, masculino) --> [corpo].
-substantivo(singular, femenino) --> [cria].
+substantivo(singular, feminino) --> [cria].
 substantivo(singular, masculino) --> [criado].
 substantivo(singular, masculino) --> [crack].
-substantivo(singular, femenino) --> [crack].
-substantivo(singular, masculino) --> ['crânio'].
-substantivo(singular, femenino) --> [cor].
-substantivo(singular, femenino) --> [corda].
-substantivo(singular, femenino) --> ['criança'].
-substantivo(plural, femenino) --> ['crianças'].
+substantivo(singular, feminino) --> [crack].
+substantivo(singular, masculino) --> [ cranio ].
+substantivo(singular, feminino) --> [cor].
+substantivo(singular, feminino) --> [corda].
+substantivo(singular, feminino) --> [ crianca ].
+substantivo(plural, feminino) --> [ criancas ].
 substantivo(singular, masculino) --> [crime].
 substantivo(singular, masculino) --> [criminoso].
-substantivo(singular, femenino) --> [crise].
+substantivo(singular, feminino) --> [crise].
 substantivo(singular, masculino) --> [culpado].
 substantivo(singular, masculino) --> [debate].
 substantivo(singular, masculino) --> [desenho].
 substantivo(plural, masculino) --> [desenhos].
 substantivo(plural, masculino) --> [ayrtons].
 substantivo(singular, masculino) --> [dedo].
-substantivo(singular, femenino) --> [defesa].
-substantivo(plural, femenino) --> [defesas].
-substantivo(singular, femenino) --> ['definição'].
+substantivo(singular, feminino) --> [defesa].
+substantivo(plural, feminino) --> [defesas].
+substantivo(singular, feminino) --> [ definicao ].
 substantivo(singular, masculino) --> [desaparecido].
-substantivo(singular, femenino) --> [disputa].
+substantivo(singular, feminino) --> [disputa].
 substantivo(singular, masculino) --> [efeito].
 substantivo(plural, masculino) --> [efeitos].
-substantivo(plural, femenino) --> ['eleições'].
+substantivo(plural, feminino) --> [ eleicoes ].
 substantivo(plural, masculino) --> [elementos].
-substantivo(singular, femenino) --> [eletricidade].
-substantivo(singular, femenino) --> ['emoção'].
-substantivo(plural, femenino) --> ['emoções'].
+substantivo(singular, feminino) --> [eletricidade].
+substantivo(singular, feminino) --> [ emocao ].
+substantivo(plural, feminino) --> [ emocoes ].
 substantivo(singular, masculino) --> [emprego].
-substantivo(singular, femenino) --> [empresa].
+substantivo(singular, feminino) --> [empresa].
 substantivo(plural, masculino) --> [desejos].
 substantivo(singular, masculino) --> [desempenho].
 substantivo(singular, masculino) --> [desenvolvimento].
 substantivo(singular, masculino) --> [desejo].
-substantivo(plural, femenino) --> [desculpas].
+substantivo(plural, feminino) --> [desculpas].
 substantivo(singular, masculino) --> [diabo].
-substantivo(plural, masculino) --> ['dicionários'].
-substantivo(singular, femenino) --> ['diferença'].
-substantivo(plural, femenino) --> [diferencas].
-substantivo(singular, femenino) --> [dificuldade].
-substantivo(plural, femenino) --> [dificuldades].
+substantivo(plural, masculino) --> [ dicionarios ].
+substantivo(singular, feminino) --> [ diferenca ].
+substantivo(plural, feminino) --> [diferencas].
+substantivo(singular, feminino) --> [dificuldade].
+substantivo(plural, feminino) --> [dificuldades].
 substantivo(plural, masculino) --> [empreendedores].
-substantivo(plural, femenino) --> [empresas].
-substantivo(singular, femenino) --> [droga].
-substantivo(plural, femenino) --> [drogas].
+substantivo(plural, feminino) --> [empresas].
+substantivo(singular, feminino) --> [droga].
+substantivo(plural, feminino) --> [drogas].
 substantivo(plural, masculino) --> [downloads].
-substantivo(singular, femenino) --> [banda].
+substantivo(singular, feminino) --> [banda].
 substantivo(singular, masculino) --> [baque].
-substantivo(plural, femenino) --> [baratas].
+substantivo(plural, feminino) --> [baratas].
 substantivo(singular, masculino) --> [bullying].
 substantivo(singular, masculino) --> [burton].
 substantivo(singular, masculino) --> [bush].
-substantivo(singular, femenino) --> ['cabeça'].
-substantivo(singular, femenino) --> [caixa].
+substantivo(singular, feminino) --> [ cabeca ].
+substantivo(singular, feminino) --> [caixa].
 substantivo(singular, masculino) --> [dinheiro].
-substantivo(singular, femenino) --> [dinheirama].
-substantivo(singular, femenino) --> [diplomacia].
-substantivo(plural, masculino) --> ['diplomáticos'].
+substantivo(singular, feminino) --> [dinheirama].
+substantivo(singular, feminino) --> [diplomacia].
+substantivo(plural, masculino) --> [ diplomaticos ].
 substantivo(singular, masculino) --> [barbosa].
-substantivo(singular, masculino) --> ['documentário'].
-substantivo(singular, femenino) --> [doida].
-substantivo(singular, femenino) --> ['doença'].
-substantivo(plural, femenino) --> ['doenças'].
+substantivo(singular, masculino) --> [ documentario ].
+substantivo(singular, feminino) --> [doida].
+substantivo(singular, feminino) --> [ doenca ].
+substantivo(plural, feminino) --> [ doencas ].
 substantivo(singular, masculino) --> [drama].
-substantivo(plural, femenino) --> [disputas].
-substantivo(singular, femenino) --> ['eficiência'].
+substantivo(plural, feminino) --> [disputas].
+substantivo(singular, feminino) --> [ eficiencia ].
 substantivo(plural, masculino) --> [dvds].
-substantivo(plural, masculino) --> ['avanços'].
-substantivo(singular, masculino) --> ['emissão'].
-substantivo(singular, femenino) --> [china].
-substantivo(plural, femenino) --> [chines].
-substantivo(singular, femenino) --> [chicken].
-substantivo(singular, femenino) --> [brasileira].
+substantivo(plural, masculino) --> [ avancos ].
+substantivo(singular, masculino) --> [ emissao ].
+substantivo(singular, feminino) --> [china].
+substantivo(plural, feminino) --> [chines].
+substantivo(singular, feminino) --> [chicken].
+substantivo(singular, feminino) --> [brasileira].
 substantivo(singular, masculino) --> [brasileiro].
 substantivo(plural, masculino) --> [brasileiros].
-substantivo(plural, femenino) --> [beneficios].
+substantivo(plural, feminino) --> [beneficios].
 substantivo(singular, masculino) --> [dna].
 substantivo(singular, masculino) --> [bioterrorismo].
 substantivo(singular, masculino) --> [blockbuster].
 substantivo(singular, masculino) --> [choque].
-substantivo(plural, femenino) --> [cidades].
-substantivo(singular, femenino) --> [sede].
+substantivo(plural, feminino) --> [cidades].
+substantivo(singular, feminino) --> [sede].
 substantivo(plural, masculino) --> [economistas].
-substantivo(plural, femenino) --> [economistas].
+substantivo(plural, feminino) --> [economistas].
 substantivo(plural, masculino) --> [fantoches].
-substantivo(singular, femenino) --> [beira].
-substantivo(singular, femenino) --> [beleza].
+substantivo(singular, feminino) --> [beira].
+substantivo(singular, feminino) --> [beleza].
 substantivo(singular, masculino) --> [calor].
-substantivo(plural, femenino) --> [calorias].
+substantivo(plural, feminino) --> [calorias].
 substantivo(singular, masculino) --> [caminho].
-substantivo(singular, femenino) --> [capacidade].
-substantivo(singular, femenino) --> ['ciência'].
+substantivo(singular, feminino) --> [capacidade].
+substantivo(singular, feminino) --> [ ciencia ].
 substantivo(singular, masculino) --> [cientista].
-substantivo(singular, femenino) --> [cientista].
+substantivo(singular, feminino) --> [cientista].
 substantivo(plural, masculino) --> [cientistas].
-substantivo(plural, femenino) --> [cientistas].
-substantivo(singular, femenino) --> [classe].
+substantivo(plural, feminino) --> [cientistas].
+substantivo(singular, feminino) --> [classe].
 substantivo(plural, masculino) --> [computadores].
-substantivo(singular, femenino) --> ['conclusão'].
-substantivo(singular, femenino) --> ['concorrência'].
+substantivo(singular, feminino) --> [ conclusao ].
+substantivo(singular, feminino) --> [ concorrencia ].
 substantivo(singular, masculino) --> [co2].
 substantivo(singular, masculino) --> [cliente].
-substantivo(singular, femenino) --> [cliente].
-substantivo(singular, femenino) --> [comida].
-substantivo(singular, femenino) --> ['competição'].
-substantivo(singular, femenino) --> [compra].
+substantivo(singular, feminino) --> [cliente].
+substantivo(singular, feminino) --> [comida].
+substantivo(singular, feminino) --> [ competicao ].
+substantivo(singular, feminino) --> [compra].
 substantivo(plural, masculino) --> [corpos].
-substantivo(singular, femenino) --> [dor].
-substantivo(plural, femenino) --> [dores].
-substantivo(singular, femenino) --> ['dimensão'].
-substantivo(plural, femenino) --> ['dimensões'].
+substantivo(singular, feminino) --> [dor].
+substantivo(plural, feminino) --> [dores].
+substantivo(singular, feminino) --> [ dimensao ].
+substantivo(plural, feminino) --> [ dimensoes ].
 substantivo(plural, masculino) --> [diretores].
-substantivo(singular, femenino) --> ['discussão'].
-substantivo(singular, femenino) --> [cara].
+substantivo(singular, feminino) --> [ discussao ].
+substantivo(singular, feminino) --> [cara].
 substantivo(singular, masculino) --> [cara].
 substantivo(singular, masculino) --> [conflito].
 substantivo(plural, masculino) --> [conflitos].
-substantivo(plural, femenino) --> [conhecidas].
+substantivo(plural, feminino) --> [conhecidas].
 substantivo(singular, masculino) --> [dado].
-substantivo(singular, femenino) --> ['distância'].
-substantivo(singular, femenino) --> [economia].
-substantivo(singular, femenino) --> ['classificação'].
-substantivo(plural, femenino) --> ['dúvidas'].
-substantivo(singular, femenino) --> [balburdia].
-substantivo(singular, femenino) --> [bamba].
+substantivo(singular, feminino) --> [ distancia ].
+substantivo(singular, feminino) --> [economia].
+substantivo(singular, feminino) --> [ classificacao ].
+substantivo(plural, feminino) --> [ duvidas ].
+substantivo(singular, feminino) --> [balburdia].
+substantivo(singular, feminino) --> [bamba].
 substantivo(singular, masculino) --> [bamba].
-substantivo(plural, femenino) --> [cores].
+substantivo(plural, feminino) --> [cores].
 substantivo(singular, masculino) --> [criador].
-substantivo(singular, femenino) --> [decada].
-substantivo(singular, femenino) --> [data].
+substantivo(singular, feminino) --> [decada].
+substantivo(singular, feminino) --> [data].
 substantivo(singular, masculino) --> [apelo].
-substantivo(singular, femenino) --> [cartwright].
+substantivo(singular, feminino) --> [cartwright].
 substantivo(singular, masculino) --> [bem].
-substantivo(singular, femenino) --> [bisbilhotice].
+substantivo(singular, feminino) --> [bisbilhotice].
 substantivo(singular, masculino) --> [caso].
 substantivo(plural, masculino) --> [casos].
-substantivo(singular, femenino) --> [certeza].
-substantivo(plural, femenino) --> [cilindradas].
+substantivo(singular, feminino) --> [certeza].
+substantivo(plural, feminino) --> [cilindradas].
 substantivo(singular, masculino) --> [comercial].
-substantivo(plural, femenino) --> [empresariais].
-substantivo(plural, femenino) --> [emissoes].
-substantivo(plural, femenino) --> [economistas].
+substantivo(plural, feminino) --> [empresariais].
+substantivo(plural, feminino) --> [emissoes].
+substantivo(plural, feminino) --> [economistas].
 substantivo(plural, masculino) --> [economistas].
 substantivo(singular, masculino) --> [economista].
-substantivo(singular, femenino) --> [economista].
+substantivo(singular, feminino) --> [economista].
 substantivo(singular, masculino) --> [dislexico].
 substantivo(singular, masculino) --> [direito].
 substantivo(plural, masculino) --> [direitos].
-substantivo(singular, femenino) --> [direta].
-substantivo(singular, femenino) --> ['divulgação'].
-substantivo(singular, femenino) --> [coisa].
-substantivo(plural, femenino) --> [coisas].
-substantivo(plural, femenino) --> [companhias].
-substantivo(singular, femenino) --> ['comprovação'].
+substantivo(singular, feminino) --> [direta].
+substantivo(singular, feminino) --> [ divulgacao ].
+substantivo(singular, feminino) --> [coisa].
+substantivo(plural, feminino) --> [coisas].
+substantivo(plural, feminino) --> [companhias].
+substantivo(singular, feminino) --> [ comprovacao ].
 substantivo(singular, masculino) --> [dia].
 substantivo(singular, masculino) --> [cuidado].
 substantivo(singular, masculino) --> [conceito].
-substantivo(singular, femenino) --> ['configuração'].
-substantivo(plural, femenino) --> ['configurações'].
+substantivo(singular, feminino) --> [ configuracao ].
+substantivo(plural, feminino) --> [ configuracoes ].
 substantivo(singular, masculino) --> [counter].
-substantivo(singular, femenino) --> ['determinação'].
+substantivo(singular, feminino) --> [ determinacao ].
 substantivo(singular, masculino) --> [cortex].
 substantivo(plural, masculino) --> [dados].
-substantivo(singular, masculino) --> ['contrário'].
+substantivo(singular, masculino) --> [ contrario ].
 substantivo(singular, masculino) --> [curso].
 substantivo(singular, masculino) --> [custo].
-substantivo(singular, femenino) --> ['descrição'].
+substantivo(singular, feminino) --> [ descricao ].
 substantivo(singular, masculino) --> [davos].
 substantivo(singular, masculino) --> [treino].
 substantivo(plural, masculino) --> [treinos].
 
 
 %VERBO
+
+
+verbo(singular) --> [estudando].
+verbo(singular) --> [matando].
 verbo(singular) --> [estou].
 verbo(plural) --> [estamos].
-verbo(singular) --> ['está'].
+verbo(singular) --> [esta].
 verbo(singular) --> [estava].
 verbo(plural) --> [estavam].
-
+verbo(singular) --> [ e ].
+verbo(singular) --> [ era ].
+verbo(plural) --> [ sao ].
+verbo(singular) --> [vai].
+verbo(singular) --> [haver].
+verbo(singular) --> [houve].
+verbo(singular) --> [ ha ].
 verbo(singular) --> [persegue].
 verbo(plural) --> [perseguem].
 verbo(singular) --> [odeio].
@@ -983,8 +1046,8 @@ verbo(singular) --> [ficar].
 verbo(singular) --> [ficar].
 verbo(plural) --> [ficar].
 verbo(plural) --> [ficar].
-verbo(singular) --> ['ficará'].
-verbo(singular) --> ['ficará'].
+verbo(singular) --> [ ficara ].
+verbo(singular) --> [ ficara ].
 verbo(plural) --> [ficaram].
 verbo(plural) --> [ficaram].
 verbo(plural) --> [ficarem].
@@ -999,18 +1062,18 @@ verbo(plural) --> [fizemos].
 verbo(plural) --> [fizemos].
 verbo(plural) --> [fizeram].
 verbo(plural) --> [fizeram].
-verbo(singular) --> [vou]
+verbo(singular) --> [vou].
 verbo(singular) --> [fui].
 verbo(singular) --> [foi].
 verbo(singular) --> [foi].
-verbo(singular) --> ['for'].
-verbo(singular) --> ['for'].
+verbo(singular) --> [ for ].
+verbo(singular) --> [ for ].
 verbo(singular) --> [fora].
 verbo(singular) --> [fora].
 verbo(plural) --> [foram].
 verbo(plural) --> [foram].
-verbo(singular) --> ['forçasse'].
-verbo(singular) --> ['forçasse'].
+verbo(singular) --> [ forcasse ].
+verbo(singular) --> [ forcasse ].
 verbo(plural) --> [forem].
 verbo(plural) --> [forem].
 verbo(singular) --> [forma].
@@ -1094,10 +1157,10 @@ verbo(singular) --> [guarda].
 verbo(singular) --> [guarda].
 verbo(plural) --> [guiam].
 verbo(plural) --> [guiam].
-verbo(singular) --> ['há'].
-verbo(singular) --> ['há'].
-verbo(plural) --> ['há'].
-verbo(plural) --> ['há'].
+verbo(singular) --> [ ha ].
+verbo(singular) --> [ ha ].
+verbo(plural) --> [ ha ].
+verbo(plural) --> [ ha ].
 verbo(singular) --> [havia].
 verbo(singular) --> [havia].
 verbo(plural) --> [iam].
@@ -1124,8 +1187,8 @@ verbo(singular) --> [impedir].
 verbo(singular) --> [impedir].
 verbo(plural) --> [impedir].
 verbo(plural) --> [impedir].
-verbo(plural) --> ['impõem'].
-verbo(plural) --> ['impõem'].
+verbo(plural) --> [ impoem ].
+verbo(plural) --> [ impoem ].
 verbo(singular) --> [imprensa].
 verbo(singular) --> [imprensa].
 verbo(plural) --> [impulsionam].
@@ -1160,8 +1223,8 @@ verbo(singular) --> [ir].
 verbo(singular) --> [ir].
 verbo(plural) --> [ir].
 verbo(plural) --> [ir].
-verbo(singular) --> ['irá'].
-verbo(singular) --> ['irá'].
+verbo(singular) --> [ ira ].
+verbo(singular) --> [ ira ].
 verbo(plural) --> [iriam].
 verbo(plural) --> [iriam].
 verbo(singular) --> [jogar].
@@ -1169,13 +1232,15 @@ verbo(singular) --> [jogar].
 verbo(plural) --> [jogar].
 verbo(plural) --> [jogar].
 verbo(singular) --> [jogo].
+verbo(singular) --> [estudar].
+verbo(singular) --> [estudo].
 verbo(singular) --> [jogo].
 verbo(plural) --> [juntam].
 verbo(plural) --> [juntam].
-verbo(plural) --> ['lançam'].
-verbo(plural) --> ['lançam'].
-verbo(plural) --> ['lançarão'].
-verbo(plural) --> ['lançarão'].
+verbo(plural) --> [ lancam ].
+verbo(plural) --> [ lancam ].
+verbo(plural) --> [ lancarao ].
+verbo(plural) --> [ lancarao ].
 verbo(singular) --> [lembrar].
 verbo(singular) --> [lembrar].
 verbo(plural) --> [lembrar].
@@ -1298,8 +1363,8 @@ verbo(singular) --> [nadar].
 verbo(singular) --> [nadar].
 verbo(plural) --> [nadar].
 verbo(plural) --> [nadar].
-verbo(singular) --> ['nasça'].
-verbo(singular) --> ['nasça'].
+verbo(singular) --> [ nasca ].
+verbo(singular) --> [ nasca ].
 verbo(singular) --> [nasce].
 verbo(singular) --> [nasce].
 verbo(singular) --> [navega].
@@ -1432,27 +1497,28 @@ verbo(plural) --> [plantar].
 verbo(plural) --> [plantar].
 verbo(singular) --> [pode].
 verbo(singular) --> [pode].
-verbo(singular) --> ['pôde'].
-verbo(singular) --> ['pôde'].
+verbo(singular) --> [ pode ].
+verbo(singular) --> [ pode ].
 verbo(plural) --> [podem].
 verbo(plural) --> [podem].
 verbo(singular) --> [poder].
 verbo(singular) --> [poder].
 verbo(plural) --> [poder].
 verbo(plural) --> [poder].
-verbo(plural) --> ['poderão'].
-verbo(plural) --> ['poderão'].
+verbo(plural) --> [ poderao ].
+verbo(plural) --> [ poderao ].
 verbo(plural) --> [poderemos].
 verbo(plural) --> [poderemos].
 verbo(singular) --> [poderia].
 verbo(singular) --> [poderia].
-verbo(plural) --> ['poderíamos'].
-verbo(plural) --> ['poderíamos'].
+verbo(plural) --> [ poderiamos ].
+verbo(plural) --> [ poderiamos ].
 verbo(singular) --> [poluir].
 verbo(singular) --> [poluir].
 verbo(plural) --> [poluir].
 verbo(plural) --> [poluir].
-verbo(singular) --> [por].
+verbo(singula) --> [ponho].
+verbo(singular) --> [ por ].
 verbo(singular) --> [por].
 verbo(plural) --> [por].
 verbo(plural) --> [por].
@@ -1556,7 +1622,7 @@ verbo(singular) --> [emprego].
 verbo(singular) --> [consumo].
 verbo(singular) --> [consumo].
 verbo(singular) --> [cochilo].
-verbo(singular) --> [cochilo].
+verbo(singular) --> [cochilou].
 verbo(singular) --> [abastecido].
 verbo(singular) --> [abastecido].
 verbo(singular) --> [aumento].
@@ -1647,10 +1713,10 @@ verbo(singular) --> [alternar].
 verbo(singular) --> [alternar].
 verbo(plural) --> [alternar].
 verbo(plural) --> [alternar].
-verbo(singular) --> ['ameaça'].
-verbo(singular) --> ['ameaça'].
-verbo(singular) --> ['ameaças'].
-verbo(singular) --> ['ameaças'].
+verbo(singular) --> [ ameaca ].
+verbo(singular) --> [ ameaca ].
+verbo(singular) --> [ ameacas ].
+verbo(singular) --> [ ameacas ].
 verbo(singular) --> [ameacava].
 verbo(singular) --> [ameacava].
 verbo(singular) --> [amputei].
@@ -1705,8 +1771,8 @@ verbo(plural) --> [aproveitam].
 verbo(plural) --> [aproveitam].
 verbo(singular) --> [argumentar].
 verbo(singular) --> [argumentar].
-verbo(singular) --> ['arregaçar'].
-verbo(singular) --> ['arregaçar'].
+verbo(singular) --> [ arregacar ].
+verbo(singular) --> [ arregacar ].
 verbo(singular) --> [provar].
 verbo(singular) --> [provar].
 verbo(plural) --> [provar].
@@ -1744,8 +1810,8 @@ verbo(singular) --> [alcance].
 verbo(singular) --> [alcance].
 verbo(singular) --> [baixado].
 verbo(singular) --> [baixado].
-verbo(singular) --> ['balança'].
-verbo(singular) --> ['balança'].
+verbo(singular) --> [ balanca ].
+verbo(singular) --> [ balanca ].
 verbo(plural) --> [careciam].
 verbo(plural) --> [careciam].
 verbo(plural) --> [careciam].
@@ -1757,20 +1823,20 @@ verbo(plural) --> [chegam].
 verbo(plural) --> [chegam].
 verbo(singular) --> [chegou].
 verbo(singular) --> [chegou].
-verbo(singular) --> ['começa'].
-verbo(singular) --> ['começa'].
-verbo(plural) --> ['começam'].
-verbo(plural) --> ['comecam'].
-verbo(singular) --> ['começar'].
-verbo(singular) --> ['começar'].
-verbo(plural) --> ['começarem'].
-verbo(plural) --> ['começarem'].
+verbo(singular) --> [ comeca ].
+verbo(singular) --> [ comeca ].
+verbo(plural) --> [ comecam ].
+verbo(plural) --> [ comecam ].
+verbo(singular) --> [ comecar ].
+verbo(singular) --> [ comecar ].
+verbo(plural) --> [ comecarem ].
+verbo(plural) --> [ comecarem ].
 verbo(singular) --> [comece].
 verbo(singular) --> [comece].
-verbo(singular) --> ['começo'].
-verbo(singular) --> ['começo'].
-verbo(singular) --> ['começou'].
-verbo(singular) --> ['começou'].
+verbo(singular) --> [ comeco ].
+verbo(singular) --> [ comeco ].
+verbo(singular) --> [ comecou ].
+verbo(singular) --> [ comecou ].
 verbo(singular) --> [comer].
 verbo(singular) --> [comer].
 verbo(singular) --> [coloca].
@@ -1803,15 +1869,15 @@ verbo(plural) --> [buscam].
 verbo(plural) --> [buscam].
 verbo(singular) --> [bancar].
 verbo(singular) --> [bancar].
-verbo(singular) --> ['aumentá_lo'].
+verbo(singular) --> [ aumenta_lo ].
 verbo(singular) --> [batia].
 verbo(singular) --> [batia].
 verbo(singular) --> [cobrar].
 verbo(singular) --> [cobrar].
 verbo(plural) --> [cancelaram].
 verbo(plural) --> [cancelaram].
-verbo(singular) --> ['caído'].
-verbo(singular) --> ['caído'].
+verbo(singular) --> [ caido ].
+verbo(singular) --> [ caido ].
 verbo(singular) --> [cair].
 verbo(singular) --> [cair].
 verbo(plural) --> [cair].
@@ -1856,8 +1922,8 @@ verbo(plural) --> [conseguir].
 verbo(plural) --> [conseguir].
 verbo(plural) --> [conseguiram].
 verbo(plural) --> [conseguiram].
-verbo(plural) --> ['conseguirão'].
-verbo(plural) --> ['conseguirão'].
+verbo(plural) --> [ conseguirao ].
+verbo(plural) --> [ conseguirao ].
 verbo(singular) --> [comportar].
 verbo(singular) --> [comportar].
 verbo(singular) --> [comprometeu].
@@ -1994,7 +2060,7 @@ verbo(singular) --> [desenhar].
 verbo(singular) --> [desenhar].
 verbo(plural) --> [desenhar].
 verbo(plural) --> [desenhar].
-verbo(singular) --> ['desenvolvê_las'].
+verbo(singular) --> [ desenvolve_las ].
 verbo(singular) --> [desenvolver].
 verbo(singular) --> [desenvolver].
 verbo(plural) --> [desenvolver].
@@ -2132,7 +2198,7 @@ verbo(singular) --> [da].
 verbo(singular) --> [dao].
 verbo(singular) --> [dar].
 verbo(singular) --> [dava].
-verbo(singular) --> ['dê'].
+verbo(singular) --> [ de ].
 verbo(singular) --> [dormidos].
 verbo(singular) --> [depos].
 verbo(singular) --> [apelo].
@@ -2143,7 +2209,15 @@ verbo(plural) --> [cunham].
 verbo(singular) --> [conturbado].
 verbo(singular) --> [dando].
 
+
 %ADJETIVO
+
+
+adjetivo(singular, masculino) --> [depressivo].
+adjetivo(singular, masculino) --> [depressiva].
+adjetivo(singular, _masculino) --> [bem]. 
+adjetivo(singular, masculino) --> [deprimido].
+adjetivo(singular, feminino) --> [deprimida].
 adjetivo(singular, masculino) --> [fiel].
 adjetivo(singular, feminino) --> [fiel].
 adjetivo(singular, masculino) --> [forense].
@@ -2156,13 +2230,13 @@ adjetivo(singular, masculino) --> [futuro].
 adjetivo(singular, masculino) --> [ganho].
 adjetivo(singular, masculino) --> [gasto].
 adjetivo(plural, masculino) --> [gastos].
-adjetivo(plural, masculino) --> ['gêmeos'].
+adjetivo(plural, masculino) --> [ gemeos ].
 adjetivo(singular, feminino) --> [generalizada].
-adjetivo(plural, feminino) --> ['genéricas'].
+adjetivo(plural, feminino) --> [ genericas ].
 adjetivo(singular, feminino) --> [gerada].
 adjetivo(singular, masculino) --> [geral].
 adjetivo(singular, feminino) --> [geral].
-adjetivo(singular, masculino) --> ['gerentão'].
+adjetivo(singular, masculino) --> [ gerentao ].
 adjetivo(plural, masculino) --> [gigantes].
 adjetivo(plural, feminino) --> [gigantes].
 adjetivo(singular, masculino) --> [global].
@@ -2177,9 +2251,9 @@ adjetivo(singular, feminino) --> [gratuita].
 adjetivo(singular, feminino) --> [gravada].
 adjetivo(plural, masculino) --> [habitantes].
 adjetivo(plural, feminino) --> [habitantes].
-adjetivo(plural, feminino) --> ['hipotéticas'].
-adjetivo(singular, feminino) --> ['histórica'].
-adjetivo(plural, masculino) --> ['históricos'].
+adjetivo(plural, feminino) --> [ hipoteticas ].
+adjetivo(singular, feminino) --> [ historica ].
+adjetivo(plural, masculino) --> [ historicos ].
 adjetivo(singular, feminino) --> [humana].
 adjetivo(singular, masculino) --> [ideal].
 adjetivo(singular, feminino) --> [ideal].
@@ -2187,25 +2261,25 @@ adjetivo(plural, masculino) --> [identificados].
 adjetivo(singular, masculino) --> [igual].
 adjetivo(singular, feminino) --> [igual].
 adjetivo(singular, masculino) --> [impichado].
-adjetivo(singular, masculino) --> ['impirateável'].
-adjetivo(singular, feminino) --> ['impirateável'].
+adjetivo(singular, masculino) --> [ impirateavel ].
+adjetivo(singular, feminino) --> [ impirateavel ].
 adjetivo(singular, masculino) --> [importante].
 adjetivo(singular, feminino) --> [importante].
 adjetivo(plural, masculino) --> [impostos].
 adjetivo(singular, masculino) --> [imprevisto].
 adjetivo(plural, masculino) --> [imprevistos].
-adjetivo(singular, masculino) --> ['imunológico'].
+adjetivo(singular, masculino) --> [ imunologico ].
 adjetivo(singular, masculino) --> [inconsciente].
 adjetivo(singular, feminino) --> [inconsciente].
 adjetivo(singular, masculino) --> [inconveniente].
 adjetivo(singular, feminino) --> [inconveniente].
-adjetivo(plural, masculino) --> ['indivíduos'].
+adjetivo(plural, masculino) --> [ individuos ].
 adjetivo(singular, masculino) --> [inesperado].
 adjetivo(plural, masculino) --> [infantis].
 adjetivo(plural, feminino) --> [infantis].
 adjetivo(singular, masculino) --> [infeliz].
 adjetivo(singular, feminino) --> [infeliz].
-adjetivo(singular, masculino) --> ['inglês'].
+adjetivo(singular, masculino) --> [ ingles ].
 adjetivo(plural, masculino) --> [iniciais].
 adjetivo(plural, feminino) --> [iniciais].
 adjetivo(plural, masculino) --> [iniciantes].
@@ -2223,27 +2297,27 @@ adjetivo(plural, masculino) --> [internacionais].
 adjetivo(plural, feminino) --> [internacionais].
 adjetivo(singular, masculino) --> [internacional].
 adjetivo(singular, feminino) --> [internacional].
-adjetivo(plural, feminino) --> ['íntimas'].
+adjetivo(plural, feminino) --> [ intimas ].
 adjetivo(singular, masculino) --> [introduzido].
 adjetivo(singular, masculino) --> [inverso].
 adjetivo(plural, masculino) --> [investigadores].
-adjetivo(singular, masculino) --> ['inviável'].
-adjetivo(singular, feminino) --> ['inviável'].
-adjetivo(singular, masculino) --> ['irmão'].
-adjetivo(plural, masculino) --> ['irreversíveis'].
-adjetivo(plural, feminino) --> ['irreversíveis'].
-adjetivo(singular, masculino) --> ['irritável'].
-adjetivo(singular, feminino) --> ['irritável'].
+adjetivo(singular, masculino) --> [ inviavel ].
+adjetivo(singular, feminino) --> [ inviavel ].
+adjetivo(singular, masculino) --> [ irmao ].
+adjetivo(plural, masculino) --> [ irreversiveis ].
+adjetivo(plural, feminino) --> [ irreversiveis ].
+adjetivo(singular, masculino) --> [ irritavel ].
+adjetivo(singular, feminino) --> [ irritavel ].
 adjetivo(plural, masculino) --> [jogadores].
 adjetivo(plural, masculino) --> [jovens].
 adjetivo(plural, feminino) --> [jovens].
-adjetivo(singular, masculino) --> ['ladrão'].
+adjetivo(singular, masculino) --> [ ladrao ].
 adjetivo(singular, masculino) --> [legal].
 adjetivo(singular, feminino) --> [legal].
-adjetivo(singular, masculino) --> ['límbico'].
+adjetivo(singular, masculino) --> [ limbico ].
 adjetivo(plural, masculino) --> [limpos].
 adjetivo(singular, masculino) --> [lindo].
-adjetivo(singular, masculino) --> ['líquido'].
+adjetivo(singular, masculino) --> [ liquido ].
 adjetivo(singular, masculino) --> [livre].
 adjetivo(singular, feminino) --> [livre].
 adjetivo(plural, masculino) --> [livres].
@@ -2253,18 +2327,18 @@ adjetivo(plural, feminino) --> [locais].
 adjetivo(singular, masculino) --> [longo].
 adjetivo(plural, feminino) --> [loucas].
 adjetivo(singular, masculino) --> [louco].
-adjetivo(singular, masculino) --> ['mágico'].
+adjetivo(singular, masculino) --> [ magico ].
 adjetivo(singular, masculino) --> [magrinho].
 adjetivo(plural, masculino) --> [magros].
 adjetivo(singular, masculino) --> [maior].
 adjetivo(singular, feminino) --> [maior].
 adjetivo(plural, masculino) --> [maiores].
 adjetivo(plural, feminino) --> [maiores].
-adjetivo(plural, masculino) --> ['maníacos'].
+adjetivo(plural, masculino) --> [ maniacos ].
 adjetivo(singular, masculino) --> [marmanjo].
-adjetivo(singular, feminino) --> ['médica'].
-adjetivo(singular, masculino) --> ['médico'].
-adjetivo(plural, masculino) --> ['médicos'].
+adjetivo(singular, feminino) --> [ medica ].
+adjetivo(singular, masculino) --> [ medico ].
+adjetivo(plural, masculino) --> [ medicos ].
 adjetivo(singular, masculino) --> [meio].
 adjetivo(singular, masculino) --> [melhor].
 adjetivo(singular, feminino) --> [melhor].
@@ -2324,28 +2398,26 @@ adjetivo(plural, feminino) --> [novatas].
 adjetivo(singular, masculino) --> [novato].
 adjetivo(singular, masculino) --> [novo].
 adjetivo(plural, masculino) --> [novos].
-adjetivo(singular, masculino) --> ['óbvio'].
+adjetivo(singular, masculino) --> [ obvio ].
 adjetivo(singular, masculino) --> [ocidental].
 adjetivo(singular, feminino) --> [ocidental].
 adjetivo(singular, masculino) --> [ocupado].
 adjetivo(singular, masculino) --> [oficializado].
-adjetivo(singular, feminino) --> ['onírica'].
-adjetivo(singular, masculino) --> ['onírico'].
+adjetivo(singular, feminino) --> [ onirica ].
+adjetivo(singular, masculino) --> [ onirico ].
 adjetivo(singular, masculino) --> [oposto].
 adjetivo(singular, masculino) --> [organizado].
-adjetivo(singular, feminino) --> ['ótima'].
-adjetivo(singular, masculino) --> ['ótimo'].
+adjetivo(singular, feminino) --> [ otima ].
+adjetivo(singular, masculino) --> [ otimo ].
 adjetivo(plural, feminino) --> [ousadas].
 adjetivo(singular, masculino) --> [ouvido].
 adjetivo(singular, masculino) --> [paciente].
 adjetivo(singular, feminino) --> [paciente].
 adjetivo(plural, masculino) --> [pacientes].
 adjetivo(plural, feminino) --> [pacientes].
-adjetivo(singular, masculino) --> ['padrão'].
-adjetivo(singular, feminino) --> ['padrão'].
+adjetivo(singular, masculino) --> [ padrao ].
+adjetivo(singular, feminino) --> [ padrao ].
 adjetivo(plural, masculino) --> [pagos].
-adjetivo(singular, masculino) --> [pai].
-adjetivo(plural, masculino) --> [pais].
 adjetivo(singular, masculino) --> [par].
 adjetivo(singular, feminino) --> [par].
 adjetivo(singular, masculino) --> [paradoxal].
@@ -2360,7 +2432,7 @@ adjetivo(plural, feminino) --> [passistas].
 adjetivo(singular, masculino) --> [pensado].
 adjetivo(plural, feminino) --> [pequenas].
 adjetivo(plural, masculino) --> [pequenos].
-adjetivo(singular, masculino) --> ['periférico'].
+adjetivo(singular, masculino) --> [ periferico ].
 adjetivo(singular, masculino) --> [perito].
 adjetivo(plural, masculino) --> [peritos].
 adjetivo(singular, feminino) --> [pesquisada].
@@ -2371,7 +2443,7 @@ adjetivo(plural, feminino) --> [pessoais].
 adjetivo(singular, masculino) --> [pessoal].
 adjetivo(singular, feminino) --> [pessoal].
 adjetivo(plural, feminino) --> [petroleiras].
-adjetivo(singular, feminino) --> ['petrolífera'].
+adjetivo(singular, feminino) --> [ petrolifera ].
 adjetivo(singular, masculino) --> [pioneiro].
 adjetivo(singular, masculino) --> [pior].
 adjetivo(singular, feminino) --> [pior].
@@ -2379,8 +2451,8 @@ adjetivo(plural, masculino) --> [pobres].
 adjetivo(plural, feminino) --> [pobres].
 adjetivo(singular, feminino) --> [poderosa].
 adjetivo(plural, masculino) --> [poderosos].
-adjetivo(singular, feminino) --> ['poética'].
-adjetivo(plural, masculino) --> ['políticos'].
+adjetivo(singular, feminino) --> [ poetica ].
+adjetivo(plural, masculino) --> [ politicos ].
 adjetivo(singular, masculino) --> [poluente].
 adjetivo(singular, feminino) --> [poluente].
 adjetivo(plural, masculino) --> [poluentes].
@@ -2402,7 +2474,7 @@ adjetivo(singular, masculino) --> [previsto].
 adjetivo(singular, masculino) --> [primeiro].
 adjetivo(singular, masculino) --> [principal].
 adjetivo(singular, feminino) --> [principal].
-adjetivo(singular, masculino) --> ['problemático'].
+adjetivo(singular, masculino) --> [ problematico ].
 adjetivo(singular, feminino) --> [procurada].
 adjetivo(singular, feminino) --> [profunda].
 adjetivo(plural, feminino) --> [profundas].
@@ -2417,143 +2489,143 @@ adjetivo(singular, feminino) --> [prontinha].
 adjetivo(plural, masculino) --> [prontos].
 adjetivo(singular, feminino) --> [proposta].
 adjetivo(plural, feminino) --> [propostas].
-adjetivo(singular, feminino) --> ['própria'].
-adjetivo(plural, masculino) --> ['próprios'].
+adjetivo(singular, feminino) --> [ propria ].
+adjetivo(plural, masculino) --> [ proprios ].
 adjetivo(singular, feminino) --> [protegida].
 adjetivo(singular, masculino) --> [protestado].
-adjetivo(singular, masculino) --> ['provável'].
-adjetivo(singular, feminino) --> ['provável'].
-adjetivo(singular, feminino) --> ['próxima'].
-adjetivo(singular, masculino) --> ['próximo'].
-adjetivo(plural, masculino) --> ['próximos'].
-adjetivo(singular, feminino) --> ['psicóloga'].
+adjetivo(singular, masculino) --> [ provavel ].
+adjetivo(singular, feminino) --> [ provavel ].
+adjetivo(singular, feminino) --> [ proxima ].
+adjetivo(singular, masculino) --> [ proximo ].
+adjetivo(plural, masculino) --> [ proximos ].
+adjetivo(singular, feminino) --> [ psicologa ].
 adjetivo(singular, masculino) --> [psiquiatra].
 adjetivo(singular, feminino) --> [psiquiatra].
-adjetivo(singular, feminino) --> ['pública'].
-adjetivo(singular, masculino) --> ['público'].
-adjetivo(plural, masculino) --> ['públicos'].
+adjetivo(singular, feminino) --> [ publica ].
+adjetivo(singular, masculino) --> [ publico ].
+adjetivo(plural, masculino) --> [ publicos ].
 adjetivo(singular, feminino) --> [pura].
 adjetivo(singular, masculino) --> [certo].
 adjetivo(plural, masculino) --> [direitos].
-adjetivo(singular, femenino) --> [direta].
+adjetivo(singular, feminino) --> [direta].
 adjetivo(singular, masculino) --> [direto].
-adjetivo(plural, femenino) --> [alertas].
+adjetivo(plural, feminino) --> [alertas].
 adjetivo(plural, masculino) --> [abrangentes].
-adjetivo(plural, femenino) --> [abrangentes].
-adjetivo(singular, femenino)--> [aberta].
+adjetivo(plural, feminino) --> [abrangentes].
+adjetivo(singular, feminino)--> [aberta].
 adjetivo(singular, masculino) --> [criado].
 adjetivo(singular, masculino)--> [aberto].
-adjetivo(plural, femenino)--> [aceleradas].
+adjetivo(plural, feminino)--> [aceleradas].
 adjetivo(singular, masculino) --> [direito].
 adjetivo(singular, masculino)--> [artistico].
 adjetivo(plural, masculino)--> [magros].
-adjetivo(plural, masculino)--> ['acessíveis'].
+adjetivo(plural, masculino)--> [ acessiveis ].
 adjetivo(singular, masculino)--> [adiposo].
-adjetivo(singular, femenino)--> [alta].
+adjetivo(singular, feminino)--> [alta].
 adjetivo(singular, masculino)--> [alto].
 adjetivo(plural, masculino)--> [altos].
-adjetivo(singular, femenino)--> ['atômica'].
-adjetivo(singular, femenino)--> [ambiental].
-adjetivo(singular, femenino)--> [assustadora].
-adjetivo(plural, masculino)--> ['astronômicos'].
-adjetivo(singular, femenino)--> [baixa].
-adjetivo(singular, femenino)--> [bacana].
+adjetivo(singular, feminino)--> [ atomica ].
+adjetivo(singular, feminino)--> [ambiental].
+adjetivo(singular, feminino)--> [assustadora].
+adjetivo(plural, masculino)--> [ astronomicos ].
+adjetivo(singular, feminino)--> [baixa].
+adjetivo(singular, feminino)--> [bacana].
 adjetivo(plural, masculino)--> [autorais].
-adjetivo(singular, femenino)--> [autoconfianca].
-adjetivo(singular, femenino)--> [autoestima].
+adjetivo(singular, feminino)--> [autoconfianca].
+adjetivo(singular, feminino)--> [autoestima].
 adjetivo(singular, masculino)--> [automatico].
-adjetivo(singular, femenino) --> [baseadas].
+adjetivo(singular, feminino) --> [baseadas].
 adjetivo(singular, masculino)--> [bonitinho].
 adjetivo(singular, masculino)--> [bonito].
 adjetivo(plural, masculino)--> [bonitos].
-adjetivo(plural, femenino)--> [borradas].
-adjetivo(singular, femenino) --> [certas].
-adjetivo(singular, femenino)--> [branca].
-adjetivo(singular, femenino)--> ['eficiência'].
-adjetivo(singular, femenino)--> [bloqueada].
-adjetivo(singular, femenino)--> ['difícil'].
-adjetivo(singular, masculino)--> ['difícil'].
+adjetivo(plural, feminino)--> [borradas].
+adjetivo(singular, feminino) --> [certas].
+adjetivo(singular, feminino)--> [branca].
+adjetivo(singular, feminino)--> [ eficiencia ].
+adjetivo(singular, feminino)--> [bloqueada].
+adjetivo(singular, feminino)--> [ dificil ].
+adjetivo(singular, masculino)--> [ dificil ].
 adjetivo(singular, masculino)--> [dilacerado].
 adjetivo(singular, masculino) --> [direto].
-adjetivo(singular, femenino)--> [antiga].
-adjetivo(plural, femenino)--> [antigas].
+adjetivo(singular, feminino)--> [antiga].
+adjetivo(plural, feminino)--> [antigas].
 adjetivo(singular, masculino)--> [antigo].
 adjetivo(singular, masculino)--> [belo].
-adjetivo(singular, femenino)--> [cinzenta].
-adjetivo(plural, femenino) --> [coletadas].
-adjetivo(singular, femenino)--> [desligada].
-adjetivo(singular, femenino)--> [desgovernada].
+adjetivo(singular, feminino)--> [cinzenta].
+adjetivo(plural, feminino) --> [coletadas].
+adjetivo(singular, feminino)--> [desligada].
+adjetivo(singular, feminino)--> [desgovernada].
 adjetivo(plural, masculino)--> [dilapidados].
-adjetivo(plural, femenino)--> [disingular, femeninoarcadas].
-adjetivo(plural, masculino)--> [disingular, femeninoarcados].
-adjetivo(singular, femenino)--> [boa].
+adjetivo(plural, feminino)--> [disingular, femininoarcadas].
+adjetivo(plural, masculino)--> [disingular, femininoarcados].
+adjetivo(singular, feminino)--> [boa].
 adjetivo(singular, masculino)--> [bom].
-adjetivo(singular, femenino)--> [cara].
-adjetivo(singular, femenino)--> ['cinematográfica'].
+adjetivo(singular, feminino)--> [cara].
+adjetivo(singular, feminino)--> [ cinematografica ].
 adjetivo(singular, masculino)--> [claro].
-adjetivo(singular, femenino)--> [complexa].
-adjetivo(plural, femenino)--> [coloridas].
-adjetivo(plural, femenino)--> [coloridos].
-adjetivo(singular, femenino)--> [concentrada].
-adjetivo(singular, femenino)--> [codificada].
-adjetivo(singular, femenino)--> [diesel].
+adjetivo(singular, feminino)--> [complexa].
+adjetivo(plural, feminino)--> [coloridas].
+adjetivo(plural, feminino)--> [coloridos].
+adjetivo(singular, feminino)--> [concentrada].
+adjetivo(singular, feminino)--> [codificada].
+adjetivo(singular, feminino)--> [diesel].
 adjetivo(singular, masculino)--> [diesel].
-adjetivo(singular, femenino)--> [alheia].
+adjetivo(singular, feminino)--> [alheia].
 adjetivo(singular, masculino)--> [anterior].
-adjetivo(plural, femenino)--> ['ávidas'].
-adjetivo(plural, femenino)--> [banais].
+adjetivo(plural, feminino)--> [ avidas ].
+adjetivo(plural, feminino)--> [banais].
 adjetivo(plural, masculino)--> [banais].
-adjetivo(plural, femenino)--> [baseadas].
-adjetivo(plural, femenino)--> ['básicas'].
-adjetivo(singular, masculino)--> ['básico'].
+adjetivo(plural, feminino)--> [baseadas].
+adjetivo(plural, feminino)--> [ basicas ].
+adjetivo(singular, masculino)--> [ basico ].
 adjetivo(singular, masculino)--> [capaz].
-adjetivo(singular, masculino)--> ['célebre'].
-adjetivo(plural, femenino)--> ['célebres'].
+adjetivo(singular, masculino)--> [ celebre ].
+adjetivo(plural, feminino)--> [ celebres ].
 adjetivo(singular, masculino)--> [certo].
-adjetivo(plural, femenino)--> [cheios].
-adjetivo(singular, femenino)--> [civil].
+adjetivo(plural, feminino)--> [cheios].
+adjetivo(singular, feminino)--> [civil].
 adjetivo(singular, masculino)--> [civil].
-adjetivo(singular, femenino)--> ['climática'].
-adjetivo(singular, femenino)--> [comercial].
+adjetivo(singular, feminino)--> [ climatica ].
+adjetivo(singular, feminino)--> [comercial].
 adjetivo(singular, masculino)--> [comercial].
-adjetivo(singular, femenino)--> [emocional].
+adjetivo(singular, feminino)--> [emocional].
 adjetivo(singular, masculino)--> [emocional].
-adjetivo(singular, femenino)--> ['econômica'].
-adjetivo(singular, masculino)--> ['econômico'].
-adjetivo(plural, masculino)--> ['econômicos'].
+adjetivo(singular, feminino)--> [ economica ].
+adjetivo(singular, masculino)--> [ economico ].
+adjetivo(plural, masculino)--> [ economicos ].
 adjetivo(singular, masculino)--> [direito].
 adjetivo(plural, masculino)--> [direitos].
-adjetivo(singular, femenino)--> [direta].
+adjetivo(singular, feminino)--> [direta].
 adjetivo(singular, masculino)--> [direto].
-adjetivo(singular, femenino)--> [diferente].
+adjetivo(singular, feminino)--> [diferente].
 adjetivo(singular, masculino)--> [diferente].
-adjetivo(plural, femenino)--> [diferentes].
+adjetivo(plural, feminino)--> [diferentes].
 adjetivo(plural, masculino)--> [diferentes].
-adjetivo(singular, femenino)--> ['compreensível'].
-adjetivo(singular, masculino)--> ['compreensível'].
-adjetivo(singular, femenino)--> ['comparável'].
-adjetivo(singular, masculino)--> ['comparável'].
+adjetivo(singular, feminino)--> [ compreensivel ].
+adjetivo(singular, masculino)--> [ compreensivel ].
+adjetivo(singular, feminino)--> [ comparavel ].
+adjetivo(singular, masculino)--> [ comparavel ].
 adjetivo(singular, masculino)--> [cuidado].
-adjetivo(singular, femenino)--> [comum].
+adjetivo(singular, feminino)--> [comum].
 adjetivo(singular, masculino)--> [comum].
-adjetivo(singular, femenino)--> [corporal].
+adjetivo(singular, feminino)--> [corporal].
 adjetivo(singular, masculino)--> [corporal].
-adjetivo(plural, femenino)--> [concretas].
+adjetivo(plural, feminino)--> [concretas].
 adjetivo(plural, masculino)--> [conectados].
 adjetivo(singular, masculino)--> [ecochato].
 adjetivo(plural, masculino)--> [determinados].
 adjetivo(singular, masculino)--> [defasado].
-adjetivo(singular, femenino)--> [defasada].
+adjetivo(singular, feminino)--> [defasada].
 adjetivo(singular, masculino)--> [conturbado].
-adjetivo(singular, femenino)--> ['ável'].
-adjetivo(singular, masculino)--> ['ável'].
-adjetivo(singular, femenino)--> [descrita].
-adjetivo(plural, femenino)--> [definidas].
+adjetivo(singular, feminino)--> [ avel ].
+adjetivo(singular, masculino)--> [ avel ].
+adjetivo(singular, feminino)--> [descrita].
+adjetivo(plural, feminino)--> [definidas].
 adjetivo(singular, masculino)--> [definido].
-adjetivo(singular, femenino)--> [definitiva].
+adjetivo(singular, feminino)--> [definitiva].
 adjetivo(singular, masculino)--> [definitiva].
-adjetivo(singular, masculino)--> ['contrário'].
-adjetivo(plural, femenino)--> [corretas].
+adjetivo(singular, masculino)--> [ contrario ].
+adjetivo(plural, feminino)--> [corretas].
 adjetivo(singular, masculino)--> [curto].
 adjetivo(plural, masculino)--> [despertos].
 %NUMERAL
@@ -2602,24 +2674,17 @@ numeral(singular) --> [2009].
 numeral(singular) --> [2010].
 numeral(singular) --> [2011].
 numeral(singular) --> [2014].
-numeral(singular) --> ['12%'].
-numeral(singular) --> ['20%'].
-numeral(singular) --> ['29%'].
-numeral(singular) --> ['2º'].
-numeral(singular) --> ['3%'].
-numeral(singular) --> ['36%'].
-numeral(singular) --> ['3ª'].
-numeral(singular) --> ['3d'].
-numeral(singular) --> ['4x4'].
-numeral(singular) --> ['5%'].
-numeral(singular) --> ['70%'].
-numeral(singular) --> ['88%'].
-numeral(singular) --> ['bilhão'].
-numeral(singular) --> ['mil'].
-numeral(singular) --> ['meio'].
-numeral(plural,femenino) --> ['duas'].
-numeral(plural,masculino) --> ['dois'].
-numeral(plural,masculino) --> ['milhões'].
+numeral(singular) --> [2015].
+numeral(singular) --> [2016].
+numeral(singular) --> [2017].
+numeral(singular) --> [2018].
+numeral(singular) --> [2019].
+numeral(singular) --> [ bilhao ].
+numeral(singular) --> [ mil ].
+numeral(singular) --> [ meio ].
+numeral(plural,feminino) --> [ duas ].
+numeral(plural,masculino) --> [ dois ].
+numeral(plural,masculino) --> [ milhoes ].
 
 %%
 %
@@ -2630,14 +2695,13 @@ numeral(plural,masculino) --> ['milhões'].
 adverbio(singular) --> [frequentemente].
 adverbio(singular) --> [inclusive].
 adverbio(singular) --> [independentemente].
-adverbio(singular) --> ['já'].
+adverbio(singular) --> [ ja ].
 adverbio(singular) --> [justamente].
-adverbio(singular) --> ['lá'].
+adverbio(singular) --> [ la ].
 adverbio(singular) --> [legal].
 adverbio(singular) --> [ligeiramente].
 adverbio(singular) --> [logo].
 adverbio(singular) --> [mais].
-adverbio(singular) --> [mal].
 adverbio(singular) --> [mas].
 adverbio(singular) --> [melhor].
 adverbio(singular) --> [menos].
@@ -2646,7 +2710,7 @@ adverbio(singular) --> [muita].
 adverbio(plural) --> [muitas].
 adverbio(singular) --> [muito].
 adverbio(singular) --> [nada].
-adverbio(singular) --> ['não'].
+adverbio(singular) --> [ nao ].
 adverbio(singular) --> [nem].
 adverbio(singular) --> [nunca].
 adverbio(singular) --> [obviamente].
@@ -2664,28 +2728,28 @@ adverbio(singular) --> [provavelmente].
 adverbio(singular) --> [quando].
 adverbio(plural) --> [quantas].
 adverbio(singular) --> [quanto].
-adverbio(singular) --> ['quão'].
+adverbio(singular) --> [ quao ].
 adverbio(singular) --> [apesar].
 adverbio(singular) --> [acima].
 adverbio(singular) --> [automaticamente].
-adverbio(singular) --> ['aí'].
+adverbio(singular) --> [ ai ].
 adverbio(singular) --> [aleatoriamente].
-adverbio(singular) --> ['alí'].
+adverbio(singular) --> [ ali ].
 adverbio(singular) --> [anatomicamente].
 adverbio(singular) --> [bastante].
 adverbio(singular) --> [agora].
 adverbio(singular) --> [ainda].
-adverbio(singular) --> ['aquí'].
+adverbio(singular) --> [ aqui ].
 adverbio(singular) --> [apenas].
-adverbio(singular) --> ['atrás'].
+adverbio(singular) --> [ atras ].
 adverbio(singular) --> [ecologicamente].
 adverbio(plural) --> [ecologicamente].
 adverbio(singular) --> [cima].
 adverbio(singular) --> [diariamente].
 adverbio(singular) --> [embaixo].
 adverbio(singular) --> [cedo].
-adverbio(singular) --> ['cá'].
-adverbio(singular) --> ['além'].
+adverbio(singular) --> [ ca ].
+adverbio(singular) --> [ alem ].
 adverbio(singular) --> [antes].
 adverbio(singular) --> [bem].
 adverbio(singular) --> [depois].
@@ -2704,11 +2768,11 @@ preposicao(singular) --> [no].
 preposicao(plural) --> [nas].
 preposicao(singular) --> [a].
 preposicao(singular) --> [assim].
-preposicao(singular) --> ['após'].
+preposicao(singular) --> [ apos ].
 preposicao(singular) --> [ao].
 preposicao(plural) --> [aos].
 preposicao(singular) --> [em].
-preposicao(singular) --> ['até'].
+preposicao(singular) --> [ ate ].
 preposicao(singular) --> [do].
 preposicao(plural) --> [dos].
 preposicao(singular) --> [com].
@@ -2734,14 +2798,14 @@ preposicao(singular) --> [daqui].
 
 %CONJUNCAO
 
-conjuncao --> ['já'].
+conjuncao --> [ ja ].
 conjuncao --> [logo].
 conjuncao --> [mais].
 conjuncao --> [mal].
 conjuncao --> [mas].
 conjuncao --> [nem].
 conjuncao --> [ou].
-conjuncao --> ['porém'].
+conjuncao --> [ porem ].
 conjuncao --> [porque].
 conjuncao --> [quais].
 conjuncao --> [qual].
@@ -2753,35 +2817,188 @@ conjuncao --> [e].
 %INTERJEICAO
 
 interjeicao(singular) --> [ok].
-interjeicao(singular, femenino) --> ['ótima'].
-interjeicao(singular, masculino) --> ['ótimo'].
+interjeicao(singular, feminino) --> [ otima ].
+interjeicao(singular, masculino) --> [ otimo ].
 interjeicao(singular, masculino) -->[afinal].
-interjeicao(singular, femenino) -->[afinal].
+interjeicao(singular, feminino) -->[afinal].
 interjeicao(plural, masculino) -->[afinal].
-interjeicao(plural, femenino) -->[afinal].
-interjeicao(singular, masculino) -->['alelúia'].
-interjeicao(singular, femenino) -->['alelúia'].
-interjeicao(plural, masculino) -->['alelúia'].
-interjeicao(plural, femenino) -->['alelúia'].
-interjeicao(singular, masculino) -->['atenção'].
-interjeicao(singular, femenino) -->['atenção'].
-interjeicao(plural, masculino) -->['atenção'].
-interjeicao(plural, femenino) -->['atenção'].
-interjeicao(singular, masculino) -->['blablablá'].
-interjeicao(singular, femenino) -->['blablablá'].
-interjeicao(plural, masculino) -->['blablablá'].
-interjeicao(plural, femenino) -->['blablablá'].
-interjeicao(singular, masculino) -->['dúvidas'].
-interjeicao(singular, femenino) -->['dúvidas'].
-interjeicao(plural, masculino) -->['dúvidas'].
-interjeicao(plural, femenino) -->['dúvidas'].
+interjeicao(plural, feminino) -->[afinal].
+interjeicao(singular, masculino) -->[ aleluia ].
+interjeicao(singular, feminino) -->[ aleluia ].
+interjeicao(plural, masculino) -->[ aleluia ].
+interjeicao(plural, feminino) -->[ aleluia ].
+interjeicao(singular, masculino) -->[ atencao ].
+interjeicao(singular, feminino) -->[ atencao ].
+interjeicao(plural, masculino) -->[ atencao ].
+interjeicao(plural, feminino) -->[ atencao ].
+interjeicao(singular, masculino) -->[ blablabla ].
+interjeicao(singular, feminino) -->[ blablabla ].
+interjeicao(plural, masculino) -->[ blablabla ].
+interjeicao(plural, feminino) -->[ blablabla ].
+interjeicao(singular, masculino) -->[ duvidas ].
+interjeicao(singular, feminino) -->[ duvidas ].
+interjeicao(plural, masculino) -->[ duvidas ].
+interjeicao(plural, feminino) -->[ duvidas ].
 interjeicao(singular, masculino) -->[cuidado].
-interjeicao(singular, femenino) -->[cuidado].
+interjeicao(singular, feminino) -->[cuidado].
 interjeicao(plural, masculino) -->[cuidado].
-interjeicao(plural, femenino) -->[cuidado].
-interjeicao(singular, femenino) -->['blablablá'].
-interjeicao(plural, masculino) -->['blablablá'].
-interjeicao(plural, femenino) -->['blablablá'].
-interjeicao(singular, masculino) -->['dúvidas'].
-interjeicao(singular, femenino) -->['dúvidas'].
-interjeicao(plural, masculino) -->['dúvidas'].
+interjeicao(plural, feminino) -->[cuidado].
+interjeicao(singular, feminino) -->[ blablabla ].
+interjeicao(plural, masculino) -->[ blablabla ].
+interjeicao(plural, feminino) -->[ blablabla ].
+interjeicao(singular, masculino) -->[ duvidas ].
+interjeicao(singular, feminino) -->[ duvidas ].
+interjeicao(plural, masculino) -->[ duvidas ].
+
+
+
+%%%%%%%%						ANALISE SINTATICA			%%%%%%%%
+
+interrogacao --> [?]. 
+
+pronomePergunta --> [por].
+pronomePergunta --> [que].
+pronomePergunta --> [qual].
+pronomePergunta --> [quais].
+pronomePergunta --> [quando].
+pronomePergunta --> [como].
+pronomePergunta --> [onde].
+
+pronomePossessivo(singular, humano) --> [meu].
+pronomePossessivo(plural, humano) --> [meus].
+pronomePossessivo(singular, humano) --> [minha].
+pronomePossessivo(plural, humano) --> [minhas].
+pronomePossessivo(singular, agente) --> [seu].
+pronomePossessivo(plural, agente) --> [seus].
+
+
+pronomeTratamento --> [voce].
+
+pergunta(_Numero,_Genero) --> pronomePergunta, pronomePergunta, interrogacao.
+pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, interrogacao.
+pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, verbo(Numero), interrogacao.
+pergunta(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), artigo(Numero,Genero), pronomeTratamento, substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,_Genero) --> pronomePergunta, pronomeTratamento, verbo(Numero), interrogacao.
+pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), pronomePergunta, interrogacao.
+pergunta(Numero,Genero) --> pronome(_,_), pronome(_,_), pronome(_,_), pronome(_,_), verbo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, pronomeTratamento, verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, pronome(_,_), pronomeTratamento, verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, pronomeTratamento, verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, pronome(_,_), pronomeTratamento, verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
+
+assunto(pai,familia).
+assunto(mae,familia).
+assunto(filho,familia).
+assunto(filha,familia).
+assunto(trabalho,trabalho).
+assunto(cansado,trabalho).
+assunto(estudar,trabalho).
+assunto(faculdade,trabalho).
+assunto(estudando,trabalho).
+assunto(estudo,trabalho).
+assunto(deprimido,tristeza).
+assunto(triste,tristeza).
+assunto(tristeza,tristeza).
+assunto(depressivo,tristeza).
+assunto(mal, sencacao).
+assunto(bem, sencacao).
+assunto(amigo,amizade).
+assunto(amiga,amizade).
+assunto(amigos,amizade).
+
+
+answer(outOfKB,  'Entendo! Por favor, continue...' ).
+answer(error, 'que?????' ).
+
+answer(familia,   'Conte-me mais sobre sua familia').
+answer(trabalho, 'Com todo esse trabalho, voce tem tirado tempo pra voce?').
+answer(tristeza, 'Voce conta sobre esse sentimento pra mais alguem?').
+answer(sensacao, 'O que voce tem feito pra essa sencacao nao tomar conta?').
+answer(amizade, 'Algum familiar alem das suas amizades?').
+
+questao(Numero,Genero) --> pergunta(Numero,Genero).
+sentenca(Numero,Genero) --> frase(Numero,Genero).
+sentenca(Numero,Genero) --> periodoSimples(Numero,Genero).
+% sentenca(Numero,Genero) --> periodoComposto(Numero,Genero).
+
+periodoSimples(Numero,Genero) --> predicado(Numero,Genero).
+periodoSimples(Numero,Genero) --> sujeito(Numero,Genero), predicado(Numero,Genero).
+
+periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero).
+periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero), sentenca.
+periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero), conjuncao, sentenca.
+periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero).
+periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero), sentenca.
+periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero), preposicao(_),sentenca.
+periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero), conjuncao, oracaoSubordinada(Numero,Genero).
+periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero), conjuncao, oracaoCoordenada(Numero,Genero).
+
+oracaoCoordenada(Numero,Genero) --> predicado(Numero,Genero).
+oracaoCoordenada(Numero,Genero) --> sujeito(Numero,Genero), predicado(Numero,Genero).
+oracaoSubordinada(Numero,Genero) --> predicado(Numero,Genero).
+oracaoSubordinada(Numero,Genero) --> sujeito(Numero,Genero), predicado(Numero,Genero).
+
+frase(Numero,Genero) -->  sujeito(Numero,Genero).
+frase(Numero,Genero) -->  artigo(Numero,Genero) , sujeito(Numero,Genero).
+frase(Numero,Genero) -->  artigo(Numero,Genero) , sujeito(Numero,Genero).
+frase(Numero,Genero) -->  artigo(Numero,Genero), substantivo(Numero,Genero), verbo(Numero).  
+frase(Numero,Genero) -->  predicado(Numero,Genero).
+frase(Numero,Genero) -->  preposicao(Numero), artigo(Numero,Genero),substantivo(Numero,Genero).
+frase(Numero,Genero) -->  preposicao(Numero), substantivo(Numero,Genero).
+frase(Numero,Genero) -->  preposicao(Numero), pronome(Numero,Genero).
+frase(Numero,Genero) -->  preposicao(Numero), pronome(Numero,Genero), verbo(Numero).
+frase(Numero,Genero) -->  preposicao(Numero), pronomePossessivo(_Numero,_Genero), substantivo(Numero, _).
+
+sujeito(Numero,_Genero) --> adverbio(Numero), substantivo(_,_).
+sujeito(Numero,Genero) --> pronome(Numero,_), verbo(Numero), substantivo(Numero,Genero).
+sujeito(Numero,Genero) --> pronome(Numero,_), verbo(Numero), pronome(Numero,_), substantivo(Numero,Genero).
+
+
+%%% SUJEITO DETERMINADO
+
+sujeito(Numero,Genero) --> substantivo(Numero,Genero).
+sujeito(Numero,Genero) --> artigo(Numero,Genero), substantivo(Numero,Genero).
+sujeito(Numero,Genero) --> pronome(Numero,Genero), substantivo(Numero,Genero).
+sujeito(Numero,Genero) --> artigo(Numero,Genero), substantivo(Numero,Genero), conjuncao, substantivo(Numero,Genero).
+sujeito(Numero,Genero) --> artigo(Numero,Genero), substantivo(Numero,Genero), conjuncao, pronome(Numero,_), substantivo(Numero,Genero).
+sujeito(Numero,Genero) --> artigo(Numero,Genero), pronome(Numero,Genero), substantivo(Numero,Genero).
+sujeito(Numero,Genero) --> substantivo(Numero,Genero), preposicao(_), substantivo(Numero,_).
+sujeito(Numero,Genero) --> artigo(Numero,Genero), substantivo(Numero,Genero), preposicao(_), substantivo(Numero,_)
+sujeito(Numero,Genero) --> artigo(Numero,Genero) , substantivo(Numero,Genero), preposicao(_).
+
+%%% SUJEITO INDERTEMINADO
+
+sujeito(Numero,Genero) --> pronome(Numero,_).
+sujeito(Numero,Genero) --> pronome(Numero,_), substantivo(Numero,Genero).
+sujeito(Numero,Genero) --> pronome(Numero,_), substantivo(Numero,Genero), adjetivo(Numero,Genero).
+sujeito(Numero,Genero) --> pronome(Numero,_), substantivo(Numero,Genero), adjetivo(Numero,Genero).
+sujeito(Numero,Genero) --> artigo(Numero,Genero) , substantivo(Numero,Genero), adjetivo(Numero,Genero).
+sujeito(Numero,Genero) --> substantivo(Numero,Genero) , conjuncao, substantivo(Numero,Genero).
+sujeito(Numero,Genero) --> substantivo(Numero,Genero) , conjuncao, pronome(Numero,_), substantivo(Numero,Genero).
+
+predicado(Numero,_Genero) --> verbo(Numero).
+predicado(Numero,_Genero) --> verbo(Numero), adjetivo(Numero,_).
+predicado(Numero,_Genero) --> verbo(Numero), pronome(_,_), substantivo(Numero, _).
+predicado(Numero,_Genero) --> verbo(Numero), pronome(_,_), verbo(Numero).
+predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), adjetivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), pronome(Numero,_), substantivo(Numero,Genero), preposicao(_), verbo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), numeral(Numero,Genero), substantivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), numeral(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), preposicao(_), substantivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), preposicao(_), substantivo(Numero,Genero), preposicao(_), adjetivo(Numero,Genero),substantivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), preposicao(_), verbo(Numero), adverbio(Numero,Genero), adjetivo(Numero,Genero). 
+predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
+predicado(Numero,Genero) --> pronome(_,_), verbo(Numero), substantivo(Numero,Genero).
+

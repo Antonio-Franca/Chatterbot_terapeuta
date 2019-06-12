@@ -12,7 +12,13 @@ gramatic :-
 	code_reading,
 	close(X).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 %%% 						Dialogue Manager
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 main :-
  	write('DICA: NAO USE ACENTOS rsrs'), nl, nl,
@@ -54,7 +60,14 @@ parse(Sentence, assertion) :-
 parse(Sentence, question) :-
     questao(Numero, Genero, Sentence, []).
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 %%% 				ANÁLISE DA SENTENÇA COMO PERGUNTA %%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 parse_question :-
 	ler(Words),
@@ -68,7 +81,13 @@ isAQuestion(_Sentence) :-
 	write('It is not a question!').
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 %%%%				DESENVOLVIMENTO DO AGENTE %%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 context(Sentence,Theme) :-
 	assunto(Word,Theme),
@@ -94,7 +113,13 @@ therapist(_Sentence,Reply) :-
 	answer(outOfKB,Reply).
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 %%%%% 				LEITURA DA SENTENCA 			%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 read_sent(Words) :-
 	get0(Char), % prime the lookahead 
@@ -144,145 +169,3 @@ space(32).
 %%%			 character
 
 newline(10).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%%%%									OUTRA OPCAO DE LEITURA %%%
- 
-%%% Read in a sentence - "?-ler(S)"
-ler([W|Ws]) :- 
-	get_char(C), lepalavra(C, W, C1), resto_enviado(W, C1, Ws).
-
-%%% Given a word and the character after it, read in the rest of the sentence 
-resto_enviado(W, _, []) :- 
-	ultima_palavra(W), !.
-resto_enviado(W, C, [W1|Ws]) :- 
-	lepalavra(C, W1, C1), resto_enviado(W1, C1, Ws).
-
-
-%%% Read in a single word, given an initial character, and remembering which character came after the word.
-
-lepalavra(C, C, C1) :- 
-	caractere_unico(C), !, get_char(C1).
-
-lepalavra(C, W, C2) :- 
-	na_palavra(C, NewC),
-	!,
-	get_char(C1),
-	resta_palavra(C1, Cs, C2), 
-	atom_chars(W, [NewC|Cs]).
-
-
-lepalavra(C, W, C2) :- 
-	get_char(C1), lepalavra(C1, W, C2).
-resta_palavra(C,[NewC|Cs], C2) :- 
-	na_palavra(C, NewC),!,
-	get_char(C1), 
-	resta_palavra(C1, Cs, C2). 
-resta_palavra(C, [], C).
-
-
-%%% These characters can appear within a word. The second na_palavra clause converts letras to lower-case 
-na_palavra(C, C) :- 
-	letra(C, _). 
-
-na_palavra(C, L) :- 
-	letra(L, C). 
-
-na_palavra(C, C) :- 
-	digito(C). 
-
-na_palavra(C, C) :- 
-	caractere_especial(C). 
-
-membro(X,[X|_]).
-membro(X,[_|Y]):-
-	membro(X,Y).
-
-							%%% Special characters 
-caractere_especial('-'). 
-caractere_especial('').
-
-			%%% These characters form words on their own
-caractere_unico(','). 
-caractere_unico('.'). 
-caractere_unico(';').
-caractere_unico(':').
-caractere_unico('?'). 
-caractere_unico('!').
-
-					%%% Upper and lower case letras 
-letra(a, 'A'). 
-letra(b, 'B'). 
-letra(c, 'C'). 
-letra(d, 'D'). 
-letra(e, 'E'). 
-letra(f, 'F'). 
-letra(g, 'G'). 
-letra(h, 'H'). 
-letra(i, 'I'). 
-letra(j, 'J'). 
-letra(k, 'K').
-letra(n, 'N'). 
-letra(o, 'O'). 
-letra(p, 'P'). 
-letra('q', 'Q').
-letra(r, 'R'). 
-letra('s', 'S').
-letra(t, 'T'). 
-letra(u, 'U').
-letra(v, 'V'). 
-letra(w, 'W'). 
-letra('x', 'X').
-letra('y', 'Y'). 
-letra(z, 'Z').
-letra(l, 'L'). 
-letra('m', 'M').
-
-					%%% digitos
-digito('0'). 
-digito('1'). 
-digito('2'). 
-digito('3'). 
-digito('4').
-digito('5'). 
-digito('6'). 
-digito('7'). 
-digito('8'). 
-digito('9').
-
-				%%% These words terminate a sentence
-ultima_palavra('.'). 
-ultima_palavra('!'). 
-ultima_palavra('?').
-
-spaces(0) :- !.
-spaces(N) :- write(' '), N1 is N - 1, spaces(N1).
-
-
-phh([]) :- nl.
-phh([H|T]) :- 
-	write(H),
-	spaces(1), 
-	phh(T).
-
-% CARACTERES
-
-caractere_unico --> [,]. 
-caractere_unico --> [.]. 
-caractere_unico --> [;].
-caractere_unico --> [:].
-caractere_unico --> [!].

@@ -1,3 +1,58 @@
+
+execute :-
+	write('>> '),
+	read_sent(Sentence),
+	sentenca(Num,Gen,Sentence,[]).
+
+read_sent(Words) :-
+	get0(Char), % prime the lookahead 
+	read_sent(Char, Words). % get the words
+
+% Newlines end the input. 
+read_sent(C, []) :- 
+	newline(C), !.
+
+% Spaces are ignored.
+read_sent(C, Words) :- 
+	space(C), !,
+    get0(Char),
+    read_sent(Char, Words).
+
+% Everything else starts a word. 
+read_sent(Char, [Word|Words]) :-
+	read_word(Char, Chars, Next),
+	name(Word, Chars),
+	read_sent(Next, Words).
+
+% Space and newline end a word. 
+read_word(C, [], C) :- 
+	space(C), !. 
+
+read_word(C, [], C) :- 
+	newline(C), !.
+
+% All other chars are added to the list. 
+read_word(Char, [Char|Chars], Last) :-
+	get0(Next),
+	read_word(Next, Chars, Last).
+
+
+%%% space(Char)
+%%% ===========
+%%%
+%%% Char === the ASCII code for the space
+%%% 		 character
+
+space(32).
+
+%%% newline(Char)
+%%% =============
+%%%
+%%% Char === the ASCII code for the newline
+%%%			 character
+
+newline(10).
+
 % ARTIGOS
 
 artigo(singular, masculino) 	--> [o].
@@ -24,6 +79,8 @@ pronome(plural, _) 				--> [nos].
 pronome(plural, _) 				--> [vos].
 pronome(plural,masculino) 		--> [eles].
 pronome(plural,feminino) 		--> [elas].
+pronome(singular, _) 			--> [voce].
+pronome(plural, _) 			--> [voces].
 
 %%%% Pronomes pessoais atonos 
 
@@ -214,14 +271,16 @@ pronome(singular, _) --> [quanta].
 pronome(singular, _) --> [quem].
 pronome(singular, _) --> [quando].
 pronome(singular, _) --> [para].
+pronome(singular, _) --> [como].
 
 
-%SUBSTANTIVOS
+% SUBSTANTIVOS
 
 
 substantivo(singular, masculino) --> [depressivo].
 substantivo(singular, masculino) --> [depressiva].
 substantivo(singular,feminino) --> [amiga].
+substantivo(singular,feminino) --> [amigo].
 substantivo(plural,feminino) --> [amigos].
 substantivo(singular,feminino) --> [tristeza].
 substantivo(singular,masculino) --> [faculdade].
@@ -373,7 +432,6 @@ substantivo(singular, masculino) --> [joao].
 substantivo(plural, masculino) --> [jogadores].
 substantivo(singular, masculino) --> [jogo].
 substantivo(plural, masculino) --> [jogos].
-substantivo(singular, masculino) --> [amigo].       %%%%%%%%%%%%%%%%%%%
 substantivo(singular, feminino) --> [justica].
 substantivo(singular, masculino) --> [la].
 substantivo(singular, masculino) --> [labirinto].
@@ -983,7 +1041,7 @@ substantivo(plural, masculino) --> [direitos].
 substantivo(singular, feminino) --> [direta].
 substantivo(singular, feminino) --> [ divulgacao ].
 substantivo(singular, feminino) --> [coisa].
-substantivo(plural, feminino) --> [coisas].
+substantivo(_plural, _feminino) --> [coisas].
 substantivo(plural, feminino) --> [companhias].
 substantivo(singular, feminino) --> [ comprovacao ].
 substantivo(singular, masculino) --> [dia].
@@ -1015,9 +1073,12 @@ verbo(singular) --> [esta].
 verbo(singular) --> [estava].
 verbo(plural) --> [estavam].
 verbo(singular) --> [ e ].
+verbo(singular) --> [ sou ].
 verbo(singular) --> [ era ].
 verbo(plural) --> [ sao ].
 verbo(singular) --> [vai].
+verbo(singular) --> [sera].
+verbo(plural) --> [serao].
 verbo(singular) --> [haver].
 verbo(singular) --> [houve].
 verbo(singular) --> [ ha ].
@@ -2632,16 +2693,13 @@ adjetivo(plural, masculino)--> [despertos].
 
 numeral(singular) --> [0].
 numeral(singular) --> [1].
-numeral(singular) --> [1,7].
-numeral(singular) --> [1,13].
-numeral(singular) --> [1,8].
-numeral(singular) --> [2].
-numeral(singular) --> [3].
-numeral(singular) --> [4].
-numeral(singular) --> [5].
-numeral(singular) --> [6].
-numeral(singular) --> [8].
-numeral(singular) --> [10].
+numeral(plural) --> [2].
+numeral(plural) --> [3].
+numeral(plural) --> [4].
+numeral(plural) --> [5].
+numeral(plural) --> [6].
+numeral(plural) --> [8].
+numeral(plural) --> [10].
 numeral(singular) --> [14].
 numeral(singular) --> [15].
 numeral(singular) --> [18].
@@ -2682,15 +2740,12 @@ numeral(singular) --> [2019].
 numeral(singular) --> [ bilhao ].
 numeral(singular) --> [ mil ].
 numeral(singular) --> [ meio ].
-numeral(plural,feminino) --> [ duas ].
-numeral(plural,masculino) --> [ dois ].
-numeral(plural,masculino) --> [ milhoes ].
+numeral(plural) --> [ duas ].
+numeral(plural) --> [ dois ].
+numeral(plural) --> [ milhoes ].
+numeral(singular) --> [primeiro].
 
-%%
-%
-%numeral(singular) --> [primeiro].
-
-%ADVERBIO
+% ADVERBIO
 
 adverbio(singular) --> [frequentemente].
 adverbio(singular) --> [inclusive].
@@ -2755,7 +2810,8 @@ adverbio(singular) --> [bem].
 adverbio(singular) --> [depois].
 adverbio(singular) --> [demais].
 
-%PREPOSICAO
+% PREPOSICAO
+
 preposicao(singular) --> [pela].
 preposicao(singular) --> [pelo].
 preposicao(plural) --> [pelos].
@@ -2814,6 +2870,7 @@ conjuncao --> [apesar].
 conjuncao --> [como].
 conjuncao -->[caso].
 conjuncao --> [e].
+
 %INTERJEICAO
 
 interjeicao(singular) --> [ok].
@@ -2852,46 +2909,37 @@ interjeicao(plural, masculino) -->[ duvidas ].
 
 
 
-%%%%%%%%						ANALISE SINTATICA			%%%%%%%%
+%%%%%%%%						ANALISE SINTATICA PERGUNTA			%%%%%%%%
 
-interrogacao --> [?]. 
+%%% 	CARACTERES
 
-pronomePergunta --> [por].
-pronomePergunta --> [que].
-pronomePergunta --> [qual].
-pronomePergunta --> [quais].
-pronomePergunta --> [quando].
-pronomePergunta --> [como].
-pronomePergunta --> [onde].
+interrogacao --> [?].
+caractere_unico --> [,]. 
+caractere_unico --> [.].
 
-pronomePossessivo(singular, humano) --> [meu].
-pronomePossessivo(plural, humano) --> [meus].
-pronomePossessivo(singular, humano) --> [minha].
-pronomePossessivo(plural, humano) --> [minhas].
-pronomePossessivo(singular, agente) --> [seu].
-pronomePossessivo(plural, agente) --> [seus].
+questao(Numero,Genero) --> pergunta(Numero,Genero).
+
+pergunta(Numero,_Genero) --> pronome(singular,_), pronome(singular,_), interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), verbo(Numero), interrogacao.
+pergunta(Numero,Genero)  --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), verbo(Numero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), verbo(Numero), artigo(Numero,Genero), pronomeTratamento, substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronomeTratamento, verbo(Numero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,_Genero) --> pronome(singular,_), pronomeTratamento, verbo(Numero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronomeTratamento, verbo(Numero), verbo(Numero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), pronome(singular,_), interrogacao.
+pergunta(Numero,Genero)  --> pronome(_,_), pronome(_,_), pronome(_,_), pronome(_,_), verbo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronomeTratamento, verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(_,_), pronomeTratamento, verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronomeTratamento, verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(_,_), pronomeTratamento, verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
 
 
-pronomeTratamento --> [voce].
-
-pergunta(_Numero,_Genero) --> pronomePergunta, pronomePergunta, interrogacao.
-pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, interrogacao.
-pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, verbo(Numero), interrogacao.
-pergunta(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero) --> pronomePergunta, verbo(Numero), artigo(Numero,Genero), pronomeTratamento, substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,_Genero) --> pronomePergunta, pronomeTratamento, verbo(Numero), interrogacao.
-pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero) --> pronomePergunta, pronomePergunta, pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), pronomePergunta, interrogacao.
-pergunta(Numero,Genero) --> pronome(_,_), pronome(_,_), pronome(_,_), pronome(_,_), verbo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, pronomeTratamento, verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
-pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, pronome(_,_), pronomeTratamento, verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
-pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, pronomeTratamento, verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
-pergunta(Numero,Genero) --> artigo(Numero,Genero), pronomePergunta, pronome(_,_), pronomeTratamento, verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
+%%%%%% 							COMPREENSAO DO AGENTE 			%%%%%%%
 
 assunto(pai,familia).
 assunto(mae,familia).
@@ -2923,43 +2971,21 @@ answer(tristeza, 'Voce conta sobre esse sentimento pra mais alguem?').
 answer(sensacao, 'O que voce tem feito pra essa sencacao nao tomar conta?').
 answer(amizade, 'Algum familiar alem das suas amizades?').
 
-questao(Numero,Genero) --> pergunta(Numero,Genero).
-sentenca(Numero,Genero) --> frase(Numero,Genero).
-sentenca(Numero,Genero) --> periodoSimples(Numero,Genero).
-% sentenca(Numero,Genero) --> periodoComposto(Numero,Genero).
 
+
+%%%%%%%%						ANALISE SINTATICA AFIRMACAO			%%%%%%%%
+
+sentenca(Numero,Genero) --> periodo(Numero,Genero).
+
+periodo(Numero,Genero) --> periodoSimples(Numero,Genero).
+periodo(Numero,Genero) --> periodoComposto(Numero,Genero).
+
+periodoSimples(Numero,Genero) --> sujeito(Numero,Genero).
 periodoSimples(Numero,Genero) --> predicado(Numero,Genero).
 periodoSimples(Numero,Genero) --> sujeito(Numero,Genero), predicado(Numero,Genero).
 
-periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero).
-periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero), sentenca.
-periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero), conjuncao, sentenca.
-periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero).
-periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero), sentenca.
-periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero), preposicao(_),sentenca.
-periodoComposto(Numero,Genero) --> oracaoCoordenada(Numero,Genero), conjuncao, oracaoSubordinada(Numero,Genero).
-periodoComposto(Numero,Genero) --> oracaoSubordinada(Numero,Genero), conjuncao, oracaoCoordenada(Numero,Genero).
-
-oracaoCoordenada(Numero,Genero) --> predicado(Numero,Genero).
-oracaoCoordenada(Numero,Genero) --> sujeito(Numero,Genero), predicado(Numero,Genero).
-oracaoSubordinada(Numero,Genero) --> predicado(Numero,Genero).
-oracaoSubordinada(Numero,Genero) --> sujeito(Numero,Genero), predicado(Numero,Genero).
-
-frase(Numero,Genero) -->  sujeito(Numero,Genero).
-frase(Numero,Genero) -->  artigo(Numero,Genero) , sujeito(Numero,Genero).
-frase(Numero,Genero) -->  artigo(Numero,Genero) , sujeito(Numero,Genero).
-frase(Numero,Genero) -->  artigo(Numero,Genero), substantivo(Numero,Genero), verbo(Numero).  
-frase(Numero,Genero) -->  predicado(Numero,Genero).
-frase(Numero,Genero) -->  preposicao(Numero), artigo(Numero,Genero),substantivo(Numero,Genero).
-frase(Numero,Genero) -->  preposicao(Numero), substantivo(Numero,Genero).
-frase(Numero,Genero) -->  preposicao(Numero), pronome(Numero,Genero).
-frase(Numero,Genero) -->  preposicao(Numero), pronome(Numero,Genero), verbo(Numero).
-frase(Numero,Genero) -->  preposicao(Numero), pronomePossessivo(_Numero,_Genero), substantivo(Numero, _).
-
-sujeito(Numero,_Genero) --> adverbio(Numero), substantivo(_,_).
-sujeito(Numero,Genero) --> pronome(Numero,_), verbo(Numero), substantivo(Numero,Genero).
-sujeito(Numero,Genero) --> pronome(Numero,_), verbo(Numero), pronome(Numero,_), substantivo(Numero,Genero).
-
+periodoComposto(Numero,Genero) --> periodoSimples(Numero,Genero), caractere_unico, periodoSimples(Numero,Genero).
+periodoComposto(Numero,Genero) --> periodoComposto(Numero,Genero), caractere_unico, periodoSimples(Numero,Genero).
 
 %%% SUJEITO DETERMINADO
 
@@ -2970,7 +2996,7 @@ sujeito(Numero,Genero) --> artigo(Numero,Genero), substantivo(Numero,Genero), co
 sujeito(Numero,Genero) --> artigo(Numero,Genero), substantivo(Numero,Genero), conjuncao, pronome(Numero,_), substantivo(Numero,Genero).
 sujeito(Numero,Genero) --> artigo(Numero,Genero), pronome(Numero,Genero), substantivo(Numero,Genero).
 sujeito(Numero,Genero) --> substantivo(Numero,Genero), preposicao(_), substantivo(Numero,_).
-sujeito(Numero,Genero) --> artigo(Numero,Genero), substantivo(Numero,Genero), preposicao(_), substantivo(Numero,_)
+sujeito(Numero,Genero) --> artigo(Numero,Genero), substantivo(Numero,Genero), preposicao(_), substantivo(Numero,_).
 sujeito(Numero,Genero) --> artigo(Numero,Genero) , substantivo(Numero,Genero), preposicao(_).
 
 %%% SUJEITO INDERTEMINADO
@@ -2983,6 +3009,8 @@ sujeito(Numero,Genero) --> artigo(Numero,Genero) , substantivo(Numero,Genero), a
 sujeito(Numero,Genero) --> substantivo(Numero,Genero) , conjuncao, substantivo(Numero,Genero).
 sujeito(Numero,Genero) --> substantivo(Numero,Genero) , conjuncao, pronome(Numero,_), substantivo(Numero,Genero).
 
+%%% PREDICADO
+
 predicado(Numero,_Genero) --> verbo(Numero).
 predicado(Numero,_Genero) --> verbo(Numero), adjetivo(Numero,_).
 predicado(Numero,_Genero) --> verbo(Numero), pronome(_,_), substantivo(Numero, _).
@@ -2993,9 +3021,10 @@ predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), adjetivo(Nume
 predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), artigo(Numero,Genero), pronome(Numero,_), substantivo(Numero,Genero), preposicao(_), verbo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), numeral(Numero,Genero), substantivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), numeral(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), numeral(Numero), substantivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), numeral(Numero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), preposicao(_), substantivo(Numero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), preposicao(_), artigo(Numero,_), substantivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), preposicao(_), substantivo(Numero,Genero), preposicao(_), adjetivo(Numero,Genero),substantivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), preposicao(_), verbo(Numero), adverbio(Numero,Genero), adjetivo(Numero,Genero). 
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero).

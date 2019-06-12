@@ -30,12 +30,11 @@ main :-
 
 main_loop(Reply) :-
 	nl,write(Reply),nl,
-	% write('>> '),nl,nl, % prompt the user 
-	read_sent(Words), % read a sentence 
-	talk(Words, NewReply), % process it with TALK 
-	main_loop(NewReply). % pocess more sentences
+	read_sent(Words), 
+	talk(Words, NewReply),
+	main_loop(NewReply). 
 
-%%%  				REGRA DE INTERACAO HUMANO-AGENTE %%%
+%%%  				REGRA DE INTERACAO HUMANO-AGENTE 			%%%
 
 talk(Sentence, Reply) :-
 	% parse the sentence
@@ -70,7 +69,7 @@ parse(Sentence, question) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 parse_question :-
-	ler(Words),
+	read_sent(Words),
 	isAQuestion(Words),!.
 
 isAQuestion(Sentence) :-

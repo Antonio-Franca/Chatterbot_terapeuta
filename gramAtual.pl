@@ -2914,8 +2914,6 @@ interjeicao(plural, masculino) -->[ duvidas ].
 %%% 	CARACTERES
 
 interrogacao --> [?].
-caractere_unico --> [,]. 
-caractere_unico --> [.].
 
 questao(Numero,Genero) --> pergunta(Numero,Genero).
 
@@ -2974,6 +2972,10 @@ answer(amizade, 'Algum familiar alem das suas amizades?').
 
 
 %%%%%%%%						ANALISE SINTATICA AFIRMACAO			%%%%%%%%
+
+
+caractere_unico --> [,]. 
+caractere_unico --> [.].
 
 sentenca(Numero,Genero) --> periodo(Numero,Genero).
 

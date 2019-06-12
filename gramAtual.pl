@@ -2985,6 +2985,9 @@ periodo(Numero,Genero) --> periodoComposto(Numero,Genero).
 periodoSimples(Numero,Genero) --> sujeito(Numero,Genero).
 periodoSimples(Numero,Genero) --> predicado(Numero,Genero).
 periodoSimples(Numero,Genero) --> sujeito(Numero,Genero), predicado(Numero,Genero).
+periodoSimples(Numero,Genero) --> preposicao(_), sujeito(Numero,Genero).
+periodoSimples(Numero,Genero) --> preposicao(_), predicado(Numero,Genero).
+periodoSimples(Numero,Genero) --> preposicao(_), sujeito(Numero,Genero), predicado(Numero,Genero).
 
 periodoComposto(Numero,Genero) --> periodoSimples(Numero,Genero), caractere_unico, periodoSimples(Numero,Genero).
 periodoComposto(Numero,Genero) --> periodoComposto(Numero,Genero), caractere_unico, periodoSimples(Numero,Genero).
@@ -3032,4 +3035,3 @@ predicado(Numero,Genero) --> verbo(Numero), preposicao(_), verbo(Numero), adverb
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
 predicado(Numero,Genero) --> pronome(_,_), verbo(Numero), substantivo(Numero,Genero).
-

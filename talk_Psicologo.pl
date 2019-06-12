@@ -15,16 +15,68 @@ main :-
 	write('Ola, eu sou Shrink, seu terapeuta'),nl,
 	write('Como voce esta?'),nl,
 	% write('>> '), % prompt the user 
-	ler(Words), % read a sentence 
+	read_sent(Words), % read a sentence 
 	talk(Words, Reply), % process it with TALK 
 	main_loop(Reply). % pocess more sentences
 
 main_loop(Reply) :-
 	nl,write(Reply),nl,
 	% write('>> '),nl,nl, % prompt the user 
-	ler(Words), % read a sentence 
+	read_sent(Words), % read a sentence 
 	talk(Words, NewReply), % process it with TALK 
 	main_loop(NewReply). % pocess more sentences
+
+
+read_sent(Words) :-
+	get0(Char), % prime the lookahead 
+	read_sent(Char, Words). % get the words
+
+% Newlines end the input. 
+read_sent(C, []) :- 
+	newline(C), !.
+
+% Spaces are ignored.
+read_sent(C, Words) :- 
+	space(C), !,
+    get0(Char),
+    read_sent(Char, Words).
+
+% Everything else starts a word. 
+read_sent(Char, [Word|Words]) :-
+	read_word(Char, Chars, Next),
+	name(Word, Chars),
+	read_sent(Next, Words).
+
+% Space and newline end a word. 
+read_word(C, [], C) :- 
+	space(C), !. 
+
+read_word(C, [], C) :- 
+	newline(C), !.
+
+% All other chars are added to the list. 
+read_word(Char, [Char|Chars], Last) :-
+	get0(Next),
+	read_word(Next, Chars, Last).
+
+
+%%% space(Char)
+%%% ===========
+%%%
+%%% Char === the ASCII code for the space
+%%% 		 character
+
+space(32).
+
+%%% newline(Char)
+%%% =============
+%%%
+%%% Char === the ASCII code for the newline
+%%%			 character
+
+newline(10).
+
+
 
 %%%								 LEITURA E IMPRESSAO 				%%%%
 
@@ -194,9 +246,6 @@ member(X,[pronomeQuantidade,X|_],pronomeQuantidade).
 member(X,[_|Y],_):-
 	member(X,Y).
 
-therapist(Sentence,Reply,Pronome) :-
-	context(Sentence,Theme,Pronome).
-
 
 therapist(Sentence,Reply) :-
 	context(Sentence,Theme),
@@ -284,6 +333,8 @@ newline(10).
 
  
 % CARACTERES
+
+substantivo(singular, masculino) --> [pai]. 
 
 caractere_unico --> [,]. 
 caractere_unico --> [.]. 
@@ -407,6 +458,7 @@ pronome(singular, masculino) --> [quanto].
 
 
 %SUBSTANTIVOS
+
 
 substantivo(singular, masculino) --> [depressivo].
 substantivo(singular, masculino) --> [depressiva].
@@ -715,7 +767,6 @@ substantivo(plural, masculino) --> [pacientes].
 substantivo(plural, feminino) --> [pacientes].
 substantivo(singular, masculino) --> ['padrão'].
 substantivo(singular, feminino) --> ['página'].
-substantivo(singular, masculino) --> [pai].
 substantivo(singular, masculino) --> [painel].
 substantivo(plural, masculino) --> [pais].
 substantivo(singular, masculino) --> ['país'].
@@ -3059,7 +3110,7 @@ pronomePergunta --> [quando].
 pronomePergunta --> [como].
 pronomePergunta --> [onde].
 
-pronomePossessivo(sungular, humano) --> [meu].
+pronomePossessivo(singular, humano) --> [meu].
 pronomePossessivo(plural, humano) --> [meus].
 pronomePossessivo(singular, humano) --> [minha].
 pronomePossessivo(plural, humano) --> [minhas].
@@ -3149,7 +3200,7 @@ frase(Numero,Genero) -->  preposicao(Numero), artigo(Numero,Genero),substantivo(
 frase(Numero,Genero) -->  preposicao(Numero), substantivo(Numero,Genero).
 frase(Numero,Genero) -->  preposicao(Numero), pronome(Numero,Genero).
 frase(Numero,Genero) -->  preposicao(Numero), pronome(Numero,Genero), verbo(Numero).
-frase(Numero,Genero) -->  preposicao(Numero), pronomePossessivo(_Numero,_Genero), substantivo(Numero,_).
+frase(Numero,Genero) -->  preposicao(Numero), pronomePossessivo(_Numero,_Genero), substantivo(Numero, _).
 
 sujeito(Numero,_Genero) --> adverbio(Numero), substantivo(_,_).
 sujeito(Numero,Genero) --> pronome(Numero,_), verbo(Numero), substantivo(Numero,Genero).

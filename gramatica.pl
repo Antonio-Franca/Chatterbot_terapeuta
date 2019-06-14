@@ -53,6 +53,17 @@ space(32).
 
 newline(10).
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% 						GRAMATICA
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 % ARTIGOS
 
 artigo(singular, masculino) 	--> [o].
@@ -96,10 +107,10 @@ pronome(singular, masculino) 	--> [lhe].
 pronome(singular, feminino) 	--> [lhe].
 pronome(plural, masculino) 		--> [nos].
 pronome(plural, feminino) 		--> [nos].
-pronome(singular, masculino) 	--> [o].
-pronome(singular, feminino) 	--> [a].
-pronome(plural, masculino) 		--> [as].
-pronome(plural, feminino) 		--> [os].
+% pronome(singular, masculino) 	--> [o].
+% pronome(singular, feminino) 	--> [a].
+% pronome(plural, masculino) 		--> [as].
+% pronome(plural, feminino) 		--> [os].
 pronome(plural, masculino) 		--> [lhes].
 pronome(plural, feminino) 		--> [lhes].
 
@@ -2874,7 +2885,7 @@ conjuncao --> [e].
 
 %INTERJEICAO
 
-interjeicao(singular) --> [ok].
+interjeicao(singular,_) --> [ok].
 interjeicao(singular, feminino) --> [ otima ].
 interjeicao(singular, masculino) --> [ otimo ].
 interjeicao(singular, masculino) -->[afinal].
@@ -2924,18 +2935,18 @@ pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), verbo(N
 pergunta(Numero,Genero)  --> verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero)  --> pronome(singular,_), verbo(Numero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero)  --> pronome(singular,_), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero)  --> pronome(singular,_), verbo(Numero), artigo(Numero,Genero), pronomeTratamento, substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), verbo(Numero), artigo(Numero,Genero), pronome(singular,_), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronomeTratamento, verbo(Numero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,_Genero) --> pronome(singular,_), pronomeTratamento, verbo(Numero), interrogacao.
-pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronomeTratamento, verbo(Numero), verbo(Numero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronomeTratamento, verbo(Numero), verbo(Numero), artigo(Numero,Genero), pronome(singular,_), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(singular,_), verbo(Numero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,_Genero) --> pronome(singular,_), pronome(singular,_), verbo(Numero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(singular,_), verbo(Numero), verbo(Numero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(singular,_), verbo(Numero), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(singular,_), verbo(Numero), verbo(Numero), artigo(Numero,Genero), pronome(singular,_), interrogacao.
 pergunta(Numero,Genero)  --> pronome(_,_), pronome(_,_), pronome(_,_), pronome(_,_), verbo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronomeTratamento, verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
-pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(_,_), pronomeTratamento, verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
-pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronomeTratamento, verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
-pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(_,_), pronomeTratamento, verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(singular,_), verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(_,_), pronome(singular,_), verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(singular,_), verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(_,_), pronome(singular,_), verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
 
 
 %%%%%% 							COMPREENSAO DO AGENTE 			%%%%%%%
@@ -3037,3 +3048,4 @@ predicado(Numero,Genero) --> verbo(Numero), preposicao(_), verbo(Numero), adverb
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
 predicado(Numero,Genero) --> pronome(_,_), verbo(Numero), substantivo(Numero,Genero).
+predicado(Numero,Genero) --> pronome(_,_), verbo(Numero).

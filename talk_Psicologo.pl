@@ -7,10 +7,7 @@
 :- op(100,fx, 'opd').
 
 gramatic :-
-	open('gramAtual.pl',read,X),
-	set_input(X), 
-	code_reading,
-	close(X).
+	include('gramAtual.pl').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -21,6 +18,7 @@ gramatic :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 main :-
+	['Users/caiotelles/Desktop/Trab03_IA/gramAtual.pl'],
  	write('DICA: NAO USE ACENTOS rsrs'), nl, nl,
 	write('Ola, eu sou Shrink, seu terapeuta'),nl,
 	write('Como voce esta?'),nl,
@@ -33,6 +31,15 @@ main_loop(Reply) :-
 	read_sent(Words), 
 	talk(Words, NewReply),
 	main_loop(NewReply). 
+
+main_livro :-
+	write('>> '),
+	read_sent(Words),
+	typeOfSentence(Words,Type),
+	replySentenceType(Words, Type),
+	wordMorphology(Words),
+	main_livro.
+
 
 %%%  				REGRA DE INTERACAO HUMANO-AGENTE 			%%%
 
@@ -115,6 +122,98 @@ therapist(_Sentence,Reply) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+%%%%% 				PRINT DA ANALISE 			%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+replySentenceSimpleType(Sentence, question) :-
+	questao(Num,Gen,Sentence,[]),
+	nl,write('Pergunta:'),nl.
+
+replySentenceType(Sentence, assertion) :-
+	periodoSimples(Num,Gen,Sentence,[]),
+	nl,write('Periodo Simples:'),nl,nl.
+
+replySentenceType(Sentence, assertion) :-
+	periodoComposto(Num,Gen,Sentence,[]),
+	nl,write('Periodo Composto:'),nl,nl.
+
+wordMorphology([?]).
+wordMorphology([]).
+wordMorphology([Sentence|Rest]) :-
+	(pronomeVerify(Sentence);
+	artigoVerify(Sentence);
+	substantivoVerify(Sentence);
+	verboVerify(Sentence);
+	adjetivoVerify(Sentence);
+	numeralVerify(Sentence);
+	adverbioVerify(Sentence);
+	preposicaoVerify(Sentence);
+	conjuncaoVerify(Sentence);
+	interjeicaoVerify(Sentence);
+	pontoOuVirgula(Sentence)),
+	wordMorphology(Rest).
+
+pontoOuVirgula(Word) :-
+	caractere_unico([Word],[]),
+	nl,write('Ponto ou virgula'),nl,nl.
+
+pronomeVerify(Word) :-
+	pronome(Num,Gen,[Word],[]),
+	write('Pronome:       '),
+	write(Word),nl.
+
+artigoVerify(Word) :-
+	artigo(Num,Gen,[Word],[]),
+	write('Artigo:        '),
+	write(Word),nl.
+
+substantivoVerify(Word) :-
+	substantivo(Num,Gen,[Word],[]),
+	write('Substantivo:   '),
+	write(Word),nl.
+
+verboVerify(Word) :-
+	verbo(Num,[Word],[]),
+	write('Verbo:         '),
+	write(Word),nl.
+
+adjetivoVerify(Word) :-
+	adjetivo(Num,Gen,[Word],[]),
+	write('Adjetivo:      '),
+	write(Word),nl.
+
+
+numeralVerify(Word) :-
+	numeral(Num,[Word],[]),
+	write('Numeral:       '),
+	write(Word),nl.
+
+adverbioVerify(Word) :-
+	adverbio(Num,[Word],[]),
+	write('Adverbio:      '),
+	write(Word),nl.
+
+preposicaoVerify(Word) :-
+	preposicao(Num,[Word],[]),
+	write('Preposicao:    '),
+	write(Word),nl.
+
+conjuncaoVerify(Word) :-
+	conjuncao([Word],[]),
+	write('Conjuncao:     '),
+	write(Word),nl.
+
+interjeicaoVerify(Word) :-
+	interjeicao(Num,Gen,[Word],[]),
+	write('Interjeicao:   '),
+	write(Word),nl.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 %%%%% 				LEITURA DA SENTENCA 			%%%%%%%
 
 
@@ -168,3 +267,4 @@ space(32).
 %%%			 character
 
 newline(10).
+

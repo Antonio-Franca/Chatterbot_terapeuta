@@ -1,4 +1,9 @@
 
+%%%% PRA TESTAR O TALK E SO IR '?- main_loop.'
+%%%% E USAR A ENTRADA '>> bill met terry'
+%%%% EXECUTA USANDO O TRACE QUE DA PRA ENTENDER O CAMINHO 
+
+
 % TALK Program
 
 % Operators

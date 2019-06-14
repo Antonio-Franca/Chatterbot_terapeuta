@@ -1,32 +1,6 @@
-% TALK Program
+%%%%%	Iniciar o programa:
+% '?- main_livro.'  
 
-gramatic :-
-	include('gramAtual.pl').
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%%% 						Dialogue Manager
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-main :-
-	['Users/caiotelles/Desktop/Trab03_IA/gramAtual.pl'],
- 	write('DICA: NAO USE ACENTOS rsrs'), nl, nl,
-	write('Ola, eu sou Shrink, seu terapeuta'),nl,
-	write('Como voce esta?'),nl,
-	write('>> '),
-	read_sent(Words), 
-	talk(Words, Reply),  
-	main_loop(Reply).
-
-main_loop(Reply) :-
-	nl,write(Reply),nl,
-	write('>> '),
-	read_sent(Words), 
-	talk(Words, NewReply),
-	main_loop(NewReply). 
 
 main_livro :-
 	write('>> '),
@@ -36,64 +10,13 @@ main_livro :-
 	wordMorphology(Words),
 	main_livro.
 
-
-%%%  				REGRA DE INTERACAO HUMANO-AGENTE 			%%%
-
-talk(Sentence, Reply) :-
-	% parse the sentence
-	% clause, if possible
-	typeOfSentence(Sentence,Type),
-	parse(Sentence, Type),
-	therapist(Sentence,Reply).
-	%(therapist(Sentence,Reply,Pronome);therapist(Sentence,Reply)).
-
-% No parse was found, sentence is too difficult. 
-talk(_Sentence, Reply) :-
-	answer(error,Reply).
-
-
-%%%					ANÁLISE SINTÁTICA GERAL %%%%
-
-parse(Sentence, assertion) :-
-	sentenca(Numero, Genero, Sentence, []).
-
-% Parsing a query: a question.
-
-parse(Sentence, question) :-
-    questao(Numero, Genero, Sentence, []).
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%%% 				ANÁLISE DA SENTENÇA COMO PERGUNTA %%%%
+%%%%				PERGUNTA OU AFIRMACAO %%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-parse_question :-
-	read_sent(Words),
-	isAQuestion(Words),!.
-
-isAQuestion(Sentence) :-
-	questao(_Numero,_Genero,Sentence,[]),
-	write('It is a question!').
-
-isAQuestion(_Sentence) :-
-	write('It is not a question!').
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%%%%				DESENVOLVIMENTO DO AGENTE %%%%%
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-context(Sentence,Theme) :-
-	assunto(Word,Theme),
-	member(Word,Sentence).
 
 
 typeOfSentence(Sentence,question) :-
@@ -107,23 +30,15 @@ member(X,[_|Y]):-
 	member(X,Y).
 
 
-therapist(Sentence,Reply) :-
-	context(Sentence,Theme),
-	answer(Theme,Reply).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-therapist(_Sentence,Reply) :-
-	answer(outOfKB,Reply).
+
+%%%%% 				PRINT DA ANALISE SINTATICA			%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-%%%%% 				PRINT DA ANALISE 			%%%%%%%
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-replySentenceSimpleType(Sentence, question) :-
+replySentenceType(Sentence, question) :-
 	questao(Num,Gen,Sentence,[]),
 	nl,write('Pergunta:'),nl.
 
@@ -209,6 +124,8 @@ interjeicaoVerify(Word) :-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%% unica parte que eu aproveitei do codigo do livro 
+%%%%%%%%%%%%%%% foi essa:
 
 %%%%% 				LEITURA DA SENTENCA 			%%%%%%%
 
@@ -263,4 +180,3 @@ space(32).
 %%%			 character
 
 newline(10).
-

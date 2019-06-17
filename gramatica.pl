@@ -2,36 +2,36 @@
 execute :-
 	write('>> '),
 	read_sent(Sentence),
-	sentenca(Num,Gen,Sentence,[]).
+	(sentenca(Num,Gen,Sentence,[]);questao(Num,Gen,Sentence,[])).
 
 read_sent(Words) :-
-	get0(Char), % prime the lookahead 
+	get0(Char), % prime the lookahead
 	read_sent(Char, Words). % get the words
 
-% Newlines end the input. 
-read_sent(C, []) :- 
+% Newlines end the input.
+read_sent(C, []) :-
 	newline(C), !.
 
 % Spaces are ignored.
-read_sent(C, Words) :- 
+read_sent(C, Words) :-
 	space(C), !,
     get0(Char),
     read_sent(Char, Words).
 
-% Everything else starts a word. 
+% Everything else starts a word.
 read_sent(Char, [Word|Words]) :-
 	read_word(Char, Chars, Next),
 	name(Word, Chars),
 	read_sent(Next, Words).
 
-% Space and newline end a word. 
-read_word(C, [], C) :- 
-	space(C), !. 
+% Space and newline end a word.
+read_word(C, [], C) :-
+	space(C), !.
 
-read_word(C, [], C) :- 
+read_word(C, [], C) :-
 	newline(C), !.
 
-% All other chars are added to the list. 
+% All other chars are added to the list.
 read_word(Char, [Char|Chars], Last) :-
 	get0(Next),
 	read_word(Next, Chars, Last).
@@ -93,7 +93,7 @@ pronome(plural,feminino) 		--> [elas].
 pronome(singular, _) 			--> [voce].
 pronome(plural, _) 			--> [voces].
 
-%%%% Pronomes pessoais atonos 
+%%%% Pronomes pessoais atonos
 
 pronome(singular, masculino) 	--> [me].
 pronome(singular, feminino) 	--> [me].
@@ -287,7 +287,8 @@ pronome(singular, _) --> [como].
 
 % SUBSTANTIVOS
 
-
+substantivo(singular,masculino) --> [familia].
+substantivo(singular,feminino) --> [familia].
 substantivo(singular, masculino) --> [depressivo].
 substantivo(singular, masculino) --> [depressiva].
 substantivo(singular,feminino) --> [amiga].
@@ -305,7 +306,7 @@ substantivo(singular,masculino) --> [trabalho].
 substantivo(singular,masculino) --> [cansado].
 substantivo(singular, masculino) --> [gato].
 substantivo(plural, masculino) --> [gatos].
-substantivo(singular, masculino) --> [rato]. 
+substantivo(singular, masculino) --> [rato].
 substantivo(plural, masculino) --> [ratos].
 substantivo(plural, feminino) --> [ferramentas].
 substantivo(plural, masculino) --> [fertilizantes].
@@ -1692,6 +1693,8 @@ verbo(singular) --> [desempenho].
 verbo(singular) --> [desempenho].
 verbo(singular) --> [emprego].
 verbo(singular) --> [emprego].
+verbo(singular) --> [dever].
+verbo(singular) --> [deveria].
 verbo(singular) --> [consumo].
 verbo(singular) --> [consumo].
 verbo(singular) --> [cochilo].
@@ -2288,7 +2291,7 @@ verbo(singular) --> [dando].
 
 adjetivo(singular, masculino) --> [depressivo].
 adjetivo(singular, masculino) --> [depressiva].
-adjetivo(singular, _masculino) --> [bem]. 
+adjetivo(singular, _masculino) --> [bem].
 adjetivo(singular, masculino) --> [deprimido].
 adjetivo(singular, feminino) --> [deprimida].
 adjetivo(singular, masculino) --> [fiel].
@@ -2824,6 +2827,7 @@ adverbio(singular) --> [demais].
 
 % PREPOSICAO
 
+preposicao(singular) --> [sobre].
 preposicao(singular) --> [pela].
 preposicao(singular) --> [pelo].
 preposicao(plural) --> [pelos].
@@ -2939,6 +2943,7 @@ pergunta(Numero,Genero)  --> pronome(singular,_), verbo(Numero), artigo(Numero,G
 pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(singular,_), verbo(Numero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,_Genero) --> pronome(singular,_), pronome(singular,_), verbo(Numero), interrogacao.
+pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(singular,_), pronome(singular,_), verbo(Numero), interrogacao.
 pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(singular,_), verbo(Numero), verbo(Numero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(singular,_), verbo(Numero), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(singular,_), verbo(Numero), verbo(Numero), artigo(Numero,Genero), pronome(singular,_), interrogacao.
@@ -2986,7 +2991,7 @@ answer(amizade, 'Algum familiar alem das suas amizades?').
 %%%%%%%%						ANALISE SINTATICA AFIRMACAO			%%%%%%%%
 
 
-caractere_unico --> [,]. 
+caractere_unico --> [,].
 caractere_unico --> [.].
 
 sentenca(Numero,Genero) --> periodo(Numero,Genero).
@@ -3044,7 +3049,8 @@ predicado(Numero,Genero) --> verbo(Numero), numeral(Numero), substantivo(Numero,
 predicado(Numero,Genero) --> verbo(Numero), preposicao(_), substantivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), preposicao(_), artigo(Numero,_), substantivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), preposicao(_), substantivo(Numero,Genero), preposicao(_), adjetivo(Numero,Genero),substantivo(Numero,Genero).
-predicado(Numero,Genero) --> verbo(Numero), preposicao(_), verbo(Numero), adverbio(Numero,Genero), adjetivo(Numero,Genero). 
+predicado(Numero,Genero) --> verbo(Numero), preposicao(_), pronome(Numero,_), substantivo(NUmero,Genero).
+predicado(Numero,Genero) --> verbo(Numero), preposicao(_), verbo(Numero), adverbio(Numero,Genero), adjetivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero).
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
 predicado(Numero,Genero) --> pronome(_,_), verbo(Numero), substantivo(Numero,Genero).

@@ -8,51 +8,33 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-main :-
-	%['Users/caiotelles/Desktop/Trab03_IA/gramatica.pl'],
- 	write('DICA: NAO USE ACENTOS rsrs'), nl, nl,
+shrink :-
+	write('DICA: NAO USE ACENTOS rsrs'), nl, nl,
 	write('Ola, eu sou Shrink, seu terapeuta'),nl,
 	write('Como voce esta?'),nl,
 	write('>> '),
 	read_sent(Words), 
 	talk(Words, Reply),  
-	main_loop(Reply).
+	shrink_loop(Reply).
 
-main_loop(Reply) :-
+shrink_loop(Reply) :-
 	nl,write(Reply),nl,
 	write('>> '),
 	read_sent(Words), 
 	talk(Words, NewReply),
-	main_loop(NewReply). 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%%% 						Phrase Analiser
-% letra 'a'
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-main_livro :-
-	write('>> '),
-	read_sent(Words),
-	typeOfSentence(Words,Type),
-	replySentenceType(Words, Type),
-	wordMorphology(Words),
-	main_livro.
+	shrink_loop(NewReply). 
 
 
 %%%  				REGRA DE INTERACAO HUMANO-AGENTE 			%%%
 
+talk([sair],_) :-
+	abort.
+
 talk(Sentence, Reply) :-
-	% parse the sentence
-	% clause, if possible
 	typeOfSentence(Sentence,Type),
 	parse(Sentence, Type),
 	therapist(Sentence,Type,Reply).
 
-% No parse was found, sentence is too difficult. 
 talk(_Sentence, Reply) :-
 	answer(error,Reply).
 
@@ -77,6 +59,7 @@ parse(Sentence, question) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 parse_question :-
+	write('>> '),
 	read_sent(Words),
 	isAQuestion(Words),!.
 
@@ -147,6 +130,24 @@ phh([H|T]) :-
 spaces(0) :- !.
 spaces(N) :- write(' '), N1 is N - 1, spaces(N1).	
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% 						Phrase Analiser
+% letra 'a'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+main_loop :-
+	nl,write('>> '),
+	read_sent(Words),
+	typeOfSentence(Words,Type),
+	replySentenceType(Words, Type),
+	wordMorphology(Sentence),
+	main_loop.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -155,9 +156,12 @@ spaces(N) :- write(' '), N1 is N - 1, spaces(N1).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-replySentenceSimpleType(Sentence, question) :-
+replySentenceType([sair],_) :-
+	abort.
+
+replySentenceType(Sentence, question) :-
 	questao(Num,Gen,Sentence,[]),
-	nl,write('Pergunta:'),nl.
+	nl,write('Pergunta:'),nl,nl.
 
 replySentenceType(Sentence, assertion) :-
 	periodoSimples(Num,Gen,Sentence,[]),
@@ -167,8 +171,8 @@ replySentenceType(Sentence, assertion) :-
 	periodoComposto(Num,Gen,Sentence,[]),
 	nl,write('Periodo Composto:'),nl,nl.
 
-wordMorphology([?]).
 wordMorphology([]).
+wordMorphology([?]).
 wordMorphology([Sentence|Rest]) :-
 	(pronomeVerify(Sentence);
 	artigoVerify(Sentence);
@@ -1320,6 +1324,8 @@ substantivo(plural, masculino) --> [treinos].
 
 %VERBO
 
+verbo(singular) --> [escrever].
+verbo(singular) --> [quer].
 verbo(singular) --> [fazer].
 verbo(singular) --> [quiser].
 verbo(singular) --> [estudando].
@@ -3192,10 +3198,12 @@ pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(s
 pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(singular,_), verbo(Numero), verbo(Numero), artigo(Numero,Genero), substantivo(Numero,Genero), interrogacao.
 pergunta(Numero,Genero)  --> pronome(singular,_), pronome(singular,_), pronome(singular,_), verbo(Numero), verbo(Numero), artigo(Numero,Genero), pronome(singular,_), interrogacao.
 pergunta(Numero,Genero)  --> pronome(_,_), pronome(_,_), pronome(_,_), pronome(_,_), verbo(Numero,Genero), interrogacao.
-pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(singular,_), verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
-pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(_,_), pronome(singular,_), verbo(Numero,Genero), substantivo(Numero,_),interrogacao.
-pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(singular,_), verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
-pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(_,_), pronome(singular,_), verbo(Numero,Genero), pronome(_,_), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(singular,_), verbo(Numero), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(singular,_), substantivo(Numero,Genero), verbo(Numero),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(singular,_), substantivo(Numero,Genero), verbo(Numero), verbo(Numero),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(_,_), pronome(singular,_), verbo(Numero), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(singular,_), verbo(Numero), pronome(_,_), substantivo(Numero,_),interrogacao.
+pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome(_,_), pronome(singular,_), verbo(Numero), pronome(_,_), substantivo(Numero,_),interrogacao.
 
 
 %%%%%% 							COMPREENSAO DO AGENTE 			%%%%%%%
@@ -3222,7 +3230,7 @@ assunto(amigos,amizade).
 
 
 answer(outOfKB,  'Entendo! Por favor, continue...' ).
-answer(error, 'que?????' ).
+answer(error, 'Nao entendi sua frase, poderia usar outras palavras?' ).
 
 answer(familia,   'Conte-me mais sobre sua familia').
 answer(trabalho, 'Com todo esse trabalho, voce tem tirado tempo pra voce?').
@@ -3299,3 +3307,4 @@ predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(N
 predicado(Numero,Genero) --> verbo(Numero), substantivo(Numero,Genero), artigo(Numero,Genero), substantivo(Numero,Genero), adjetivo(Numero,Genero).
 predicado(Numero,Genero) --> pronome(_,_), verbo(Numero), substantivo(Numero,Genero).
 predicado(Numero,Genero) --> pronome(_,_), verbo(Numero).
+predicado(Numero,Genero) --> preposicao(_), pronome(Numero,_), substantivo(Numero,Genero).

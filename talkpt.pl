@@ -50,8 +50,8 @@ replySentenceType(Sentence, assertion) :-
 	periodoComposto(Num,Gen,Sentence,[]),
 	nl,write('Periodo Composto:'),nl,nl.
 
-wordMorphology([?]).
 wordMorphology([]).
+wordMorphology([?]).
 wordMorphology([Sentence|Rest]) :-
 	(pronomeVerify(Sentence);
 	artigoVerify(Sentence);

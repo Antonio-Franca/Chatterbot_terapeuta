@@ -80,7 +80,7 @@ isAQuestion(_Sentence) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 context(Sentence,Theme) :-
-	assunto(Word,Theme),
+	subject(Word,Theme),
 	member(Word,Sentence).
 
 
@@ -1040,7 +1040,7 @@ substantivo(plural, feminino) --> [ arvores ].
 substantivo(singular, masculino) --> [assedio].
 substantivo(singular, feminino) --> [ associacao ].
 substantivo(singular, feminino) --> [associada].
-substantivo(singular, masculino) --> [assunto].
+substantivo(singular, masculino) --> [subject].
 substantivo(singular, feminino) --> [amyris].
 substantivo(singular, feminino) --> [atividade].
 substantivo(plural, masculino) --> [ avioes ].
@@ -3208,25 +3208,25 @@ pergunta(Numero,Genero)  --> artigo(Numero,Genero), pronome(singular,_), pronome
 
 %%%%%% 							COMPREENSAO DO AGENTE 			%%%%%%%
 
-assunto(pai,familia).
-assunto(mae,familia).
-assunto(filho,familia).
-assunto(filha,familia).
-assunto(trabalho,trabalho).
-assunto(cansado,trabalho).
-assunto(estudar,trabalho).
-assunto(faculdade,trabalho).
-assunto(estudando,trabalho).
-assunto(estudo,trabalho).
-assunto(deprimido,tristeza).
-assunto(triste,tristeza).
-assunto(tristeza,tristeza).
-assunto(depressivo,tristeza).
-assunto(mal, sencacao).
-assunto(bem, sencacao).
-assunto(amigo,amizade).
-assunto(amiga,amizade).
-assunto(amigos,amizade).
+subject(pai,familia).
+subject(mae,familia).
+subject(filho,familia).
+subject(filha,familia).
+subject(trabalho,trabalho).
+subject(cansado,trabalho).
+subject(estudar,trabalho).
+subject(faculdade,trabalho).
+subject(estudando,trabalho).
+subject(estudo,trabalho).
+subject(deprimido,tristeza).
+subject(triste,tristeza).
+subject(tristeza,tristeza).
+subject(depressivo,tristeza).
+subject(mal, sencacao).
+subject(bem, sencacao).
+subject(amigo,amizade).
+subject(amiga,amizade).
+subject(amigos,amizade).
 
 
 answer(outOfKB,  'Entendo! Por favor, continue...' ).
